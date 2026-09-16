@@ -98,6 +98,7 @@ h3{font-family:var(--sans);font-weight:600;font-size:19px;line-height:1.35;lette
 }
 .rot b{
   position:absolute;left:0;top:0;white-space:nowrap;font-weight:500;font-style:italic;
+  padding:0 .1em .38em 0;
   background:radial-gradient(78% 108% at 44% 35%, var(--accent-3) 0%, var(--accent-2) 38%, var(--accent) 100%);
   -webkit-background-clip:text;background-clip:text;color:transparent;
   opacity:0;translate:0 .5em;
@@ -782,17 +783,27 @@ footer{border-top:1px solid var(--line);padding:32px 0;color:var(--muted);font-s
     addEventListener('resize', settle);
 
     if(reduce) return;
-    setInterval(function(){
+    var rtimer = null;
+    function tick(){
       var prev = words[r];
       r = (r + 1) % words.length;
       var next = words[r];
+      words.forEach(function(w){ if(w !== prev && w !== next){ w.classList.remove('on','out'); } });
       prev.classList.remove('on'); prev.classList.add('out');
       sizeTo(next);
       next.classList.remove('out');
-      requestAnimationFrame(function(){ next.classList.add('on'); });
+      void next.offsetWidth;
+      next.classList.add('on');
       rot.setAttribute('aria-label', next.textContent);
       setTimeout(function(){ prev.classList.remove('out'); }, 600);
-    }, 2600);
+    }
+    function startRot(){ clearInterval(rtimer); rtimer = setInterval(tick, 2600); }
+    function stopRot(){ clearInterval(rtimer); }
+    document.addEventListener('visibilitychange', function(){
+      if(document.hidden){ stopRot(); }
+      else { words.forEach(function(w, k){ w.classList.toggle('on', k === r); w.classList.remove('out'); }); settle(); startRot(); }
+    });
+    startRot();
   })();
 
   /* ---- phone carousel ---- */
