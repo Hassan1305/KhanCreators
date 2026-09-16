@@ -1316,17 +1316,17 @@ footer{border-top:1px solid var(--line);padding:32px 0;color:var(--muted);font-s
       rot.setAttribute('aria-label', next.textContent);
       setTimeout(function(){ prev.classList.remove('out'); }, 600);
     }
-    function tap(chip, cb){
+    function tap(chip, cb, quiet){
       chip.classList.add('hit');
-      setTimeout(function(){ chip.classList.remove('hit'); chip.classList.add('copied'); cb && cb(); }, 140);
-      setTimeout(function(){ chip.classList.remove('copied'); }, 1300);
+      setTimeout(function(){ chip.classList.remove('hit'); if(!quiet) chip.classList.add('copied'); cb && cb(); }, 140);
+      if(!quiet) setTimeout(function(){ chip.classList.remove('copied'); }, 1300);
     }
 
     var rtimer = null, holdUntil = 0;
     function startRot(){ clearInterval(rtimer); if(reduce) return; rtimer = setInterval(function(){
       if(Date.now() < holdUntil || document.hidden) return;
       var n = (r + 1) % words.length;
-      tap(chips[n], function(){ swap(n); });
+      tap(chips[n], function(){ swap(n); }, true);
     }, 2800); }
     function stopRot(){ clearInterval(rtimer); }
     chips.forEach(function(c){
