@@ -62,7 +62,7 @@
 }
 
 *{box-sizing:border-box}
-html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;overflow-x:clip}
 body{
   margin:0;background:var(--bg);color:var(--ink);
   font-family:var(--sans);font-size:17px;line-height:1.62;
@@ -78,7 +78,7 @@ section{position:relative}
 
 /* ============ type ============ */
 h1,h2,h3{font-family:var(--display);font-weight:700;line-height:1.06;margin:0;letter-spacing:-.015em}
-h1{font-size:clamp(42px,8.2vw,88px)}
+h1{font-size:clamp(38px,8.2vw,88px);overflow-wrap:break-word}
 h2{font-size:clamp(30px,5vw,52px)}
 h3{font-family:var(--sans);font-weight:600;font-size:19px;line-height:1.35;letter-spacing:-.01em;margin:0 0 8px}
 .it{font-style:italic;font-weight:500}
@@ -162,8 +162,9 @@ header.stuck{border-bottom-color:var(--line)}
 
 /* ---- phone carousel ---- */
 .stage{position:relative;display:flex;flex-direction:column;align-items:center;gap:20px}
+.pwrap{position:relative;width:min(280px,70vw)}
 .phone{
-  position:relative;width:min(280px,72vw);aspect-ratio:560/1202;
+  position:relative;width:100%;aspect-ratio:560/1202;
   border-radius:clamp(30px,7vw,38px);overflow:hidden;
   border:1px solid var(--line-2);background:var(--bg-2);
   box-shadow:var(--shadow);
@@ -202,10 +203,16 @@ header.stuck{border-bottom-color:var(--line)}
 .float small{display:block;color:var(--muted);font-size:11.5px;font-weight:400;letter-spacing:.2px}
 .float .chip{width:28px;height:28px;border-radius:8px;display:grid;place-items:center;flex:none}
 .float svg{width:15px;height:15px;stroke-width:2.2;fill:none;stroke-linecap:round;stroke-linejoin:round}
-.f1{left:-8px;top:14%;animation:bob 6s ease-in-out infinite}
-.f2{right:-14px;bottom:16%;animation:bob 6s ease-in-out infinite .9s}
-@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-11px)}}
-@media(max-width:520px){.f1{left:-4px;top:9%}.f2{right:-4px;bottom:12%}.float{font-size:12px;padding:9px 11px}}
+.f1{left:-30px;top:12%;animation:bob 6s ease-in-out infinite}
+.f2{right:-30px;bottom:17%;animation:bob 6s ease-in-out infinite .9s}
+@keyframes bob{0%,100%{translate:0 0}50%{translate:0 -11px}}
+@media(max-width:560px){
+  .f1{left:-16px;top:9%}
+  .f2{right:-16px;bottom:13%}
+  .float{font-size:12px;padding:8px 10px;gap:8px;border-radius:12px}
+  .float .chip{width:24px;height:24px;border-radius:7px}
+  .float small{font-size:10.5px}
+}
 
 /* ============ marquee ============ */
 .marq{border-block:1px solid var(--line);background:var(--bg-2);overflow:hidden;padding:15px 0}
