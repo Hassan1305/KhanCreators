@@ -79,6 +79,7 @@ section{position:relative}
 /* ============ type ============ */
 h1,h2,h3{font-family:var(--display);font-weight:700;line-height:1.06;margin:0;letter-spacing:-.015em}
 h1{font-size:clamp(38px,8.2vw,88px);overflow-wrap:break-word}
+@media(min-width:901px) and (max-width:1180px){h1{font-size:clamp(38px,6.4vw,88px)}}
 h2{font-size:clamp(30px,5vw,52px)}
 h3{font-family:var(--sans);font-weight:600;font-size:19px;line-height:1.35;letter-spacing:-.01em;margin:0 0 8px}
 .it{font-style:italic;font-weight:500}
@@ -93,17 +94,20 @@ h3{font-family:var(--sans);font-weight:600;font-size:19px;line-height:1.35;lette
 .rot{
   position:relative;display:inline-block;vertical-align:bottom;
   height:1.06em;overflow:hidden;
-  transition:width .55s cubic-bezier(.22,.8,.26,1);
+  transition:width .42s cubic-bezier(.22,.8,.26,1);
 }
 .rot b{
   position:absolute;left:0;top:0;white-space:nowrap;font-weight:500;font-style:italic;
   background:radial-gradient(78% 108% at 44% 35%, var(--accent-3) 0%, var(--accent-2) 38%, var(--accent) 100%);
   -webkit-background-clip:text;background-clip:text;color:transparent;
   opacity:0;translate:0 .5em;
-  transition:opacity .42s ease, translate .55s cubic-bezier(.22,.8,.26,1);
+  transition:opacity .4s ease .12s, translate .55s cubic-bezier(.22,.8,.26,1) .08s;
 }
+.nw{white-space:nowrap}
+.mb{display:none}
+@media(max-width:480px),(min-width:901px){.mb{display:inline}}
 .rot b.on{opacity:1;translate:0 0}
-.rot b.out{opacity:0;translate:0 -.55em}
+.rot b.out{opacity:0;translate:0 -.55em;transition-delay:0s}
 @media(prefers-reduced-motion:reduce){.rot{transition:none}.rot b{transition:none}}
 
 .eyebrow{
@@ -179,7 +183,7 @@ header.stuck{border-bottom-color:var(--line)}
 
 /* ---- phone carousel ---- */
 .stage{position:relative;display:flex;flex-direction:column;align-items:center;gap:20px}
-.pwrap{position:relative;width:min(280px,70vw)}
+.pwrap{position:relative;width:min(236px,58vw)}
 .phone{
   position:relative;width:100%;aspect-ratio:560/1202;
   border-radius:clamp(30px,7vw,38px);overflow:hidden;
@@ -432,7 +436,7 @@ footer{border-top:1px solid var(--line);padding:32px 0;color:var(--muted);font-s
   <div class="wrap hero-grid">
     <div>
       <span class="eyebrow rv"><i class="dot"></i> iPhone &amp; iPad · One-time purchase</span>
-      <h1 class="rv">Stop retyping<br>the same <span class="rot" id="rot" aria-label="things"><b class="on">things</b><b>replies</b><b>commands</b><b>prompts</b><b>addresses</b><b>sign-offs</b></span>.</h1>
+      <h1 class="rv">Stop retyping<br>the same <br class="mb"><span class="nw"><span class="rot" id="rot" aria-label="things"><b class="on">things</b><b>replies</b><b>commands</b><b>prompts</b><b>addresses</b><b>sign-offs</b></span>.</span></h1>
       <p class="lede rv">The email reply you send twice a day. The code you paste every morning. Your address, your invoice details, the client name you always misspell. Save it once, then put it anywhere in two taps.</p>
       <div class="cta rv">
         <a class="btn" href="https://apps.apple.com/app/id6802945896">
