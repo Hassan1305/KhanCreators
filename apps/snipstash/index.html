@@ -52,7 +52,7 @@
   --line:rgba(16,20,45,.10);
   --line-2:rgba(16,20,45,.18);
   --ink:#171B33;
-  --muted:#5B6280;
+  --muted:#4F567A;
   --accent:#3B4FD8;
   --accent-2:#4C5FE0;
   --accent-3:#2B3AA8;
@@ -66,7 +66,7 @@ html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;overflow-x:clip}
 body{
   margin:0;background:var(--bg);color:var(--ink);
   font-family:var(--sans);font-size:17px;line-height:1.62;
-  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
 }
 img{max-width:100%;display:block}
 a{color:inherit;text-decoration:none}
@@ -135,7 +135,13 @@ header{
   border-bottom:1px solid transparent;transition:border-color .3s;
 }
 header.stuck{border-bottom-color:var(--line)}
-.nav{display:flex;align-items:center;gap:10px;height:66px}
+.nav{display:flex;align-items:center;gap:10px;height:66px;transition:height .3s cubic-bezier(.2,.8,.3,1)}
+header.compact .nav{height:56px}
+header.compact .brand img{width:26px;height:26px}
+.brand img{transition:width .3s,height .3s}
+.prog{position:absolute;left:0;bottom:-1px;height:2px;width:100%;transform-origin:left;transform:scaleX(0);
+  background:linear-gradient(90deg,var(--accent),var(--accent-3));opacity:0;transition:opacity .3s}
+header.compact .prog{opacity:1}
 .brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:-.02em;font-size:17px}
 .brand img{width:30px;height:30px;border-radius:8px}
 .nav .sp{flex:1}
@@ -151,6 +157,20 @@ header.stuck{border-bottom-color:var(--line)}
 .icon-btn svg{width:17px;height:17px;stroke:var(--ink);fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
 :root[data-theme="light"] .sun{display:none}
 :root[data-theme="dark"] .moon{display:none}
+
+/* ============ dot nav ============ */
+.dots{position:fixed;right:22px;top:50%;translate:0 -50%;z-index:50;display:none;flex-direction:column;gap:14px;margin:0;padding:0;list-style:none}
+@media(min-width:1180px){.dots{display:flex}}
+.dots a{position:relative;display:block;width:10px;height:10px;border-radius:50%;background:var(--line-2);transition:background .3s, transform .3s}
+.dots a:hover{background:var(--accent-2);transform:scale(1.25)}
+.dots a.on{background:var(--accent);box-shadow:0 0 0 4px var(--glow)}
+.dots a span{
+  position:absolute;right:20px;top:50%;translate:6px -50%;white-space:nowrap;
+  font-size:12px;font-weight:600;letter-spacing:.3px;color:var(--ink);
+  background:var(--bg-2);border:1px solid var(--line-2);border-radius:8px;padding:5px 9px;
+  opacity:0;pointer-events:none;transition:opacity .25s, translate .25s;
+}
+.dots a:hover span{opacity:1;translate:0 -50%}
 
 /* ============ buttons ============ */
 .btn{
@@ -169,7 +189,7 @@ header.stuck{border-bottom-color:var(--line)}
 /* ============ hero ============ */
 .hero{padding:clamp(40px,7vw,86px) 0 clamp(50px,7vw,90px);position:relative}
 .hero::before{
-  content:"";position:absolute;inset:-25% -10% auto -10%;height:720px;pointer-events:none;
+  content:"";position:absolute;inset:-25% 0 auto 0;height:720px;pointer-events:none;
   background:radial-gradient(52% 50% at 62% 28%, var(--glow) 0%, transparent 70%);
   filter:blur(18px);opacity:.75;
 }
@@ -252,6 +272,31 @@ header.stuck{border-bottom-color:var(--line)}
 .marq-in ul{display:flex;align-items:center;gap:36px;margin:0;padding:0 18px;list-style:none;white-space:nowrap}
 .marq-in li{display:flex;align-items:center;gap:9px;color:var(--muted);font-size:13.5px;font-weight:500;letter-spacing:.2px}
 .marq-in li b{width:5px;height:5px;border-radius:50%;background:var(--accent);flex:none}
+.marq-in li.u{color:var(--ink);background:var(--surface-2);border:1px solid var(--line);border-radius:999px;padding:5px 12px 5px 9px;font-size:12.5px}
+.marq-in li.u svg{width:13px;height:13px;stroke:var(--accent-2);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+
+/* ============ trust strip ============ */
+.trust{padding:clamp(34px,5vw,56px) 0 0}
+.trust-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+@media(max-width:900px){.trust-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.tr .big{font-size:22px}.tr{padding:16px 14px 14px}.tr svg{width:15px;height:15px;right:11px;top:11px}}
+.tr{
+  position:relative;overflow:hidden;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 18px 16px;
+  transition:border-color .3s, transform .3s cubic-bezier(.2,.8,.3,1);
+}
+.tr:hover{border-color:var(--line-2);transform:translateY(-3px)}
+.tr .big{font-family:var(--display);font-size:clamp(26px,3vw,34px);line-height:1;letter-spacing:-.02em;font-weight:700}
+.tr .big i{font-style:italic;font-weight:500;color:var(--accent-2)}
+.tr small{display:block;color:var(--muted);font-size:13px;margin-top:8px;line-height:1.45}
+.tr svg{position:absolute;right:14px;top:14px;width:18px;height:18px;stroke:var(--accent-2);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;opacity:.8}
+.trust-note{
+  margin-top:12px;display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;
+  color:var(--muted);font-size:13.5px;padding:0 4px;
+}
+.trust-note a{color:var(--accent-2);font-weight:600;display:inline-flex;align-items:center;gap:5px;border-bottom:1px solid transparent;transition:border-color .2s}
+.trust-note a:hover{border-bottom-color:var(--accent-2)}
+.trust-note .stars{display:inline-flex;gap:2px}
+.trust-note .stars svg{width:13px;height:13px;fill:var(--accent-2);stroke:none}
 
 /* ============ section head ============ */
 .head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:clamp(30px,4vw,48px)}
@@ -272,6 +317,13 @@ header.stuck{border-bottom-color:var(--line)}
   padding:26px 24px;transition:transform .3s cubic-bezier(.2,.8,.3,1), border-color .3s, background .3s;
 }
 .card:hover{transform:translateY(-4px);border-color:var(--line-2);background:var(--surface-2)}
+.card::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(260px circle at var(--mx,50%) var(--my,50%), var(--glow) 0%, transparent 65%);
+  opacity:0;transition:opacity .35s;
+}
+.card:hover::before{opacity:.55}
+.card > *{position:relative;z-index:1}
 .card::after{
   content:"";position:absolute;left:24px;right:24px;top:0;height:1px;
   background:linear-gradient(90deg,transparent,var(--accent),transparent);
@@ -292,22 +344,47 @@ header.stuck{border-bottom-color:var(--line)}
 .b-lg .txt{padding:34px 10px 34px 30px;max-width:56ch}
 .b-lg h3{font-size:clamp(22px,3vw,30px);font-family:var(--display);font-weight:700;letter-spacing:-.015em;margin-bottom:12px}
 .b-lg p{font-size:16.5px}
-.peek{position:relative;height:100%;min-height:290px;display:flex;justify-content:center;align-items:flex-end}
-.peek img{
-  width:min(232px,62%);border-radius:26px 26px 0 0;
-  border:1px solid var(--line-2);border-bottom:0;
-  box-shadow:0 -18px 60px -26px rgba(0,0,0,.8);
-  translate:0 26px;
-}
+.peek{position:relative;height:100%;min-height:300px;display:flex;justify-content:center;align-items:flex-end;overflow:hidden}
 .peek::before{
   content:"";position:absolute;inset:0;pointer-events:none;
   background:radial-gradient(60% 55% at 50% 75%, var(--glow) 0%, transparent 72%);opacity:.8;
 }
+.kdemo{
+  position:relative;width:min(290px,84%);translate:0 14px;
+  background:var(--bg-2);border:1px solid var(--line-2);border-bottom:0;border-radius:26px 26px 0 0;
+  box-shadow:0 -18px 60px -26px rgba(0,0,0,.8);overflow:hidden;font-family:var(--sans);
+}
+.kd-msg{padding:16px 16px 12px}
+.kd-to{display:block;font-size:11px;color:var(--muted);letter-spacing:.3px;margin-bottom:8px}
+.kd-body{
+  min-height:58px;background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:9px 11px;
+  font-size:12.5px;line-height:1.45;color:var(--ink);white-space:pre-wrap;word-break:break-word;
+}
+.kd-cur{display:inline-block;width:1.5px;height:13px;background:var(--accent);vertical-align:-2px;margin-left:1px;animation:blink 1.1s steps(1) infinite}
+.kd-kb{background:var(--surface);border-top:1px solid var(--line);padding:10px 10px 12px}
+.kd-row{display:flex;gap:6px;margin-bottom:9px;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,#000 78%,transparent);mask-image:linear-gradient(90deg,#000 78%,transparent)}
+.kd-chip{
+  flex:none;font-size:11px;font-weight:600;color:var(--ink);background:var(--bg-2);border:1px solid var(--line-2);
+  border-radius:8px;padding:6px 9px;transition:background .2s, color .2s, transform .2s, border-color .2s;
+}
+.kd-chip.hit{background:var(--accent);color:#fff;border-color:transparent;transform:scale(.96)}
+.kd-keys{display:grid;grid-template-columns:repeat(10,1fr);gap:4px}
+.kd-keys i{display:block;height:20px;border-radius:5px;background:var(--surface-2);border:1px solid var(--line)}
+.kd-keys i.sp{grid-column:span 6}
+.kd-keys i.g{position:relative}
+.kd-keys i.g::after{content:"";position:absolute;inset:5px;border-radius:50%;border:1.5px solid var(--muted)}
+.kd-finger{
+  position:absolute;width:22px;height:22px;border-radius:50%;left:40px;top:150px;z-index:3;pointer-events:none;
+  background:color-mix(in srgb,var(--accent) 35%,transparent);border:1.5px solid var(--accent-2);
+  box-shadow:0 6px 18px -6px var(--glow);opacity:0;
+  transition:left .5s cubic-bezier(.2,.8,.3,1), top .5s cubic-bezier(.2,.8,.3,1), transform .15s, opacity .3s;
+}
+.kd-finger.show{opacity:1}
+.kd-finger.tap{transform:scale(.7)}
 @media(max-width:820px){
   .b-lg .inner{grid-template-columns:1fr;gap:0}
   .b-lg .txt{padding:28px 24px 4px}
-  .peek{min-height:210px}
-  .peek img{width:min(210px,58%)}
+  .peek{min-height:250px}
 }
 
 /* strikethrough "instead of" chips */
@@ -374,6 +451,27 @@ header.stuck{border-bottom-color:var(--line)}
 .plan li{padding:7px 0;color:var(--muted);display:flex;gap:11px;font-size:15.5px}
 .plan li::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--accent);flex:none;margin-top:11px}
 .plan .btn{width:100%}
+
+/* ============ pricing comparison ============ */
+.compare{margin-top:18px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.compare table{width:100%;border-collapse:collapse;font-size:14.5px}
+.compare th,.compare td{padding:14px 18px;text-align:left;border-bottom:1px solid var(--line)}
+.compare th{font-size:11px;letter-spacing:1.4px;text-transform:uppercase;color:var(--muted);font-weight:600}
+.compare th:not(:first-child),.compare td:not(:first-child){text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.compare tr:last-child td{border-bottom:0}
+.compare td{color:var(--muted)}
+.compare td:first-child{color:var(--ink);font-weight:500}
+.compare tr.me td{background:color-mix(in srgb,var(--accent) 9%,transparent);color:var(--ink)}
+.compare tr.me td:first-child{font-weight:600}
+.compare .tot{font-family:var(--display);font-size:20px;font-weight:700;letter-spacing:-.01em;color:var(--ink)}
+.compare tr.me .tot{color:var(--accent-2)}
+.compare-note{color:var(--muted);font-size:12.5px;margin:10px 4px 0}
+@media(max-width:560px){
+  .compare table{font-size:13.5px}
+  .compare th,.compare td{padding:12px 10px}
+  .compare th:nth-child(3),.compare td:nth-child(3){display:none}
+  .compare .tot{font-size:17px}
+}
 
 /* ============ faq ============ */
 .faq-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:clamp(28px,5vw,64px);align-items:start}
@@ -465,6 +563,23 @@ header.stuck{border-bottom-color:var(--line)}
   background:radial-gradient(50% 50% at 50% 50%, var(--glow) 0%, transparent 70%);pointer-events:none}
 .final > *{position:relative}
 .final .lede{margin:14px auto 30px}
+.final-icon{
+  width:88px;height:88px;border-radius:22px;margin:0 auto 26px;display:block;
+  box-shadow:0 30px 70px -24px var(--glow), 0 0 0 1px var(--line-2);
+  animation:floaty 5s ease-in-out infinite;
+}
+@keyframes floaty{0%,100%{translate:0 0}50%{translate:0 -8px}}
+.final-ticks{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:26px;padding:0;list-style:none}
+.final-ticks li{
+  display:inline-flex;align-items:center;gap:7px;font-size:13px;color:var(--muted);font-weight:500;
+  background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:7px 13px 7px 10px;
+}
+.final-ticks svg{width:13px;height:13px;stroke:var(--ok);fill:none;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.final-ring{
+  position:absolute;left:50%;top:50%;width:min(720px,120vw);aspect-ratio:1;border-radius:50%;translate:-50% -50%;
+  border:1px solid var(--line);pointer-events:none;opacity:.7;
+}
+.final-ring.r2{width:min(1040px,160vw);opacity:.4}
 
 /* ============ footer ============ */
 footer{border-top:1px solid var(--line);padding:32px 0;color:var(--muted);font-size:14px}
@@ -501,7 +616,16 @@ footer{border-top:1px solid var(--line);padding:32px 0;color:var(--muted);font-s
     </button>
     <a class="btn sm" href="https://apps.apple.com/app/id6802945896">Download</a>
   </div>
+  <span class="prog" id="prog"></span>
 </header>
+
+<ul class="dots" id="dots" aria-label="Page sections">
+  <li><a href="#top" data-s="top"><span>Top</span></a></li>
+  <li><a href="#features" data-s="features"><span>Features</span></a></li>
+  <li><a href="#privacy" data-s="privacy"><span>Privacy</span></a></li>
+  <li><a href="#pricing" data-s="pricing"><span>Pricing</span></a></li>
+  <li><a href="#faq" data-s="faq"><span>FAQ</span></a></li>
+</ul>
 
 <main id="top">
 
@@ -525,11 +649,11 @@ footer{border-top:1px solid var(--line);padding:32px 0;color:var(--muted);font-s
     <div class="stage rv">
       <div class="pwrap">
         <div class="phone" id="phone">
-          <img src="images/screen-1.png" alt="SnipStash library with folders and tags" class="on">
-          <img src="images/screen-2.png" alt="Pasting a snippet from the SnipStash keyboard" loading="lazy">
-          <img src="images/screen-3.png" alt="Searching snippets" loading="lazy">
-          <img src="images/screen-4.png" alt="Copying a snippet in one tap" loading="lazy">
-          <img src="images/screen-5.png" alt="SnipStash Pro, one-time purchase" loading="lazy">
+          <img src="images/screen-1.png" alt="SnipStash library with folders and tags" width="560" height="1202" decoding="async" class="on">
+          <img src="images/screen-2.png" alt="Pasting a snippet from the SnipStash keyboard" width="560" height="1202" decoding="async" loading="lazy">
+          <img src="images/screen-3.png" alt="Searching snippets" width="560" height="1202" decoding="async" loading="lazy">
+          <img src="images/screen-4.png" alt="Copying a snippet in one tap" width="560" height="1202" decoding="async" loading="lazy">
+          <img src="images/screen-5.png" alt="SnipStash Pro, one-time purchase" width="560" height="1202" decoding="async" loading="lazy">
         </div>
 
         <div class="float f1">
@@ -562,17 +686,52 @@ footer{border-top:1px solid var(--line);padding:32px 0;color:var(--muted);font-s
 <div class="marq" aria-hidden="true">
   <div class="marq-in">
     <ul>
-      <li><b></b> No subscription</li><li><b></b> No account to create</li><li><b></b> No ads</li>
-      <li><b></b> No tracking</li><li><b></b> No servers of ours</li><li><b></b> Syncs through your own iCloud</li>
-      <li><b></b> Works offline</li><li><b></b> Built by two people</li>
+      <li><b></b> No subscription</li>
+      <li class="u"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>Email sign-offs</li>
+      <li><b></b> No account to create</li>
+      <li class="u"><svg viewBox="0 0 24 24"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5"/></svg>Git commands</li>
+      <li><b></b> No ads, no tracking</li>
+      <li class="u"><svg viewBox="0 0 24 24"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg>Home and work addresses</li>
+      <li><b></b> Syncs through your own iCloud</li>
+      <li class="u"><svg viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/></svg>AI prompts</li>
+      <li><b></b> Works offline</li>
+      <li class="u"><svg viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 12h6M9 16h6"/></svg>Invoice details</li>
+      <li><b></b> Built by two people</li>
+      <li class="u"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/></svg>Canned replies</li>
     </ul>
     <ul>
-      <li><b></b> No subscription</li><li><b></b> No account to create</li><li><b></b> No ads</li>
-      <li><b></b> No tracking</li><li><b></b> No servers of ours</li><li><b></b> Syncs through your own iCloud</li>
-      <li><b></b> Works offline</li><li><b></b> Built by two people</li>
+      <li><b></b> No subscription</li>
+      <li class="u"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>Email sign-offs</li>
+      <li><b></b> No account to create</li>
+      <li class="u"><svg viewBox="0 0 24 24"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5"/></svg>Git commands</li>
+      <li><b></b> No ads, no tracking</li>
+      <li class="u"><svg viewBox="0 0 24 24"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg>Home and work addresses</li>
+      <li><b></b> Syncs through your own iCloud</li>
+      <li class="u"><svg viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/></svg>AI prompts</li>
+      <li><b></b> Works offline</li>
+      <li class="u"><svg viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 12h6M9 16h6"/></svg>Invoice details</li>
+      <li><b></b> Built by two people</li>
+      <li class="u"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/></svg>Canned replies</li>
     </ul>
   </div>
 </div>
+
+<!-- ================= TRUST ================= -->
+<section class="trust">
+  <div class="wrap">
+    <div class="trust-grid">
+      <div class="tr rv"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M21.5 20a6.5 6.5 0 0 0-4.5-6.2"/></svg><div class="big">2 <i>people</i></div><small>Hassan and Bilal. No investors, no growth team, no reason to add a subscription.</small></div>
+      <div class="tr rv"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="6" rx="1.5"/><rect x="3" y="14" width="18" height="6" rx="1.5"/><path d="M7 7h.01M7 17h.01"/></svg><div class="big">0 <i>servers</i></div><small>Your snippets stay on your device and in your own iCloud. We have nothing to leak.</small></div>
+      <div class="tr rv"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9.5 9.5h3.75a1.75 1.75 0 0 1 0 3.5h-2.5a1.75 1.75 0 0 0 0 3.5H14.5"/></svg><div class="big">$19.99 <i>once</i></div><small>Pay one time. Every future update is included, on every device you own.</small></div>
+      <div class="tr rv"><svg viewBox="0 0 24 24"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M10 18.5h4"/></svg><div class="big">iOS 17 <i>and up</i></div><small>iPhone and iPad today. A native Mac app is in the works.</small></div>
+    </div>
+    <p class="trust-note rv">
+      <span class="stars" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.2 6.8.8-5 4.6 1.3 6.7L12 17.5l-6 3.3 1.3-6.7-5-4.6 6.8-.8z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.2 6.8.8-5 4.6 1.3 6.7L12 17.5l-6 3.3 1.3-6.7-5-4.6 6.8-.8z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.2 6.8.8-5 4.6 1.3 6.7L12 17.5l-6 3.3 1.3-6.7-5-4.6 6.8-.8z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.2 6.8.8-5 4.6 1.3 6.7L12 17.5l-6 3.3 1.3-6.7-5-4.6 6.8-.8z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.2 6.8.8-5 4.6 1.3 6.7L12 17.5l-6 3.3 1.3-6.7-5-4.6 6.8-.8z"/></svg></span>
+      <span>SnipStash is new, so there are no reviews to show you yet. If you use it, a rating helps us more than you would think.</span>
+      <a href="https://apps.apple.com/app/id6802945896?action=write-review">Leave a rating on the App Store</a>
+    </p>
+  </div>
+</section>
 
 <!-- ================= FEATURES ================= -->
 <section class="sec" id="features">
@@ -583,7 +742,6 @@ footer{border-top:1px solid var(--line);padding:32px 0;color:var(--muted);font-s
         <h2 style="margin-top:16px">Your reusable text,<br><span class="grad">one tap away</span></h2>
         <p class="lede">Six things done properly, instead of fifty done badly.</p>
       </div>
-      <span class="num">01 / 04</span>
     </div>
 
     <div class="bento">
@@ -604,7 +762,24 @@ footer{border-top:1px solid var(--line);padding:32px 0;color:var(--muted);font-s
               <li>retyping it from memory</li>
             </ul>
           </div>
-          <div class="peek"><img src="images/screen-2.png" alt="Pasting a snippet from the SnipStash keyboard" loading="lazy"></div>
+          <div class="peek">
+            <div class="kdemo" id="kdemo" aria-label="Animated demo: tapping a snippet in the keyboard types it into a message">
+              <div class="kd-msg">
+                <span class="kd-to">To: Maya at Studio North</span>
+                <div class="kd-body"><span id="kdText"></span><span class="kd-cur"></span></div>
+              </div>
+              <div class="kd-kb">
+                <div class="kd-row" id="kdRow">
+                  <span class="kd-chip" data-t="Best regards,&#10;Hassan">Email sign-off</span>
+                  <span class="kd-chip" data-t="Thanks for the update. Let me review it and come back to you by Thursday.">Gentle follow-up</span>
+                  <span class="kd-chip" data-t="git commit --amend --no-edit">Amend commit</span>
+                  <span class="kd-chip" data-t="12 Harbour Lane, Flat 4, Leeds LS1 4AB">Home address</span>
+                </div>
+                <div class="kd-keys" aria-hidden="true"><i class="g"></i><i></i><i class="sp"></i><i></i><i></i></div>
+              </div>
+              <div class="kd-finger" id="kdFinger"></div>
+            </div>
+          </div>
         </div>
       </article>
 
@@ -683,7 +858,7 @@ footer{border-top:1px solid var(--line);padding:32px 0;color:var(--muted);font-s
 <section class="sec privacy" id="privacy">
   <div class="wrap pgrid">
     <div class="rv">
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:16px"><span class="eyebrow"><i class="dot"></i> Privacy</span><span class="num">02 / 04</span></div>
+      <span class="eyebrow"><i class="dot"></i> Privacy</span>
       <h2 style="margin:16px 0 14px">We can't read<br>your <span class="grad">snippets</span>.</h2>
       <p class="lede">Most apps say they respect your privacy. Here is exactly what SnipStash does, so you can check it yourself.</p>
       <p style="margin-top:22px"><a class="btn ghost" href="https://hassan1305.github.io/snipstash-site/privacy.html">Read the full policy</a></p>
@@ -706,7 +881,6 @@ footer{border-top:1px solid var(--line);padding:32px 0;color:var(--muted);font-s
         <h2 style="margin-top:16px">Buy it once.<br><span class="grad">Keep it forever</span>.</h2>
         <p class="lede">Other snippet tools rent you their software every year. This one doesn't.</p>
       </div>
-      <span class="num">03 / 04</span>
     </div>
 
     <div class="price">
@@ -735,6 +909,18 @@ footer{border-top:1px solid var(--line);padding:32px 0;color:var(--muted);font-s
         <a class="btn" href="https://apps.apple.com/app/id6802945896">Get SnipStash Pro</a>
       </div>
     </div>
+
+    <div class="compare rv">
+      <table>
+        <thead><tr><th>Snippet tool</th><th>You pay</th><th>After 1 year</th><th>After 3 years</th></tr></thead>
+        <tbody>
+          <tr class="me"><td>SnipStash Pro</td><td>$19.99 once</td><td>$19.99</td><td class="tot">$19.99</td></tr>
+          <tr><td>Typical monthly subscription</td><td>$3.99 a month</td><td>$47.88</td><td class="tot">$143.64</td></tr>
+          <tr><td>Typical yearly subscription</td><td>$39.99 a year</td><td>$39.99</td><td class="tot">$119.97</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="compare-note rv">Subscription rows are illustrative, based on common prices for snippet and text expansion apps. Your maths may differ, the shape will not.</p>
   </div>
 </section>
 
@@ -742,7 +928,7 @@ footer{border-top:1px solid var(--line);padding:32px 0;color:var(--muted);font-s
 <section class="sec" id="faq">
   <div class="wrap faq-grid">
     <div class="faq-intro rv">
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:16px"><span class="eyebrow"><i class="dot"></i> Questions</span><span class="num">04 / 04</span></div>
+      <span class="eyebrow"><i class="dot"></i> Questions</span>
       <h2>Before<br><span class="grad">you buy</span>.</h2>
       <p class="lede">The things people ask us most, answered straight. If yours is not here, ask us and one of us will reply.</p>
       <div class="ask">
@@ -787,10 +973,18 @@ footer{border-top:1px solid var(--line);padding:32px 0;color:var(--muted);font-s
 
 <!-- ================= FINAL ================= -->
 <section class="sec final">
+  <span class="final-ring"></span><span class="final-ring r2"></span>
   <div class="wrap">
+    <img class="final-icon rv" src="images/icon.png" alt="" width="88" height="88" loading="lazy">
     <h2 class="rv">Save it once.<br><span class="grad">Paste it everywhere</span>.</h2>
     <p class="lede rv">Free to try, 25 snippets, no account needed.</p>
     <div class="rv"><a class="btn" href="https://apps.apple.com/app/id6802945896">Download on the App Store</a></div>
+    <ul class="final-ticks rv">
+      <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>No subscription</li>
+      <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>No account</li>
+      <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>No tracking</li>
+      <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>iPhone and iPad</li>
+    </ul>
   </div>
 </section>
 
@@ -916,6 +1110,87 @@ footer{border-top:1px solid var(--line);padding:32px 0;color:var(--muted);font-s
       card.addEventListener('pointercancel', end);
       card.addEventListener('lostpointercapture', end);
     });
+  })();
+
+  /* ---- compact header, progress bar, dot nav ---- */
+  (function(){
+    var prog = document.getElementById('prog');
+    var hero = document.querySelector('.hero');
+    function onScroll(){
+      var h = hero ? hero.offsetHeight : 400;
+      hdr.classList.toggle('compact', scrollY > h * 0.6);
+      var max = document.documentElement.scrollHeight - innerHeight;
+      if(prog) prog.style.transform = 'scaleX(' + (max > 0 ? Math.min(1, scrollY / max) : 0) + ')';
+    }
+    addEventListener('scroll', onScroll, {passive:true}); onScroll();
+
+    var dots = document.querySelectorAll('#dots a');
+    if(dots.length && 'IntersectionObserver' in window){
+      var map = {};
+      dots.forEach(function(a){ map[a.dataset.s] = a; });
+      var secs = ['top','features','privacy','pricing','faq'].map(function(id){ return document.getElementById(id); }).filter(Boolean);
+      var io2 = new IntersectionObserver(function(entries){
+        entries.forEach(function(en){
+          if(en.isIntersecting){
+            dots.forEach(function(a){ a.classList.remove('on'); });
+            var id = en.target.id; if(map[id]) map[id].classList.add('on');
+          }
+        });
+      }, {rootMargin:'-40% 0px -55% 0px', threshold:0});
+      secs.forEach(function(sec){ io2.observe(sec); });
+    }
+  })();
+
+  /* ---- card spotlight ---- */
+  (function(){
+    var bento = document.querySelector('.bento');
+    if(!bento || !matchMedia('(hover:hover)').matches) return;
+    bento.addEventListener('pointermove', function(e){
+      var card = e.target.closest('.card'); if(!card) return;
+      var r = card.getBoundingClientRect();
+      card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+      card.style.setProperty('--my', (e.clientY - r.top) + 'px');
+    });
+  })();
+
+  /* ---- keyboard demo ---- */
+  (function(){
+    var demo = document.getElementById('kdemo'); if(!demo) return;
+    var out = document.getElementById('kdText'), finger = document.getElementById('kdFinger');
+    var chips = Array.prototype.slice.call(document.querySelectorAll('#kdRow .kd-chip'));
+    var k = 0, running = false, stop = false;
+    function wait(ms){ return new Promise(function(r){ setTimeout(r, ms); }); }
+    function moveTo(chip){
+      var d = demo.getBoundingClientRect(), c = chip.getBoundingClientRect();
+      finger.style.left = (c.left - d.left + c.width / 2 - 11) + 'px';
+      finger.style.top  = (c.top - d.top + c.height / 2 - 11) + 'px';
+    }
+    async function cycle(){
+      if(running) return; running = true;
+      while(!stop){
+        var chip = chips[k]; var text = chip.dataset.t;
+        out.textContent = '';
+        moveTo(chip); finger.classList.add('show');
+        await wait(650);
+        finger.classList.add('tap'); chip.classList.add('hit');
+        await wait(160);
+        finger.classList.remove('tap');
+        if(reduce){ out.textContent = text; }
+        else { for(var i = 0; i < text.length && !stop; i++){ out.textContent += text[i]; await wait(text[i] === '\n' ? 120 : 22); } }
+        await wait(300); chip.classList.remove('hit');
+        await wait(1500);
+        finger.classList.remove('show');
+        await wait(400);
+        k = (k + 1) % chips.length;
+      }
+      running = false;
+    }
+    if('IntersectionObserver' in window){
+      new IntersectionObserver(function(e){
+        if(e[0].isIntersecting){ stop = false; cycle(); } else { stop = true; }
+      }, {threshold:0.3}).observe(demo);
+    } else { cycle(); }
+    document.addEventListener('visibilitychange', function(){ if(document.hidden){ stop = true; } else { stop = false; cycle(); } });
   })();
 
   /* ---- faq accordion ---- */
