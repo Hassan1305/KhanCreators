@@ -775,7 +775,7 @@ footer{border-top:1px solid var(--line);padding:32px 0;color:var(--muted);font-s
     if(!rot) return;
     var words = rot.querySelectorAll('b'), r = 0;
 
-    function sizeTo(el){ rot.style.width = Math.ceil(el.getBoundingClientRect().width) + 'px'; }
+    function sizeTo(el){ rot.style.width = Math.ceil(el.getBoundingClientRect().width - parseFloat(getComputedStyle(el).paddingRight)) + 'px'; }
     function settle(){ sizeTo(words[r]); rot.setAttribute('aria-label', words[r].textContent); }
 
     if(document.fonts && document.fonts.ready){ document.fonts.ready.then(settle); }
