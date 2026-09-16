@@ -219,7 +219,7 @@ header.stuck{border-bottom-color:var(--line)}
 
 /* floating cards */
 .float{
-  position:absolute;z-index:3;background:var(--bg-2);border:1px solid var(--line-2);
+  position:absolute;z-index:3;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;background:var(--bg-2);border:1px solid var(--line-2);
   border-radius:14px;padding:11px 14px;box-shadow:var(--shadow);
   display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500;
   backdrop-filter:blur(8px);
@@ -230,6 +230,8 @@ header.stuck{border-bottom-color:var(--line)}
 .f1{left:-30px;top:12%;animation:bob 6s ease-in-out infinite}
 .f2{right:-30px;bottom:17%;animation:bob 6s ease-in-out infinite .9s}
 @keyframes bob{0%,100%{translate:0 0}50%{translate:0 -11px}}
+.float.drag{animation:none;cursor:grabbing;z-index:4;transform:scale(1.04);box-shadow:0 40px 90px -30px rgba(0,0,0,.9)}
+.float{transition:transform .25s cubic-bezier(.2,.8,.3,1), box-shadow .25s}
 @media(max-width:560px){
   .f1{left:-16px;top:9%}
   .f2{right:-16px;bottom:13%}
@@ -881,6 +883,39 @@ footer{border-top:1px solid var(--line);padding:32px 0;color:var(--muted);font-s
       else { words.forEach(function(w, k){ w.classList.toggle('on', k === r); w.classList.remove('out'); }); settle(); startRot(); }
     });
     startRot();
+  })();
+
+  /* ---- draggable floating cards ---- */
+  (function(){
+    var wrap = document.querySelector('.pwrap');
+    if(!wrap || !('PointerEvent' in window)) return;
+    var PAD = 36;
+    document.querySelectorAll('.pwrap .float').forEach(function(card){
+      var sx, sy, ox, oy, dragging = false;
+      card.addEventListener('pointerdown', function(e){
+        if(e.button !== 0 && e.pointerType === 'mouse') return;
+        var w = wrap.getBoundingClientRect(), c = card.getBoundingClientRect();
+        ox = c.left - w.left; oy = c.top - w.top;
+        card.style.right = 'auto'; card.style.bottom = 'auto';
+        card.style.left = ox + 'px'; card.style.top = oy + 'px';
+        sx = e.clientX; sy = e.clientY; dragging = true;
+        card.classList.add('drag');
+        card.setPointerCapture(e.pointerId);
+        e.preventDefault();
+      });
+      card.addEventListener('pointermove', function(e){
+        if(!dragging) return;
+        var w = wrap.getBoundingClientRect(), c = card.getBoundingClientRect();
+        var x = ox + (e.clientX - sx), y = oy + (e.clientY - sy);
+        x = Math.max(-PAD, Math.min(w.width + PAD - c.width, x));
+        y = Math.max(-PAD / 2, Math.min(w.height + PAD / 2 - c.height, y));
+        card.style.left = x + 'px'; card.style.top = y + 'px';
+      });
+      function end(){ if(!dragging) return; dragging = false; card.classList.remove('drag'); }
+      card.addEventListener('pointerup', end);
+      card.addEventListener('pointercancel', end);
+      card.addEventListener('lostpointercapture', end);
+    });
   })();
 
   /* ---- faq accordion ---- */
