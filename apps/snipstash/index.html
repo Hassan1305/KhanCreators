@@ -439,7 +439,7 @@ header.stuck{border-bottom-color:var(--line)}
   display:grid;place-items:center;position:relative;background:var(--surface);
   transition:transform .45s cubic-bezier(.2,.8,.3,1), background .3s, border-color .3s, color .3s;
 }
-.qh .pm::before,.qh .pm::after{content:"";position:absolute;background:currentColor;border-radius:2px}
+.qh .pm::before,.qh .pm::after{content:"";position:absolute;left:50%;top:50%;translate:-50% -50%;background:currentColor;border-radius:2px}
 .qh .pm::before{width:11px;height:1.6px}
 .qh .pm::after{width:1.6px;height:11px}
 .q.open .qh .pm{transform:rotate(135deg);background:var(--accent);border-color:transparent;color:#fff}
@@ -749,7 +749,8 @@ footer{border-top:1px solid var(--line);padding:32px 0;color:var(--muted);font-s
           <span><strong>Hassan and Bilal</strong><small>The two people who make SnipStash</small></span>
         </div>
         <p>Still have a question? Send it over, we read every email.</p>
-        <a class="btn ghost sm" href="mailto:ch.hasni.khan@gmail.com">Email us</a>
+        <a class="btn ghost sm" id="ask-btn" href="mailto:ch.hasni.khan@gmail.com?subject=SnipStash%20question" data-email="ch.hasni.khan@gmail.com"><span>Email us</span></a>
+        <small class="ask-note" id="ask-note" style="display:block;margin-top:10px;font-size:12.5px;color:var(--muted)">Or copy ch.hasni.khan@gmail.com</small>
       </div>
     </div>
 
@@ -883,6 +884,14 @@ footer{border-top:1px solid var(--line);padding:32px 0;color:var(--muted);font-s
 
   /* ---- faq accordion ---- */
   (function(){
+    var ab = document.getElementById('ask-btn'), an = document.getElementById('ask-note');
+    if(ab){ ab.addEventListener('click', function(){
+      var t = ab.querySelector('span');
+      try{ navigator.clipboard.writeText(ab.dataset.email).then(function(){
+        t.textContent = 'Address copied'; if(an) an.textContent = 'Paste it into any mail app.';
+        setTimeout(function(){ t.textContent = 'Email us'; }, 2200);
+      }); }catch(e){}
+    }); }
     var qs = document.querySelectorAll('#qs .q');
     qs.forEach(function(q){
       q.querySelector('.qh').addEventListener('click', function(){
