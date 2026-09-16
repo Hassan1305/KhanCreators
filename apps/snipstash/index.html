@@ -283,79 +283,68 @@ header.compact .prog{opacity:1}
 .stage.demo .try{opacity:1}
 @media(max-width:900px){.try{top:-8px}}
 
-/* ---- headline typing + keyboard strip ---- */
-.tl{position:relative;display:inline}
-.tl .ghost{visibility:hidden}
-.tl .live{position:absolute;left:0;top:0;white-space:nowrap}
-.caret{display:inline-block;width:.045em;height:.82em;background:var(--accent);vertical-align:-.06em;margin-left:.03em;border-radius:1px;animation:blink 1s steps(1) infinite}
-h1.typing .nw,h1.typing .rot b{visibility:hidden}
-h1.done .tl .ghost{visibility:visible}
-h1.done .tl .live{display:none}
-.nw.paste{animation:pastepop .5s cubic-bezier(.2,.8,.3,1)}
-@keyframes pastepop{0%{scale:.92;opacity:0}45%{scale:1.05;opacity:1}100%{scale:1;opacity:1}}
-.hstrip{
-  display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin:18px 0 0;padding:0;list-style:none;
-  opacity:0;translate:0 8px;transition:opacity .45s ease, translate .5s cubic-bezier(.2,.8,.3,1);
+/* ============ scroll story hero ============ */
+.story{position:relative;height:430vh}
+.story-pin{position:sticky;top:0;height:100vh;display:flex;align-items:center;overflow:hidden}
+.story-pin::before{
+  content:"";position:absolute;inset:-20% 0 auto 0;height:80vh;pointer-events:none;
+  background:radial-gradient(52% 50% at 62% 40%, var(--glow) 0%, transparent 70%);filter:blur(18px);opacity:.75;
 }
-.hstrip.show{opacity:1;translate:0 0}
-.hstrip .lbl{
-  display:inline-flex;align-items:center;gap:6px;font-size:10.5px;letter-spacing:1.4px;text-transform:uppercase;font-weight:600;color:var(--muted);margin-right:4px;
+.story-grid{display:grid;grid-template-columns:1.06fr .94fr;gap:clamp(30px,5vw,60px);align-items:center;position:relative;z-index:1;width:100%}
+.story-copy{position:relative}
+.story-steps{position:relative;min-height:clamp(380px,52vh,500px);margin-top:22px}
+.step{position:absolute;inset:0;opacity:0;transform:translateY(40px);transition:opacity .5s ease, transform .6s cubic-bezier(.2,.8,.3,1);pointer-events:none}
+.step.on{opacity:1;transform:none;pointer-events:auto}
+.step.past{opacity:0;transform:translateY(-40px)}
+.step h1{margin:0}
+.step .lede{margin-top:20px}
+.step .cta{margin-top:28px}
+.story-dots{display:flex;gap:8px;margin-top:22px}
+.story-dots i{width:26px;height:4px;border-radius:2px;background:var(--line-2);transition:background .3s, width .3s}
+.story-dots i.on{background:var(--accent);width:44px}
+.scroll-hint{
+  position:absolute;left:0;bottom:-58px;display:flex;align-items:center;gap:8px;color:var(--muted);font-size:12.5px;letter-spacing:1.4px;text-transform:uppercase;font-weight:600;
+  transition:opacity .4s;
 }
-.hstrip .lbl .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
-.hstrip .lbl svg{width:18px;height:18px;stroke:var(--accent-2);fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
-.hchip{
-  position:relative;font-size:12.5px;font-weight:500;color:var(--ink);background:var(--surface);border:1px solid var(--line-2);
-  border-radius:9px;padding:6px 11px;cursor:pointer;transition:background .2s, color .2s, border-color .2s, transform .15s;
+.scroll-hint svg{width:16px;height:16px;stroke:var(--accent-2);fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;animation:bob 2s ease-in-out infinite}
+.scroll-hint.hide{opacity:0}
+.story-stage{perspective:1400px;display:flex;justify-content:center;align-items:center}
+.story .pwrap{perspective:1400px;transform-style:flat}
+.phone3d{transform-origin:50% 50%;transition:transform .25s cubic-bezier(.2,.8,.3,1);will-change:transform}
+.phone3d .pscreen{position:absolute;inset:0;opacity:1;transform:none;pointer-events:none}
+.story .float{opacity:0;scale:.8;transition:opacity .4s ease, scale .5s cubic-bezier(.2,.8,.3,1)}
+.story .ps-thread{overflow:hidden}
+.story .float.pop{opacity:1;scale:1}
+.ps-field .sf{flex:1;font-size:10.5px;line-height:1.35;color:#111;padding:3px 0;white-space:pre-wrap;word-break:break-word;min-height:16px}
+.ps-field .sf.empty::before{content:"iMessage";color:#a0a0a5}
+.ps-finger{
+  position:absolute;width:22px;height:22px;border-radius:50%;left:50%;top:60%;z-index:3;pointer-events:none;
+  background:color-mix(in srgb,var(--accent) 35%,transparent);border:1.5px solid var(--accent-2);box-shadow:0 6px 18px -6px var(--glow);
+  opacity:0;translate:-50% -50%;transition:opacity .3s, top .55s cubic-bezier(.2,.8,.3,1), left .55s cubic-bezier(.2,.8,.3,1), scale .15s;
 }
-.hchip:hover{background:var(--surface-2)}
-.hchip.on{background:var(--accent);color:#fff;border-color:transparent}
-.hchip.hit{transform:scale(.94)}
-.hchip .tick{
-  position:absolute;left:50%;top:-8px;translate:-50% -100%;background:var(--bg-2);border:1px solid var(--line-2);border-radius:999px;
-  padding:4px 9px;font-size:11px;font-weight:600;color:var(--ok);white-space:nowrap;opacity:0;transition:opacity .25s, translate .3s;pointer-events:none;
+.ps-finger.show{opacity:1}
+.ps-finger.at{top:80.5%;left:50%}
+.ps-finger.tap{scale:.7}
+.ps-bub.out.hid{display:none}
+.story.sent .ps-send{opacity:.35}
+@media(max-width:900px){
+  .story{height:380vh}
+  .story-grid{grid-template-columns:1fr;gap:18px;align-content:center}
+  .story-pin{padding-top:66px;align-items:flex-start}
+  .story-steps{min-height:clamp(190px,30vh,260px);margin-top:12px}
+  .story .float{display:none}
+  .step h1{font-size:clamp(30px,7.6vw,44px)}
+  .step .lede{font-size:15px;margin-top:12px}
+  .step .cta{margin-top:16px}
+  .step .cta .btn{padding:11px 16px;font-size:14px}
+  .step .cta .ghost{display:none}
+  .story .pwrap{width:min(190px,48vw)}
+  .scroll-hint{display:none}
+  .story-dots{margin-top:12px}
 }
-.hchip.copied .tick{opacity:1;translate:-50% calc(-100% - 4px)}
-@media(prefers-reduced-motion:reduce){.hstrip{transition:none}.nw.paste{animation:none}}
-
-
-.tabs{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;max-width:330px}
-.tab{
-  position:relative;overflow:hidden;
-  font-size:12.5px;font-weight:500;color:var(--muted);
-  padding:7px 13px;border-radius:999px;border:1px solid var(--line);
-  background:var(--surface);transition:color .25s, border-color .25s;
-}
-.tab span{position:relative;z-index:1}
-.tab::before{
-  content:"";position:absolute;left:0;top:0;bottom:0;width:100%;
-  background:var(--accent);opacity:.9;
-  transform:scaleX(0);transform-origin:left;
-}
-.tab.on{color:#fff;border-color:transparent}
-.tab.on::before{animation:fill var(--dur,4200ms) linear forwards}
-@keyframes fill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
-
-/* floating cards */
-.float{
-  position:absolute;z-index:3;cursor:grab;white-space:nowrap;touch-action:none;user-select:none;-webkit-user-select:none;background:var(--bg-2);border:1px solid var(--line-2);
-  border-radius:14px;padding:11px 14px;box-shadow:var(--shadow);
-  display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500;
-  backdrop-filter:blur(8px);
-}
-.float small{display:block;color:var(--muted);font-size:11.5px;font-weight:400;letter-spacing:.2px}
-.float .chip{width:28px;height:28px;border-radius:8px;display:grid;place-items:center;flex:none}
-.float svg{width:15px;height:15px;stroke-width:2.2;fill:none;stroke-linecap:round;stroke-linejoin:round}
-.f1{left:-30px;top:19%;animation:bob 6s ease-in-out infinite}
-.f2{right:-30px;top:7%;animation:bob 6s ease-in-out infinite .9s}
-@keyframes bob{0%,100%{translate:0 0}50%{translate:0 -11px}}
-.float.drag{animation:none;cursor:grabbing;z-index:4;transform:scale(1.04);box-shadow:0 40px 90px -30px rgba(0,0,0,.9)}
-.float{transition:transform .25s cubic-bezier(.2,.8,.3,1), box-shadow .25s}
-@media(max-width:560px){
-  .f1{left:-16px;top:15%}
-  .f2{right:-16px;top:6%}
-  .float{font-size:12px;padding:8px 10px;gap:8px;border-radius:12px}
-  .float .chip{width:24px;height:24px;border-radius:7px}
-  .float small{font-size:10.5px}
+@media(prefers-reduced-motion:reduce){
+  .story{height:auto}.story-pin{position:static;height:auto;padding:60px 0}
+  .step{position:relative;opacity:1;transform:none}.step:not(:last-child){display:none}
 }
 
 /* ============ marquee ============ */
@@ -810,86 +799,56 @@ footer{border-top:1px solid var(--line);padding:32px 0;color:var(--muted);font-s
 <main id="top">
 
 <!-- ================= HERO ================= -->
-<section class="hero">
-  <div class="wrap hero-grid">
-    <div>
-      <span class="eyebrow rv"><i class="dot"></i> iPhone &amp; iPad · One-time purchase</span>
-      <h1 class="rv" id="h1"><span class="tl"><span class="ghost">Stop retyping</span><span class="live" id="t1"></span></span><br><span class="tl"><span class="ghost">the same</span><span class="live" id="t2"></span></span> <br class="mb"><span class="nw" id="nw"><span class="rot" id="rot" aria-label="things"><b class="on">things</b><b>replies</b><b>commands</b><b>prompts</b><b>addresses</b><b>sign-offs</b></span>.</span></h1>
-      <ul class="hstrip" id="hstrip" aria-label="Pick a word">
-        <li class="lbl" title="From your keyboard"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M7 14h10"/></svg><span class="sr">From your keyboard</span></li>
-        <li><button class="hchip on" data-i="0">things<span class="tick">Pasted</span></button></li>
-        <li><button class="hchip" data-i="1">replies<span class="tick">Pasted</span></button></li>
-        <li><button class="hchip" data-i="2">commands<span class="tick">Pasted</span></button></li>
-        <li><button class="hchip" data-i="3">prompts<span class="tick">Pasted</span></button></li>
-        <li><button class="hchip" data-i="4">addresses<span class="tick">Pasted</span></button></li>
-        <li><button class="hchip" data-i="5">sign-offs<span class="tick">Pasted</span></button></li>
-      </ul>
-      <p class="lede rv">The email reply you send twice a day. The code you paste every morning. Your address, your invoice details, the client name you always misspell. Save it once, then put it anywhere in two taps.</p>
-      <div class="cta rv">
-        <a class="btn" href="https://apps.apple.com/app/id6802945896">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M16.4 12.7c0-2.4 2-3.6 2.1-3.6-1.1-1.7-2.9-1.9-3.5-1.9-1.5-.2-2.9.9-3.7.9s-1.9-.9-3.2-.8c-1.6 0-3.1 1-3.9 2.4-1.7 2.9-.4 7.2 1.2 9.5.8 1.1 1.7 2.4 3 2.4 1.2 0 1.7-.8 3.2-.8s1.9.8 3.2.8 2.1-1.1 2.9-2.3c.9-1.3 1.3-2.6 1.3-2.7 0 0-2.5-1-2.6-3.9zM14 5.6c.7-.8 1.1-2 1-3.1-1 0-2.2.7-2.9 1.5-.6.7-1.2 1.9-1 3 1.1.1 2.2-.6 2.9-1.4z"/></svg>
-          Download on the App Store
-        </a>
-        <a class="btn ghost" href="#pricing">See pricing</a>
-      </div>
-      <p class="cta-note rv"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg> Free to try, 25 snippets. Pro is $19.99 once, never a subscription.</p>
-    </div>
-
-    <div class="stage rv">
-      <div class="pwrap">
-        <div class="try" id="try"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12l7 7 7-7"/></svg>Try it, tap a snippet</div>
-        <div class="phone" id="phone">
-          <div class="slide pscreen on" id="pscreen" aria-label="Interactive demo of the SnipStash keyboard">
-            <div class="ps-top"><span>9:41</span><span class="isl"></span><span>●●●</span></div>
-            <div class="ps-hdr">New Message<i>×</i></div>
-            <div class="ps-to">To:<b>Maya at Studio North</b></div>
-            <div class="ps-thread" id="psThread"><div class="ps-bub in">Hi! Can you send over the invoice details and your address for the contract?</div></div>
-            <div class="ps-compose">
-              <span class="plus">+</span>
-              <label class="ps-field"><textarea id="psField" rows="1" placeholder="iMessage" aria-label="Message"></textarea><span class="ps-send" id="psSend">↑</span></label>
-            </div>
-            <div class="ps-kb">
-              <div class="ps-search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>Search snippets</div>
-              <div class="ps-tags"><span class="on">All</span><span>Pinned</span><span>#email</span><span>#work</span><span>#code</span></div>
-              <div class="ps-list" id="psList">
-                <button class="ps-row" data-t="Invoice INV-0231, due in 30 days. Bank details are in the attached PDF."><b>Invoice details</b><small>Invoice INV-0231, due in 30 days. Bank details…</small></button>
-                <button class="ps-row" data-t="12 Harbour Lane, Flat 4, Leeds LS1 4AB"><b>Home address</b><small>12 Harbour Lane, Flat 4, Leeds LS1 4AB</small></button>
-                <button class="ps-row" data-t="Thanks for the update. Let me review it and come back to you by Thursday."><b>Gentle follow-up</b><small>Thanks for the update. Let me review it and come…</small></button>
-                <button class="ps-row" data-t="Best regards,&#10;Hassan"><b>Email sign-off</b><small>Best regards, Hassan</small></button>
-              </div>
-              <div class="ps-keys"><i class="g"></i><i>space</i><i class="ret">return</i></div>
-            </div>
-            <div class="ps-toast" id="psToast"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Pasted from SnipStash</div>
+<section class="story" id="story">
+  <div class="story-pin">
+    <div class="wrap story-grid">
+      <div class="story-copy">
+        <span class="eyebrow"><i class="dot"></i> iPhone &amp; iPad · One-time purchase</span>
+        <div class="story-steps">
+          <div class="step on"><h1>Stop retyping<br>the same <span class="grad">things</span>.</h1><p class="lede">The sign-off you have typed a hundred times. The address you keep getting slightly wrong. Watch what SnipStash does with them.</p></div>
+          <div class="step"><h1>Tap the globe.<br><span class="grad">Tap a snippet</span>.</h1><p class="lede">Your library lives inside every keyboard on your phone. No app switching, no losing your place mid-sentence.</p></div>
+          <div class="step"><h1>Pasted.<br>In <span class="grad">two taps</span>.</h1><p class="lede">Text, links, images and files. It lands exactly where your cursor is, formatted the way it should be.</p></div>
+          <div class="step"><h1>Save it once.<br><span class="grad">Paste it everywhere</span>.</h1><p class="lede">$19.99 once, never a subscription. No account, no servers, syncs through your own iCloud.</p>
+            <div class="cta"><a class="btn" href="https://apps.apple.com/app/id6802945896"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M16.4 12.7c0-2.4 2-3.6 2.1-3.6-1.1-1.7-2.9-1.9-3.5-1.9-1.5-.2-2.9.9-3.7.9s-1.9-.9-3.2-.8c-1.6 0-3.1 1-3.9 2.4-1.7 2.9-.4 7.2 1.2 9.5.8 1.1 1.7 2.4 3 2.4 1.2 0 1.7-.8 3.2-.8s1.9.8 3.2.8 2.1-1.1 2.9-2.3c.9-1.3 1.3-2.6 1.3-2.7 0 0-2.5-1-2.6-3.9zM14 5.6c.7-.8 1.1-2 1-3.1-1 0-2.2.7-2.9 1.5-.6.7-1.2 1.9-1 3 1.1.1 2.2-.6 2.9-1.4z"/></svg>Download on the App Store</a><a class="btn ghost" href="#pricing">See pricing</a></div>
           </div>
-          <img class="slide" src="images/screen-1.png" alt="SnipStash library with folders and tags" width="560" height="1202" decoding="async" loading="lazy">
-          <img class="slide" src="images/screen-2.png" alt="Pasting a snippet from the SnipStash keyboard" width="560" height="1202" decoding="async" loading="lazy">
-          <img class="slide" src="images/screen-3.png" alt="Searching snippets" width="560" height="1202" decoding="async" loading="lazy">
-          <img class="slide" src="images/screen-4.png" alt="Copying a snippet in one tap" width="560" height="1202" decoding="async" loading="lazy">
-          <img class="slide" src="images/screen-5.png" alt="SnipStash Pro, one-time purchase" width="560" height="1202" decoding="async" loading="lazy">
         </div>
-
-        <div class="float f1">
-          <span class="chip" style="background:color-mix(in srgb,var(--ok) 20%,transparent)">
-            <svg viewBox="0 0 24 24" stroke="var(--ok)"><path d="M20 6L9 17l-5-5"/></svg>
-          </span>
-          <span>Copied<small>to your clipboard</small></span>
-        </div>
-
-        <div class="float f2">
-          <span class="chip" style="background:color-mix(in srgb,var(--accent) 22%,transparent)">
-            <svg viewBox="0 0 24 24" stroke="var(--accent-2)"><rect x="2" y="6" width="20" height="12" rx="2.4"/><path d="M7 14h10"/></svg>
-          </span>
-          <span>19 snippets<small>in your keyboard</small></span>
-        </div>
+        <div class="story-dots" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i></div>
+        <div class="scroll-hint" id="sHint">Scroll to see it work <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
       </div>
 
-      <div class="tabs" id="tabs">
-        <button class="tab on" data-i="0"><span>Try it</span></button>
-        <button class="tab" data-i="1"><span>Library</span></button>
-        <button class="tab" data-i="2"><span>Keyboard</span></button>
-        <button class="tab" data-i="3"><span>Search</span></button>
-        <button class="tab" data-i="4"><span>One tap copy</span></button>
-        <button class="tab" data-i="5"><span>Pro</span></button>
+      <div class="stage story-stage">
+        <div class="pwrap">
+          <div class="phone phone3d" id="sphone">
+            <div class="pscreen" aria-hidden="true">
+              <div class="ps-top"><span>9:41</span><span class="isl"></span><span>●●●</span></div>
+              <div class="ps-hdr">New Message<i>×</i></div>
+              <div class="ps-to">To:<b>Maya at Studio North</b></div>
+              <div class="ps-thread"><div class="ps-bub in">Anything else you need from me?</div><div class="ps-bub out hid" id="sBub">Best regards,
+Hassan</div></div>
+              <div class="ps-compose"><span class="plus">+</span><div class="ps-field"><span class="sf empty" id="sField"></span><span class="ps-send" id="sSend">↑</span></div></div>
+              <div class="ps-kb">
+                <div class="ps-search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>Search snippets</div>
+                <div class="ps-tags"><span class="on">All</span><span>Pinned</span><span>#email</span><span>#work</span><span>#code</span></div>
+                <div class="ps-list">
+                  <div class="ps-row" id="sRow"><b>Email sign-off</b><small>Best regards, Hassan</small></div>
+                  <div class="ps-row"><b>Gentle follow-up</b><small>Thanks for the update. Let me review it and come…</small></div>
+                  <div class="ps-row"><b>Home address</b><small>12 Harbour Lane, Flat 4, Leeds LS1 4AB</small></div>
+                </div>
+                <div class="ps-keys"><i class="g"></i><i>space</i><i class="ret">return</i></div>
+              </div>
+              <div class="ps-toast" id="sToast"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Pasted from SnipStash</div>
+              <div class="ps-finger" id="sFinger"></div>
+            </div>
+          </div>
+          <div class="float f1" id="sF1">
+            <span class="chip" style="background:color-mix(in srgb,var(--ok) 20%,transparent)"><svg viewBox="0 0 24 24" stroke="var(--ok)"><path d="M20 6L9 17l-5-5"/></svg></span>
+            <span>Pasted<small>no app switching</small></span>
+          </div>
+          <div class="float f2" id="sF2">
+            <span class="chip" style="background:color-mix(in srgb,var(--accent) 22%,transparent)"><svg viewBox="0 0 24 24" stroke="var(--accent-2)"><rect x="2" y="6" width="20" height="12" rx="2.4"/><path d="M7 14h10"/></svg></span>
+            <span>19 snippets<small>in your keyboard</small></span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -1290,107 +1249,56 @@ footer{border-top:1px solid var(--line);padding:32px 0;color:var(--muted);font-s
     rv.forEach(function(el){ io.observe(el); });
   }
 
-  /* ---- rotating headline word, typed intro, keyboard strip ---- */
+  /* ---- scroll story ---- */
   (function(){
-    var rot = document.getElementById('rot'), h1 = document.getElementById('h1'), nw = document.getElementById('nw');
-    if(!rot) return;
-    var words = rot.querySelectorAll('b'), r = 0;
-    var chips = document.querySelectorAll('#hstrip .hchip'), strip = document.getElementById('hstrip');
-    var t1 = document.getElementById('t1'), t2 = document.getElementById('t2');
-
-    function sizeTo(el){ rot.style.width = Math.ceil(el.getBoundingClientRect().width - parseFloat(getComputedStyle(el).paddingRight)) + 'px'; }
-    function settle(){ sizeTo(words[r]); rot.setAttribute('aria-label', words[r].textContent); }
-    if(document.fonts && document.fonts.ready){ document.fonts.ready.then(settle); document.fonts.addEventListener && document.fonts.addEventListener('loadingdone', settle); }
-    settle();
-    addEventListener('resize', settle);
-
-    function swap(n){
-      var prev = words[r];
-      r = (n + words.length) % words.length;
-      var next = words[r];
-      chips.forEach(function(c, k){ c.classList.toggle('on', k === r); });
-      if(prev === next) return;
-      words.forEach(function(w){ if(w !== prev && w !== next){ w.classList.remove('on','out'); } });
-      prev.classList.remove('on'); prev.classList.add('out');
-      sizeTo(next);
-      next.classList.remove('out');
-      void next.offsetWidth;
-      next.classList.add('on');
-      rot.setAttribute('aria-label', next.textContent);
-      setTimeout(function(){ prev.classList.remove('out'); }, 600);
+    var story = document.getElementById('story'); if(!story) return;
+    var steps = story.querySelectorAll('.step'), dots = story.querySelectorAll('.story-dots i');
+    var phone = document.getElementById('sphone'), field = document.getElementById('sField'), finger = document.getElementById('sFinger');
+    var row = document.getElementById('sRow'), toast = document.getElementById('sToast'), bub = document.getElementById('sBub');
+    var f1 = document.getElementById('sF1'), f2 = document.getElementById('sF2'), hint = document.getElementById('sHint'), send = document.getElementById('sSend');
+    var TEXT = 'Best regards,\nHassan';
+    var cur = -1;
+    function clamp(x){ return Math.max(0, Math.min(1, x)); }
+    function ease(x){ return 1 - Math.pow(1 - x, 3); }
+    function lerp(a, b, t){ return a + (b - a) * t; }
+    function setStep(k){
+      if(k === cur) return; cur = k;
+      steps.forEach(function(st, i){ st.classList.toggle('on', i === k); st.classList.toggle('past', i < k); });
+      dots.forEach(function(d, i){ d.classList.toggle('on', i === k); });
     }
-    function tap(chip, cb, quiet){
-      chip.classList.add('hit');
-      setTimeout(function(){ chip.classList.remove('hit'); if(!quiet) chip.classList.add('copied'); cb && cb(); }, 140);
-      if(!quiet) setTimeout(function(){ chip.classList.remove('copied'); }, 1300);
+    function render(p){
+      setStep(p < .22 ? 0 : p < .5 ? 1 : p < .75 ? 2 : 3);
+      var ry = lerp(-26, 0, ease(clamp(p / .5))) + lerp(0, 14, ease(clamp((p - .75) / .25)));
+      var rx = lerp(10, 0, ease(clamp(p / .5)));
+      var sc = lerp(.9, 1, ease(clamp(p / .35)));
+      phone.style.transform = 'rotateY(' + ry.toFixed(2) + 'deg) rotateX(' + rx.toFixed(2) + 'deg) scale(' + sc.toFixed(3) + ')';
+      finger.classList.toggle('show', p > .24 && p < .58);
+      finger.classList.toggle('at', p > .28);
+      finger.classList.toggle('tap', p > .38 && p < .45);
+      row.classList.toggle('hit', p > .38 && p < .6);
+      var sent = p > .68;
+      var n = sent ? 0 : Math.round(clamp((p - .41) / .09) * TEXT.length);
+      field.textContent = TEXT.slice(0, n); field.classList.toggle('empty', n === 0);
+      send.classList.toggle('ready', n > 0);
+      toast.classList.toggle('show', p > .49 && p < .64);
+      bub.classList.toggle('hid', !sent);
+      f1.classList.toggle('pop', p > .52);
+      f2.classList.toggle('pop', p > .8);
+      hint.classList.toggle('hide', p > .04);
     }
-
-    var rtimer = null, holdUntil = 0;
-    function startRot(){ clearInterval(rtimer); if(reduce) return; rtimer = setInterval(function(){
-      if(Date.now() < holdUntil || document.hidden) return;
-      var n = (r + 1) % words.length;
-      tap(chips[n], function(){ swap(n); }, true);
-    }, 2800); }
-    function stopRot(){ clearInterval(rtimer); }
-    chips.forEach(function(c){
-      c.addEventListener('click', function(){
-        holdUntil = Date.now() + 7000;
-        tap(c, function(){ swap(+c.dataset.i); nw.classList.remove('paste'); void nw.offsetWidth; nw.classList.add('paste'); });
+    var ticking = false;
+    function onScroll(){
+      if(ticking) return; ticking = true;
+      requestAnimationFrame(function(){
+        ticking = false;
+        var total = story.offsetHeight - innerHeight;
+        var p = total > 0 ? clamp(-story.getBoundingClientRect().top / total) : 1;
+        render(reduce ? 1 : p);
       });
-    });
-    document.addEventListener('visibilitychange', function(){
-      if(document.hidden){ stopRot(); }
-      else { words.forEach(function(w, k){ w.classList.toggle('on', k === r); w.classList.remove('out'); }); settle(); startRot(); }
-    });
-
-    /* typed intro, once per session */
-    var played = false;
-    try{ played = sessionStorage.getItem('ss-intro') === '1'; }catch(e){}
-    function finish(){
-      h1.classList.remove('typing'); h1.classList.add('done');
-      strip.classList.add('show');
-      startRot();
     }
-    if(reduce || played){ finish(); return; }
-    try{ sessionStorage.setItem('ss-intro','1'); }catch(e){}
-
-    h1.classList.add('typing');
-    var caret = document.createElement('span'); caret.className = 'caret';
-    function wait(ms){ return new Promise(function(res){ setTimeout(res, ms); }); }
-    function setText(el, txt){ el.textContent = txt; el.appendChild(caret); }
-    async function typeInto(el, target, from){
-      var cur = from || '';
-      for(var k = cur.length; k < target.length; k++){
-        cur = target.slice(0, k + 1); setText(el, cur);
-        await wait(target[k] === ' ' ? 90 : 58 + Math.random() * 45);
-      }
-    }
-    async function run(){
-      await wait(420);
-      setText(t1, '');
-      await typeInto(t1, 'Stop retpy');
-      await wait(380);
-      setText(t1, 'Stop retp'); await wait(110);
-      setText(t1, 'Stop ret'); await wait(140);
-      await typeInto(t1, 'Stop retyping', 'Stop ret');
-      await wait(160);
-      t1.removeChild(caret);
-      setText(t2, '');
-      await typeInto(t2, 'the same');
-      await wait(260);
-      strip.classList.add('show');
-      await wait(520);
-      tap(chips[0]);
-      await wait(150);
-      nw.style.visibility = 'visible'; nw.classList.add('paste');
-      settle(); if(document.fonts && document.fonts.ready){ document.fonts.ready.then(settle); }
-      await wait(700);
-      t2.removeChild(caret);
-      nw.style.visibility = '';
-      settle();
-      finish();
-    }
-    run();
+    addEventListener('scroll', onScroll, {passive:true});
+    addEventListener('resize', onScroll);
+    onScroll();
   })();
 
   /* ---- draggable floating cards ---- */
@@ -1554,102 +1462,6 @@ footer{border-top:1px solid var(--line);padding:32px 0;color:var(--muted);font-s
     start();
   })();
 
-  /* ---- phone carousel ---- */
-  var DUR = 4200, DEMO_DUR = 9000;
-  var shots = document.querySelectorAll('#phone .slide');
-  var tabs  = document.querySelectorAll('#tabs .tab');
-  var stageEl = document.querySelector('.stage');
-  var i = 0, timer = null, busy = false;
-
-  function show(n, user){
-    i = (n + shots.length) % shots.length;
-    shots.forEach(function(s, k){ s.classList.toggle('on', k === i); });
-    tabs.forEach(function(t, k){
-      t.classList.remove('on');
-      t.style.setProperty('--dur', (k === 0 ? DEMO_DUR : DUR) + 'ms');
-      if(k === i){ void t.offsetWidth; t.classList.add('on'); }
-    });
-    stageEl.classList.toggle('demo', i === 0);
-    if(user){ busy = false; restart(); }
-  }
-  function restart(){
-    clearTimeout(timer);
-    if(reduce || busy) return;
-    timer = setTimeout(function(){ show(i + 1); restart(); }, i === 0 ? DEMO_DUR : DUR);
-  }
-  tabs.forEach(function(t){
-    t.style.setProperty('--dur', (+t.dataset.i === 0 ? DEMO_DUR : DUR) + 'ms');
-    t.addEventListener('click', function(){ show(+t.dataset.i, true); });
-  });
-  stageEl.classList.add('demo');
-
-  /* interactive composer: typing or tapping a snippet parks the carousel */
-  (function(){
-    var field = document.getElementById('psField'), send = document.getElementById('psSend');
-    var thread = document.getElementById('psThread'), toast = document.getElementById('psToast');
-    if(!field) return;
-    function park(){ busy = true; clearTimeout(timer); tabs[0].classList.remove('on'); void tabs[0].offsetWidth; tabs[0].classList.add('on'); tabs[0].style.setProperty('--dur','0ms'); }
-    function grow(){ field.style.height = 'auto'; field.style.height = Math.min(62, field.scrollHeight) + 'px'; send.classList.toggle('ready', field.value.trim().length > 0); }
-    field.addEventListener('focus', park);
-    field.addEventListener('input', function(){ park(); grow(); });
-    document.querySelectorAll('#psList .ps-row').forEach(function(row){
-      row.addEventListener('click', function(){
-        park();
-        var t = row.dataset.t, v = field.value, a = field.selectionStart || v.length, b = field.selectionEnd || a;
-        var before = v.slice(0, a), after = v.slice(b);
-        var glue = before && !/\s$/.test(before) ? ' ' : '';
-        field.value = before + glue + t + after;
-        var pos = (before + glue + t).length;
-        field.focus({preventScroll:true}); field.setSelectionRange(pos, pos);
-        grow();
-        row.classList.add('hit'); setTimeout(function(){ row.classList.remove('hit'); }, 160);
-        toast.classList.add('show'); clearTimeout(toast._t); toast._t = setTimeout(function(){ toast.classList.remove('show'); }, 1100);
-      });
-    });
-    function sendMsg(){
-      var v = field.value.trim(); if(!v) return;
-      var bub = document.createElement('div'); bub.className = 'ps-bub out'; bub.textContent = v;
-      thread.appendChild(bub); while(thread.children.length > 4) thread.removeChild(thread.firstChild);
-      field.value = ''; grow();
-    }
-    send.addEventListener('click', sendMsg);
-    field.addEventListener('keydown', function(e){ if(e.key === 'Enter' && !e.shiftKey){ e.preventDefault(); sendMsg(); } });
-  })();
-
-  /* cursor tilt on the phone (mouse only) */
-  (function(){
-    var wrap = document.querySelector('.pwrap');
-    if(!wrap || !matchMedia('(hover:hover) and (pointer:fine)').matches || reduce) return;
-    stageEl.addEventListener('pointermove', function(e){
-      if(e.pointerType !== 'mouse' || wrap.querySelector('.float.drag')) return;
-      var r = wrap.getBoundingClientRect();
-      var x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
-      wrap.classList.add('tilt');
-      wrap.style.transform = 'rotateY(' + (x * 10).toFixed(2) + 'deg) rotateX(' + (-y * 8).toFixed(2) + 'deg)';
-    });
-    stageEl.addEventListener('pointerleave', function(){ wrap.classList.remove('tilt'); wrap.style.transform = ''; });
-  })();
-
-  /* pause while off screen or tab hidden */
-  document.addEventListener('visibilitychange', function(){
-    if(document.hidden) clearTimeout(timer); else restart();
-  });
-  var stage = document.getElementById('phone');
-  if('IntersectionObserver' in window){
-    new IntersectionObserver(function(e){
-      if(e[0].isIntersecting) restart(); else clearTimeout(timer);
-    }, {threshold:0.2}).observe(stage);
-  } else { restart(); }
-
-  /* swipe on touch */
-  var x0 = null;
-  stage.addEventListener('touchstart', function(e){ x0 = e.target.closest('.ps-kb, .ps-field') ? null : e.touches[0].clientX; }, {passive:true});
-  stage.addEventListener('touchend', function(e){
-    if(x0 === null) return;
-    var dx = e.changedTouches[0].clientX - x0;
-    if(Math.abs(dx) > 42) show(i + (dx < 0 ? 1 : -1), true);
-    x0 = null;
-  }, {passive:true});
 })();
 </script>
 </body>
