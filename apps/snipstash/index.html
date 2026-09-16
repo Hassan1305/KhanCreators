@@ -374,19 +374,88 @@ header.stuck{border-bottom-color:var(--line)}
 .plan .btn{width:100%}
 
 /* ============ faq ============ */
-.faq{max-width:780px}
-details{border:1px solid var(--line);background:var(--surface);border-radius:14px;padding:0 18px;margin-bottom:10px;transition:border-color .25s,background .25s}
-details[open]{border-color:var(--line-2);background:var(--surface-2)}
-summary{cursor:pointer;font-weight:600;list-style:none;display:flex;justify-content:space-between;
-  gap:16px;align-items:center;padding:17px 0;font-size:16px}
-summary::-webkit-details-marker{display:none}
-summary .pm{width:24px;height:24px;border-radius:50%;border:1px solid var(--line-2);display:grid;place-items:center;flex:none;transition:transform .3s, background .3s}
-summary .pm::before{content:"";width:9px;height:1.5px;background:currentColor;position:absolute}
-summary .pm::after{content:"";width:1.5px;height:9px;background:currentColor;position:absolute;transition:opacity .25s}
-.pm{position:relative}
-details[open] summary .pm{transform:rotate(90deg);background:var(--surface-2)}
-details[open] summary .pm::after{opacity:0}
-details p{color:var(--muted);margin:0 0 18px;font-size:15.5px;max-width:66ch}
+.faq-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:clamp(28px,5vw,64px);align-items:start}
+@media(max-width:860px){.faq-grid{grid-template-columns:1fr;gap:28px}}
+.faq-intro{position:sticky;top:96px}
+@media(max-width:860px){.faq-intro{position:static}}
+.faq-intro h2{margin-top:16px}
+.faq-intro .lede{margin-top:14px}
+.ask{
+  margin-top:26px;position:relative;overflow:hidden;
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px 22px;
+}
+.ask::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(70% 70% at 0% 0%, var(--glow) 0%, transparent 70%);opacity:.6;
+}
+.ask > *{position:relative}
+.ask .who{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.ask .av{display:flex}
+.ask .av span{
+  width:32px;height:32px;border-radius:50%;border:2px solid var(--bg-2);
+  display:grid;place-items:center;font-size:12px;font-weight:700;color:#fff;
+  background:linear-gradient(135deg,var(--accent),var(--accent-2));
+}
+.ask .av span+span{margin-left:-9px;background:linear-gradient(135deg,var(--accent-2),var(--accent-3));color:var(--bg)}
+.ask strong{display:block;font-size:15px;letter-spacing:-.01em}
+.ask small{color:var(--muted);font-size:13px}
+.ask p{color:var(--muted);margin:0 0 14px;font-size:14.5px}
+
+.qs{display:grid;gap:10px;counter-reset:q}
+.q{
+  position:relative;overflow:hidden;
+  background:var(--surface);border:1px solid var(--line);border-radius:16px;
+  transition:border-color .3s, background .3s, box-shadow .3s;
+}
+.q::before{
+  content:"";position:absolute;left:0;top:14px;bottom:14px;width:3px;border-radius:0 3px 3px 0;
+  background:linear-gradient(180deg,var(--accent-3),var(--accent));
+  transform:scaleY(0);transform-origin:top;transition:transform .4s cubic-bezier(.2,.8,.3,1);
+}
+.q::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(60% 80% at 0% 50%, var(--glow) 0%, transparent 70%);
+  opacity:0;transition:opacity .4s;
+}
+.q:hover{border-color:var(--line-2);background:var(--surface-2)}
+.q.open{border-color:color-mix(in srgb,var(--accent) 45%, transparent);background:var(--surface-2);box-shadow:0 20px 50px -30px var(--glow)}
+.q.open::before{transform:scaleY(1)}
+.q.open::after{opacity:.45}
+.qh{
+  position:relative;z-index:1;width:100%;text-align:left;
+  display:flex;align-items:center;gap:16px;padding:18px 18px 18px 20px;
+  font-weight:600;font-size:16px;line-height:1.35;letter-spacing:-.005em;
+}
+.qh .n{
+  font-size:11px;letter-spacing:1.5px;color:var(--muted);font-weight:600;
+  font-variant-numeric:tabular-nums;flex:none;width:22px;transition:color .3s;
+}
+.qh .n::before{counter-increment:q;content:"0" counter(q)}
+.q.open .qh .n{color:var(--accent-2)}
+.qh .t{flex:1;transition:transform .35s cubic-bezier(.2,.8,.3,1)}
+.q:hover .qh .t{transform:translateX(3px)}
+.qh .pm{
+  width:30px;height:30px;border-radius:50%;border:1px solid var(--line-2);flex:none;
+  display:grid;place-items:center;position:relative;background:var(--surface);
+  transition:transform .45s cubic-bezier(.2,.8,.3,1), background .3s, border-color .3s, color .3s;
+}
+.qh .pm::before,.qh .pm::after{content:"";position:absolute;background:currentColor;border-radius:2px}
+.qh .pm::before{width:11px;height:1.6px}
+.qh .pm::after{width:1.6px;height:11px}
+.q.open .qh .pm{transform:rotate(135deg);background:var(--accent);border-color:transparent;color:#fff}
+.qb{display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s cubic-bezier(.2,.8,.3,1)}
+.q.open .qb{grid-template-rows:1fr}
+.qi{overflow:hidden;min-height:0}
+.qi p{
+  position:relative;z-index:1;color:var(--muted);margin:0;padding:0 56px 20px 58px;font-size:15.5px;max-width:62ch;
+  opacity:0;translate:0 -6px;transition:opacity .35s ease, translate .4s cubic-bezier(.2,.8,.3,1);
+}
+.q.open .qi p{opacity:1;translate:0 0;transition-delay:.12s}
+@media(max-width:560px){
+  .qh{padding:16px 14px 16px 16px;gap:12px;font-size:15px}
+  .qh .n{width:20px}
+  .qi p{padding:0 16px 18px 48px;font-size:14.5px}
+}
 
 /* ============ final ============ */
 .final{text-align:center;position:relative;overflow:hidden}
@@ -669,40 +738,46 @@ footer{border-top:1px solid var(--line);padding:32px 0;color:var(--muted);font-s
 
 <!-- ================= FAQ ================= -->
 <section class="sec" id="faq">
-  <div class="wrap">
-    <div class="head rv">
-      <div>
-        <span class="eyebrow"><i class="dot"></i> Questions</span>
-        <h2 style="margin-top:16px">Before you buy</h2>
+  <div class="wrap faq-grid">
+    <div class="faq-intro rv">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:16px"><span class="eyebrow"><i class="dot"></i> Questions</span><span class="num">04 / 04</span></div>
+      <h2>Before<br><span class="grad">you buy</span>.</h2>
+      <p class="lede">The things people ask us most, answered straight. If yours is not here, ask us and one of us will reply.</p>
+      <div class="ask">
+        <div class="who">
+          <span class="av"><span>H</span><span>B</span></span>
+          <span><strong>Hassan and Bilal</strong><small>The two people who make SnipStash</small></span>
+        </div>
+        <p>Still have a question? Send it over, we read every email.</p>
+        <a class="btn ghost sm" href="mailto:ch.hasni.khan@gmail.com">Email us</a>
       </div>
-      <span class="num">04 / 04</span>
     </div>
 
-    <div class="faq">
-      <details class="rv" open>
-        <summary>Is this really a one-time purchase? <span class="pm"></span></summary>
-        <p>Yes. $19.99 once, on every device signed in to your Apple Account. There is no subscription, and there is no plan to add one.</p>
-      </details>
-      <details class="rv">
-        <summary>Which devices does it run on? <span class="pm"></span></summary>
-        <p>iPhone and iPad, iOS 17 or later. A native Mac app is in the works.</p>
-      </details>
-      <details class="rv">
-        <summary>Where do my snippets live? <span class="pm"></span></summary>
-        <p>On your device, and in your own private iCloud if you turn sync on. We run no servers, so there is nowhere for us to store or read anything.</p>
-      </details>
-      <details class="rv">
-        <summary>The keyboard needs Full Access. Why? <span class="pm"></span></summary>
-        <p>iOS requires Full Access for a custom keyboard to reach your saved snippets at all. SnipStash's keyboard contains no networking code, so nothing you type can leave your device through it.</p>
-      </details>
-      <details class="rv">
-        <summary>Can I keep AI prompts in it? <span class="pm"></span></summary>
-        <p>Yes, and plenty of people do. If you retype the same prompts into ChatGPT or Claude, save them once and paste them from the keyboard. Tags and folders work the same way for prompts as for email replies.</p>
-      </details>
-      <details class="rv">
-        <summary>Who makes SnipStash? <span class="pm"></span></summary>
-        <p>Two people, Hassan and Bilal. It's young, and the roadmap is genuinely being shaped by the people using it. Write to us and you'll get a reply from one of us.</p>
-      </details>
+    <div class="qs" id="qs">
+      <div class="q open rv">
+        <button class="qh" aria-expanded="true"><span class="n"></span><span class="t">Is this really a one-time purchase?</span><span class="pm"></span></button>
+        <div class="qb"><div class="qi"><p>Yes. $19.99 once, on every device signed in to your Apple Account. There is no subscription, and there is no plan to add one.</p></div></div>
+      </div>
+      <div class="q rv">
+        <button class="qh" aria-expanded="false"><span class="n"></span><span class="t">Which devices does it run on?</span><span class="pm"></span></button>
+        <div class="qb"><div class="qi"><p>iPhone and iPad, iOS 17 or later. A native Mac app is in the works.</p></div></div>
+      </div>
+      <div class="q rv">
+        <button class="qh" aria-expanded="false"><span class="n"></span><span class="t">Where do my snippets live?</span><span class="pm"></span></button>
+        <div class="qb"><div class="qi"><p>On your device, and in your own private iCloud if you turn sync on. We run no servers, so there is nowhere for us to store or read anything.</p></div></div>
+      </div>
+      <div class="q rv">
+        <button class="qh" aria-expanded="false"><span class="n"></span><span class="t">The keyboard needs Full Access. Why?</span><span class="pm"></span></button>
+        <div class="qb"><div class="qi"><p>iOS requires Full Access for a custom keyboard to reach your saved snippets at all. SnipStash's keyboard contains no networking code, so nothing you type can leave your device through it.</p></div></div>
+      </div>
+      <div class="q rv">
+        <button class="qh" aria-expanded="false"><span class="n"></span><span class="t">Can I keep AI prompts in it?</span><span class="pm"></span></button>
+        <div class="qb"><div class="qi"><p>Yes, and plenty of people do. If you retype the same prompts into ChatGPT or Claude, save them once and paste them from the keyboard. Tags and folders work the same way for prompts as for email replies.</p></div></div>
+      </div>
+      <div class="q rv">
+        <button class="qh" aria-expanded="false"><span class="n"></span><span class="t">Who makes SnipStash?</span><span class="pm"></span></button>
+        <div class="qb"><div class="qi"><p>Two people, Hassan and Bilal. It's young, and the roadmap is genuinely being shaped by the people using it. Write to us and you'll get a reply from one of us.</p></div></div>
+      </div>
     </div>
   </div>
 </section>
@@ -804,6 +879,18 @@ footer{border-top:1px solid var(--line);padding:32px 0;color:var(--muted);font-s
       else { words.forEach(function(w, k){ w.classList.toggle('on', k === r); w.classList.remove('out'); }); settle(); startRot(); }
     });
     startRot();
+  })();
+
+  /* ---- faq accordion ---- */
+  (function(){
+    var qs = document.querySelectorAll('#qs .q');
+    qs.forEach(function(q){
+      q.querySelector('.qh').addEventListener('click', function(){
+        var open = !q.classList.contains('open');
+        qs.forEach(function(o){ o.classList.remove('open'); o.querySelector('.qh').setAttribute('aria-expanded','false'); });
+        if(open){ q.classList.add('open'); q.querySelector('.qh').setAttribute('aria-expanded','true'); }
+      });
+    });
   })();
 
   /* ---- phone carousel ---- */
