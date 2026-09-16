@@ -749,8 +749,8 @@ footer{border-top:1px solid var(--line);padding:32px 0;color:var(--muted);font-s
           <span><strong>Hassan and Bilal</strong><small>The two people who make SnipStash</small></span>
         </div>
         <p>Still have a question? Send it over, we read every email.</p>
-        <a class="btn ghost sm" id="ask-btn" href="mailto:ch.hasni.khan@gmail.com?subject=SnipStash%20question" data-email="ch.hasni.khan@gmail.com"><span>Email us</span></a>
-        <small class="ask-note" id="ask-note" style="display:block;margin-top:10px;font-size:12.5px;color:var(--muted)">Or copy ch.hasni.khan@gmail.com</small>
+        <a class="btn ghost sm" id="ask-btn" href="mailto:ch.hasni.khan@gmail.com,bilalwalker687@gmail.com?subject=SnipStash%20question" data-email="ch.hasni.khan@gmail.com, bilalwalker687@gmail.com"><span>Email us</span></a>
+        <small class="ask-note" id="ask-note" style="display:block;margin-top:10px;font-size:12.5px;color:var(--muted)">Hassan: ch.hasni.khan@gmail.com<br>Bilal: bilalwalker687@gmail.com</small>
       </div>
     </div>
 
@@ -801,6 +801,7 @@ footer{border-top:1px solid var(--line);padding:32px 0;color:var(--muted);font-s
     <a href="https://hassan1305.github.io/snipstash-site/privacy.html">Privacy Policy</a>
     <a href="https://hassan1305.github.io/snipstash-site/support.html">Support</a>
     <a href="mailto:ch.hasni.khan@gmail.com">ch.hasni.khan@gmail.com</a>
+    <a href="mailto:bilalwalker687@gmail.com">bilalwalker687@gmail.com</a>
   </div>
 </footer>
 
@@ -888,7 +889,7 @@ footer{border-top:1px solid var(--line);padding:32px 0;color:var(--muted);font-s
     if(ab){ ab.addEventListener('click', function(){
       var t = ab.querySelector('span');
       try{ navigator.clipboard.writeText(ab.dataset.email).then(function(){
-        t.textContent = 'Address copied'; if(an) an.textContent = 'Paste it into any mail app.';
+        t.textContent = "Addresses copied"; if(an) an.textContent = "Paste them into any mail app.";
         setTimeout(function(){ t.textContent = 'Email us'; }, 2200);
       }); }catch(e){}
     }); }
