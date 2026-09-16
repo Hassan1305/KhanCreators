@@ -283,16 +283,39 @@ header.compact .prog{opacity:1}
 .stage.demo .try{opacity:1}
 @media(max-width:900px){.try{top:-8px}}
 
+/* floating cards */
+.float{
+  position:absolute;z-index:3;cursor:grab;white-space:nowrap;touch-action:none;user-select:none;-webkit-user-select:none;background:var(--bg-2);border:1px solid var(--line-2);
+  border-radius:14px;padding:11px 14px;box-shadow:var(--shadow);
+  display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500;
+  backdrop-filter:blur(8px);
+}
+.float small{display:block;color:var(--muted);font-size:11.5px;font-weight:400;letter-spacing:.2px}
+.float .chip{width:28px;height:28px;border-radius:8px;display:grid;place-items:center;flex:none}
+.float svg{width:15px;height:15px;stroke-width:2.2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.f1{left:-30px;top:19%;animation:bob 6s ease-in-out infinite}
+.f2{right:-30px;top:7%;animation:bob 6s ease-in-out infinite .9s}
+@keyframes bob{0%,100%{translate:0 0}50%{translate:0 -11px}}
+.float.drag{animation:none;cursor:grabbing;z-index:4;transform:scale(1.04);box-shadow:0 40px 90px -30px rgba(0,0,0,.9)}
+.float{transition:transform .25s cubic-bezier(.2,.8,.3,1), box-shadow .25s}
+@media(max-width:560px){
+  .f1{left:-16px;top:15%}
+  .f2{right:-16px;top:6%}
+  .float{font-size:12px;padding:8px 10px;gap:8px;border-radius:12px}
+  .float .chip{width:24px;height:24px;border-radius:7px}
+  .float small{font-size:10.5px}
+}
+
 /* ============ scroll story hero ============ */
 .story{position:relative;height:430vh}
-.story-pin{position:sticky;top:0;height:100vh;display:flex;align-items:center;overflow:hidden}
+.story-pin{position:sticky;top:0;height:100vh;box-sizing:border-box;padding-top:66px;display:flex;align-items:center;overflow:hidden}
 .story-pin::before{
   content:"";position:absolute;inset:-20% 0 auto 0;height:80vh;pointer-events:none;
   background:radial-gradient(52% 50% at 62% 40%, var(--glow) 0%, transparent 70%);filter:blur(18px);opacity:.75;
 }
 .story-grid{display:grid;grid-template-columns:1.06fr .94fr;gap:clamp(30px,5vw,60px);align-items:center;position:relative;z-index:1;width:100%}
 .story-copy{position:relative}
-.story-steps{position:relative;min-height:clamp(380px,52vh,500px);margin-top:22px}
+.story-steps{position:relative;min-height:clamp(300px,46vh,500px);margin-top:22px}
 .step{position:absolute;inset:0;opacity:0;transform:translateY(40px);transition:opacity .5s ease, transform .6s cubic-bezier(.2,.8,.3,1);pointer-events:none}
 .step.on{opacity:1;transform:none;pointer-events:auto}
 .step.past{opacity:0;transform:translateY(-40px)}
@@ -309,7 +332,7 @@ header.compact .prog{opacity:1}
 .scroll-hint svg{width:16px;height:16px;stroke:var(--accent-2);fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;animation:bob 2s ease-in-out infinite}
 .scroll-hint.hide{opacity:0}
 .story-stage{perspective:1400px;display:flex;justify-content:center;align-items:center}
-.story .pwrap{perspective:1400px;transform-style:flat}
+.story .pwrap{perspective:1400px;transform-style:flat;width:min(236px,58vw,calc((100vh - 200px) * .466))}
 .phone3d{transform-origin:50% 50%;transition:transform .25s cubic-bezier(.2,.8,.3,1);will-change:transform}
 .phone3d .pscreen{position:absolute;inset:0;opacity:1;transform:none;pointer-events:none}
 .story .float{opacity:0;scale:.8;transition:opacity .4s ease, scale .5s cubic-bezier(.2,.8,.3,1)}
@@ -330,7 +353,7 @@ header.compact .prog{opacity:1}
 @media(max-width:900px){
   .story{height:380vh}
   .story-grid{grid-template-columns:1fr;gap:18px;align-content:center}
-  .story-pin{padding-top:66px;align-items:flex-start}
+  .story-pin{align-items:flex-start}
   .story-steps{min-height:clamp(190px,30vh,260px);margin-top:12px}
   .story .float{display:none}
   .step h1{font-size:clamp(30px,7.6vw,44px)}
@@ -338,7 +361,7 @@ header.compact .prog{opacity:1}
   .step .cta{margin-top:16px}
   .step .cta .btn{padding:11px 16px;font-size:14px}
   .step .cta .ghost{display:none}
-  .story .pwrap{width:min(190px,48vw)}
+  .story .pwrap{width:min(190px,48vw,calc((100vh - 420px) * .466))}
   .scroll-hint{display:none}
   .story-dots{margin-top:12px}
 }
