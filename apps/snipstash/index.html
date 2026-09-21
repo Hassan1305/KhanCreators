@@ -640,11 +640,10 @@ header.compact .prog{opacity:1}
 
 /* ============ mac ============ */
 .mac{background:var(--bg-2);border-block:1px solid var(--line);overflow:hidden}
-.mac-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,64px);align-items:center}
-@media(max-width:900px){.mac-grid{grid-template-columns:1fr;gap:36px}}
-.mac-grid > *,.tpl-grid > *,.pal,.pal-wrap{min-width:0}
-.mac h2{margin-top:16px}
-.mac .lede{margin-top:14px}
+.tpl-grid > *{min-width:0}
+.mac-head{flex-direction:column;align-items:center;text-align:center;margin-bottom:clamp(26px,3.5vw,40px)}
+.mac-head h2{margin-top:16px}
+.mac-head .lede{margin:14px auto 0;max-width:60ch}
 .mac-list{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:26px 0 0;padding:0;list-style:none}
 @media(max-width:560px){.mac-list{grid-template-columns:1fr}}
 .mac-list li{
@@ -661,141 +660,190 @@ header.compact .prog{opacity:1}
 .mac-list b{display:block;font-size:14.5px;font-weight:600;letter-spacing:-.01em;margin-bottom:2px}
 .mac-list small{display:block;color:var(--muted);font-size:13px;line-height:1.45}
 .mac-note{color:var(--muted);font-size:13.5px;margin:18px 0 0}
-.mac-ticks{justify-content:flex-start;margin-top:14px}
+.mac-ticks{justify-content:center;margin-top:22px}
+.mac .mac-note{text-align:center;margin-top:14px}
 
-/* menu bar palette mock */
-.pal-wrap{position:relative;display:flex;flex-direction:column;align-items:center;gap:14px;padding:34px 0 10px}
-.pal-wrap::before{
-  content:"";position:absolute;inset:0;pointer-events:none;
-  background:radial-gradient(55% 55% at 50% 45%, var(--glow) 0%, transparent 70%);opacity:.9;
+/* ---- desktop stage ---- */
+.mac-stage{
+  position:relative;width:100%;max-width:900px;margin:0 auto;overflow:hidden;border-radius:20px;border:1px solid var(--line-2);
+  background:
+    radial-gradient(70% 80% at 20% 0%, color-mix(in srgb,var(--accent) 34%,transparent) 0%, transparent 60%),
+    radial-gradient(60% 70% at 90% 100%, color-mix(in srgb,var(--accent-3) 22%,transparent) 0%, transparent 60%),
+    linear-gradient(160deg, color-mix(in srgb,var(--bg) 70%,var(--accent)) 0%, var(--bg) 70%);
+  box-shadow:var(--shadow);
+  font-family:var(--sans);user-select:none;-webkit-user-select:none;
 }
-.menubar{
-  position:absolute;top:0;left:50%;translate:-50% 0;width:min(440px,100%);height:26px;border-radius:8px 8px 0 0;
-  background:var(--surface-2);border:1px solid var(--line);border-bottom:0;
-  display:flex;align-items:center;justify-content:flex-end;gap:14px;padding:0 14px;color:var(--muted);font-size:11px;
+.mac-canvas{position:absolute;top:0;left:0;width:880px;height:520px;transform-origin:0 0}
+.mb{
+  position:absolute;inset:0 0 auto 0;height:26px;display:flex;align-items:center;gap:14px;padding:0 14px;
+  background:color-mix(in srgb,var(--bg-2) 70%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);
+  font-size:11px;color:var(--ink);
 }
-.menubar img{width:14px;height:14px;border-radius:3px;animation:mbflash 6s ease-in-out infinite}
-@keyframes mbflash{0%,60%,100%{filter:none}63%{filter:brightness(1.8)}66%{filter:none}}
-.pal{
-  position:relative;width:min(420px,100%);border-radius:16px;
-  background:var(--bg);border:1px solid var(--line-2);box-shadow:var(--shadow);overflow:hidden;
-  font-family:var(--sans);
-}
-.pal-search{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid var(--line);font-size:15px}
-.pal-search svg{width:16px;height:16px;stroke:var(--muted);fill:none;stroke-width:2;flex:none}
-.pal-search .cur{width:1.5px;height:16px;background:var(--accent);animation:blink 1.1s steps(1) infinite}
-.pal-search .hint{margin-left:auto;font-size:11px;color:var(--muted);letter-spacing:.5px;border:1px solid var(--line);border-radius:6px;padding:3px 7px}
-.pal-chips{display:flex;gap:5px;padding:10px 12px 4px;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,#000 88%,transparent);mask-image:linear-gradient(90deg,#000 88%,transparent)}
-.pal-chips span{flex:none;font-size:10.5px;font-weight:500;color:var(--muted);background:var(--surface-2);border:1px solid var(--line);border-radius:999px;padding:3px 9px}
-.pal-chips span.on{background:var(--accent);color:#fff;border-color:transparent}
-.pal-rows{padding:6px}
-.pal-row{display:flex;align-items:center;gap:11px;padding:9px 10px;border-radius:9px;font-size:13.5px;position:relative}
-.pal-row .ic{width:26px;height:26px;border-radius:7px;background:var(--surface-2);display:grid;place-items:center;flex:none}
-.pal-row .ic svg{width:13px;height:13px;stroke:var(--accent-2);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.pal-row span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.pal-row span small{display:block;color:var(--muted);font-size:11.5px;overflow:hidden;text-overflow:ellipsis}
-.pal-row em{font-style:normal;font-size:10.5px;color:var(--accent-2);white-space:nowrap;flex:none}
-@media(max-width:420px){.pal-row em{display:none}}
-.pal-row kbd{font-family:var(--sans);font-size:11px;color:var(--muted);border:1px solid var(--line);border-radius:5px;padding:2px 6px;letter-spacing:.5px;flex:none}
-.pal-row.sel{background:color-mix(in srgb,var(--accent) 16%,transparent)}
-.pal-row.sel kbd{color:var(--accent-2);border-color:color-mix(in srgb,var(--accent) 40%,transparent)}
-.pal-foot{display:flex;gap:14px;padding:9px 16px;border-top:1px solid var(--line);font-size:11px;color:var(--muted)}
-.pal-foot .cnt{margin-left:auto;white-space:nowrap}
-@media(max-width:420px){.pal-foot .cnt{display:none}}
-.pal-foot b{font-weight:600;color:var(--ink);margin-right:4px}
-.pal-toast{
-  position:absolute;right:14px;bottom:50px;background:var(--bg-2);border:1px solid var(--line-2);border-radius:10px;padding:8px 11px;
-  font-size:12px;font-weight:500;display:flex;align-items:center;gap:8px;box-shadow:var(--shadow);
-  opacity:0;translate:0 -6px;animation:toast 6s ease-in-out infinite;
-}
-.pal-toast svg{width:13px;height:13px;stroke:var(--ok);fill:none;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
-@keyframes toast{0%,58%{opacity:0;translate:0 -6px}63%,88%{opacity:1;translate:0 0}94%,100%{opacity:0;translate:0 -6px}}
-.pal-row.sel::after{
-  content:"";position:absolute;inset:0;border-radius:9px;background:var(--accent);opacity:0;
-  animation:rowflash 6s ease-in-out infinite;
-}
-@keyframes rowflash{0%,58%,66%,100%{opacity:0}61%{opacity:.35}}
-
-/* mac scenes rotation */
-.mac-scenes{display:grid;grid-template-columns:minmax(0,1fr);width:100%;min-width:0;justify-items:center}
-.mac-scenes .scene,.pal,.mwin{contain:inline-size}
-.mac-scenes .scene{grid-area:1/1;width:100%;display:flex;justify-content:center;align-items:flex-start;opacity:0;translate:0 10px;transition:opacity .5s ease, translate .6s cubic-bezier(.2,.8,.3,1);pointer-events:none}
-.mac-scenes .scene.on{opacity:1;translate:0 0;pointer-events:auto}
-.mac-scenes .scene:not(.on) .pal-toast,.mac-scenes .scene:not(.on) .pal-row.sel::after{animation:none}
-.mac-tabs{position:relative;display:flex;gap:6px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px}
-.mac-tabs button{position:relative;overflow:hidden;font-size:12px;font-weight:600;color:var(--muted);border-radius:999px;padding:6px 13px;transition:color .3s, background .3s}
-.mac-tabs button.on{color:var(--ink);background:var(--surface-2)}
-.mac-tabs button::after{content:"";position:absolute;left:0;bottom:0;height:2px;width:100%;background:var(--accent);transform:scaleX(0);transform-origin:left}
-.mac-tabs button.on.run::after{animation:tabfill var(--mac-step,6500ms) linear forwards}
-@keyframes tabfill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
-.pal-wrap:hover .mac-tabs button.on.run::after{animation-play-state:paused}
-
-/* library + settings window mocks */
-.mwin{
-  width:min(520px,100%);border-radius:12px;background:var(--bg);border:1px solid var(--line-2);box-shadow:var(--shadow);overflow:hidden;
-  font-family:var(--sans);font-size:10px;line-height:1.35;color:var(--ink);
-}
-.mw-title{display:flex;align-items:center;gap:10px;padding:8px 12px;border-bottom:1px solid var(--line);background:var(--surface)}
-.mw-title b{font-size:11px;font-weight:600}
+.mb .apple{width:11px;height:11px;border-radius:50% 50% 45% 45%;background:var(--ink);opacity:.85}
+.mb b{font-weight:700}
+.mb span{color:var(--muted)}
+.mb .sp{flex:1}
+.mb img{width:14px;height:14px;border-radius:3px}
+.win{position:absolute;background:var(--bg);border:1px solid var(--line-2);border-radius:11px;box-shadow:var(--shadow);overflow:hidden;font-size:11px;color:var(--ink);opacity:0;scale:.98;transition:opacity .4s ease, scale .5s cubic-bezier(.2,.8,.3,1)}
+.win.show{opacity:1;scale:1}
+.win-t{display:flex;align-items:center;gap:10px;padding:8px 12px;border-bottom:1px solid var(--line);background:var(--surface)}
+.win-t b{font-size:11px;font-weight:600}
 .tl{display:flex;gap:5px}
 .tl i{width:9px;height:9px;border-radius:50%;background:#FF5F57}
 .tl i:nth-child(2){background:#FEBC2E}.tl i:nth-child(3){background:#28C840}
-.mw-search{margin-left:auto;display:flex;align-items:center;gap:5px;color:var(--muted);background:var(--surface-2);border:1px solid var(--line);border-radius:6px;padding:3px 8px;width:110px}
+/* mail */
+.mail{left:110px;top:60px;width:660px;height:432px}
+.mail-tools{display:flex;gap:6px;margin-left:auto}
+.mail-tools i{width:22px;height:16px;border-radius:5px;background:var(--surface-2);border:1px solid var(--line)}
+.mail .send{width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-size:12px;margin-left:8px}
+.mail-f{display:flex;gap:8px;align-items:center;padding:6px 14px;border-bottom:1px solid var(--line);font-size:11px}
+.mail-f span{color:var(--muted);width:52px}
+.mail-f em{font-style:normal;background:var(--surface-2);border:1px solid var(--line);border-radius:5px;padding:1px 7px}
+.mail-b{padding:14px 16px;font-size:12.5px;line-height:1.55;white-space:pre-wrap;color:var(--ink)}
+.mail-b .cur{display:inline-block;width:1.5px;height:14px;background:var(--accent);vertical-align:-2px;animation:blink 1.1s steps(1) infinite}
+/* palette */
+.pal{
+  position:absolute;left:50%;top:104px;width:460px;translate:-50% 0;border-radius:16px;
+  background:var(--bg-2);border:1px solid var(--line-2);box-shadow:0 40px 90px -30px rgba(0,0,0,.7);overflow:hidden;
+  opacity:0;scale:.96;transition:opacity .3s ease, scale .4s cubic-bezier(.2,.8,.3,1);
+}
+.pal.show{opacity:1;scale:1}
+.pal-search{display:flex;align-items:center;gap:10px;padding:13px 16px;border-bottom:1px solid var(--line);font-size:15px}
+.pal-search svg{width:16px;height:16px;stroke:var(--muted);fill:none;stroke-width:2;flex:none}
+.pal-search .q:empty::before{content:"Search snippets…";color:var(--muted)}
+.pal-search .cur{width:1.5px;height:16px;background:var(--accent);animation:blink 1.1s steps(1) infinite}
+.pal-search .hint{margin-left:auto;font-size:11px;color:var(--muted);letter-spacing:.5px;border:1px solid var(--line);border-radius:6px;padding:3px 7px}
+.pal-chips{display:flex;gap:5px;padding:10px 12px 4px;overflow:hidden}
+.pal-chips span{flex:none;font-size:10.5px;font-weight:500;color:var(--muted);background:var(--surface-2);border:1px solid var(--line);border-radius:999px;padding:3px 9px}
+.pal-chips span.on{background:var(--accent);color:#fff;border-color:transparent}
+.pal-rows{padding:6px}
+.pal-row{display:flex;align-items:center;gap:11px;padding:8px 10px;border-radius:9px;font-size:13px;position:relative;transition:background .25s}
+.pal-row.hid{display:none}
+.pal-row .ic{width:26px;height:26px;border-radius:7px;background:var(--surface-2);display:grid;place-items:center;flex:none}
+.pal-row .ic svg{width:13px;height:13px;stroke:var(--accent-2);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.pal-row span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pal-row span small{display:block;color:var(--muted);font-size:11px;overflow:hidden;text-overflow:ellipsis}
+.pal-row em{font-style:normal;font-size:10.5px;color:var(--accent-2);white-space:nowrap;flex:none}
+.pal-row kbd{font-family:var(--sans);font-size:10.5px;color:var(--muted);border:1px solid var(--line);border-radius:5px;padding:2px 6px;flex:none}
+.pal-row.sel{background:color-mix(in srgb,var(--accent) 16%,transparent)}
+.pal-row.sel kbd{color:var(--accent-2);border-color:color-mix(in srgb,var(--accent) 40%,transparent)}
+.pal-foot{display:flex;gap:14px;padding:8px 16px;border-top:1px solid var(--line);font-size:10.5px;color:var(--muted)}
+.pal-foot b{font-weight:600;color:var(--ink);margin-right:4px}
+.pal-foot .cnt{margin-left:auto}
+/* library window */
+.mwin{left:60px;top:54px;width:760px;height:440px;font-size:10.5px}
+.mw-search{margin-left:auto;display:flex;align-items:center;gap:5px;color:var(--muted);background:var(--surface-2);border:1px solid var(--line);border-radius:6px;padding:3px 8px;width:120px}
 .mw-search svg{width:10px;height:10px;stroke:var(--muted);fill:none;stroke-width:2.2}
-.mw-body{display:grid;grid-template-columns:110px 150px 1fr;min-height:236px}
-.mw-side{background:var(--surface);border-right:1px solid var(--line);padding:6px}
-.mw-side small,.ms-body small{display:block;font-size:8.5px;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);font-weight:600;margin:8px 4px 3px}
+.mw-body{display:grid;grid-template-columns:140px 190px 1fr;height:calc(100% - 33px)}
+.mw-side{background:var(--surface);border-right:1px solid var(--line);padding:8px}
+.mw-side small{display:block;font-size:8.5px;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);font-weight:600;margin:8px 6px 3px}
 .mw-side small:first-child{margin-top:2px}
-.mw-side div{display:flex;align-items:center;gap:6px;padding:3px 6px;border-radius:5px;color:var(--ink);white-space:nowrap}
+.mw-side div{display:flex;align-items:center;gap:7px;padding:4px 7px;border-radius:6px;white-space:nowrap}
 .mw-side div.on{background:var(--surface-2)}
-.mw-side svg{width:10px;height:10px;stroke:var(--accent-2);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
-.mw-side b{color:var(--accent-2);font-weight:600;width:10px;text-align:center}
-.mw-side em{margin-left:auto;font-style:normal;color:var(--muted);font-size:9px}
-.mw-list{border-right:1px solid var(--line);padding:6px 5px}
-.mw-list > div{display:flex;gap:7px;align-items:flex-start;padding:6px 6px;border-radius:7px;border-bottom:1px solid var(--line)}
+.mw-side svg{width:11px;height:11px;stroke:var(--accent-2);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.mw-side b{color:var(--accent-2);font-weight:600;width:11px;text-align:center}
+.mw-side em{margin-left:auto;font-style:normal;color:var(--muted);font-size:9.5px}
+.mw-list{border-right:1px solid var(--line);padding:8px 6px}
+.mw-list > div{display:flex;gap:8px;align-items:flex-start;padding:7px 7px;border-radius:8px;border-bottom:1px solid var(--line)}
 .mw-list > div.sel{background:var(--accent);color:#fff;border-bottom-color:transparent}
 .mw-list > div.sel small{color:rgba(255,255,255,.8)}
 .mw-list > div > span:last-child{min-width:0;font-weight:600}
 .mw-list small{display:block;font-weight:400;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.mw-list i{font-style:normal;font-weight:400;color:var(--muted);font-size:9px;margin-left:3px}
+.mw-list i{font-style:normal;font-weight:400;color:var(--muted);font-size:9.5px;margin-left:3px}
 .mw-list .sel i{color:rgba(255,255,255,.8)}
-.mw-list .ic{width:20px;height:20px;border-radius:5px;background:var(--surface-2);display:grid;place-items:center;flex:none}
-.mw-list .ic svg{width:10px;height:10px;stroke:var(--muted);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.mw-list .ic{width:22px;height:22px;border-radius:6px;background:var(--surface-2);display:grid;place-items:center;flex:none}
+.mw-list .ic svg{width:11px;height:11px;stroke:var(--muted);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .mw-list .ic.txt5{background:#D6E8FF}.mw-list .ic.txt5 svg{stroke:#2E7CF6}
 .mw-list .ic.org5{background:#FFE7CC}.mw-list .ic.org5 svg{stroke:#E8862B}
 .mw-list .ic.tpl5{background:#D8F5DF}.mw-list .ic.tpl5 svg{stroke:#2FA84F}
 .mw-list .ic.pal5{background:linear-gradient(90deg,#34C759 0 33%,#FFCC00 33% 66%,#FF3B30 66%)}
-.mw-detail{padding:10px 12px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.mw-detail{padding:14px 18px;display:flex;flex-direction:column;gap:8px;min-width:0}
 .mw-dt{display:flex;align-items:center;justify-content:space-between;margin-bottom:2px}
-.mw-dt b{font-size:12px;font-weight:700}
-.mw-dt span{font-size:9px;color:var(--muted);border:1px solid var(--line);border-radius:5px;padding:2px 6px}
-.mw-detail p{margin:0;font-size:10px;color:var(--ink)}
-.mw-img{background:#5870F5;border-radius:6px;aspect-ratio:120/62;width:52%;display:grid;place-items:center}
-.mw-tags{display:flex;gap:4px;align-items:center;margin-top:2px}
-.mw-tags span{font-size:8.5px;color:var(--accent-2);background:color-mix(in srgb,var(--accent) 14%,transparent);border-radius:4px;padding:2px 6px}
-.mw-tags em{font-style:normal;font-size:8.5px;color:var(--muted);margin-left:auto}
+.mw-dt b{font-size:14px;font-weight:700}
+.mw-dt span{font-size:10px;color:var(--muted);border:1px solid var(--line);border-radius:5px;padding:2px 7px}
+.mw-detail p{margin:0;font-size:11.5px;color:var(--ink)}
+.mw-img{background:#5870F5;border-radius:8px;aspect-ratio:120/62;width:52%;display:grid;place-items:center}
 .mw-img svg{width:50%;fill:#F6C453}
-.mw-bar{margin-top:auto;display:flex;gap:5px;padding-top:8px}
-.mw-bar span{display:inline-flex;align-items:center;gap:4px;font-size:9.5px;font-weight:600;border-radius:999px;padding:4px 9px;background:var(--surface-2);border:1px solid var(--line);color:var(--ink)}
+.mw-tags{display:flex;gap:4px;align-items:center;margin-top:2px}
+.mw-tags span{font-size:9.5px;color:var(--accent-2);background:color-mix(in srgb,var(--accent) 14%,transparent);border-radius:4px;padding:2px 7px}
+.mw-tags em{font-style:normal;font-size:9.5px;color:var(--muted);margin-left:auto}
+.mw-bar{margin-top:auto;display:flex;gap:6px;padding-top:8px}
+.mw-bar span{display:inline-flex;align-items:center;gap:4px;font-size:10.5px;font-weight:600;border-radius:999px;padding:5px 11px;background:var(--surface-2);border:1px solid var(--line);color:var(--ink)}
 .mw-bar .pri{background:var(--accent);color:#fff;border-color:transparent;flex:1;justify-content:center}
-.mw-bar kbd{font-family:var(--sans);font-size:8.5px;opacity:.8;font-weight:500}
-.tog{display:inline-block;width:22px;height:13px;border-radius:999px;background:var(--line-2);position:relative;flex:none}
-.tog::after{content:"";position:absolute;top:1.5px;left:1.5px;width:10px;height:10px;border-radius:50%;background:#fff;transition:left .3s}
-.tog.on{background:var(--accent)}
-.tog.on::after{left:10.5px}
-.mset{width:min(420px,100%)}
-.ms-tabs{display:flex;justify-content:center;gap:2px;padding:8px;border-bottom:1px solid var(--line)}
-.ms-tabs span{font-size:9.5px;padding:3px 9px;border-radius:5px;color:var(--muted)}
-.ms-tabs span.on{background:var(--accent);color:#fff}
-.ms-body{padding:8px 14px 14px}
-.ms-body small{margin:8px 0 4px}
-.ms-row{display:flex;align-items:center;justify-content:space-between;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:7px;padding:6px 9px;font-size:10px;margin-top:4px}
-.ms-row kbd{font-family:var(--sans);font-size:9px;color:var(--muted);border:1px solid var(--line);border-radius:4px;padding:2px 6px}
-.ms-body p{margin:5px 2px 0;font-size:8.5px;color:var(--muted);line-height:1.4}
-.seg{display:inline-flex;background:var(--surface-2);border-radius:5px;padding:2px;gap:2px}
-.seg b{font-weight:500;font-size:9px;padding:2px 7px;border-radius:4px;color:var(--muted)}
-.seg b.on{background:var(--accent);color:#fff}
-@media(max-width:640px){.mw-body{grid-template-columns:96px 1fr}.mw-list{display:none}.mw-search{display:none}}
+.mw-bar kbd{font-family:var(--sans);font-size:9px;opacity:.8;font-weight:500}
+/* spotlight */
+.spot{
+  position:absolute;left:50%;top:150px;width:560px;translate:-50% 0;border-radius:16px;overflow:hidden;
+  background:color-mix(in srgb,var(--bg-2) 92%,transparent);backdrop-filter:blur(14px);border:1px solid var(--line-2);box-shadow:0 40px 90px -30px rgba(0,0,0,.7);
+  opacity:0;scale:.96;transition:opacity .3s ease, scale .4s cubic-bezier(.2,.8,.3,1);
+}
+.spot.show{opacity:1;scale:1}
+.spot-f{display:flex;align-items:center;gap:12px;padding:14px 18px;font-size:21px;color:var(--ink)}
+.spot-f svg{width:22px;height:22px;stroke:var(--muted);fill:none;stroke-width:2;flex:none}
+.spot-f .q:empty::before{content:"Spotlight Search";color:var(--muted)}
+.spot-f .cur{width:2px;height:22px;background:var(--accent);animation:blink 1.1s steps(1) infinite}
+.spot-r{display:grid;grid-template-rows:0fr;transition:grid-template-rows .4s cubic-bezier(.2,.8,.3,1)}
+.spot.res .spot-r{grid-template-rows:1fr}
+.spot-r > div{overflow:hidden;min-height:0}
+.spot-r small{display:block;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);font-weight:600;padding:8px 18px 4px;border-top:1px solid var(--line)}
+.spot-row{display:flex;align-items:center;gap:11px;padding:8px 14px;margin:0 6px;border-radius:9px;font-size:13px}
+.spot-row:last-child{margin-bottom:6px}
+.spot-row.sel{background:color-mix(in srgb,var(--accent) 16%,transparent)}
+.spot-row img{width:22px;height:22px;border-radius:6px}
+.spot-row em{font-style:normal;color:var(--muted);font-size:11.5px;margin-left:auto;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:55%}
+/* key hud + toast */
+.hud{position:absolute;top:38px;left:50%;translate:-50% 0;display:flex;gap:6px;opacity:0;transition:opacity .25s;z-index:5}
+.hud.show{opacity:1}
+.hud kbd{
+  font-family:var(--sans);font-size:13px;font-weight:600;color:var(--ink);background:var(--bg-2);border:1px solid var(--line-2);border-bottom-width:3px;
+  border-radius:8px;padding:6px 10px;min-width:36px;text-align:center;box-shadow:0 10px 30px -12px rgba(0,0,0,.6);
+}
+.hud.press kbd{animation:keypress .38s ease}
+@keyframes keypress{35%{transform:translateY(2px);border-bottom-width:1px;background:var(--accent);color:#fff;border-color:transparent}}
+.mtoast{
+  position:absolute;right:26px;top:38px;background:var(--bg-2);border:1px solid var(--line-2);border-radius:10px;padding:8px 11px;
+  font-size:12px;font-weight:500;color:var(--ink);display:flex;align-items:center;gap:8px;box-shadow:var(--shadow);z-index:5;
+  opacity:0;translate:0 -6px;transition:opacity .25s, translate .3s;
+}
+.mtoast.show{opacity:1;translate:0 0}
+.mtoast svg{width:13px;height:13px;stroke:var(--ok);fill:none;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+/* feature tiles = scene picker */
+.mac-feats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;max-width:900px;margin:14px auto 0}
+.mac-feats button{
+  position:relative;text-align:left;display:flex;gap:11px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:13px 14px;
+  transition:border-color .3s, background .3s, transform .3s cubic-bezier(.2,.8,.3,1);
+}
+.mac-feats button:hover{border-color:var(--line-2);transform:translateY(-2px)}
+.mac-feats button.on{border-color:color-mix(in srgb,var(--accent) 55%,transparent);background:var(--surface-2);box-shadow:0 20px 50px -30px var(--glow)}
+.mac-feats .k{
+  flex:none;min-width:30px;height:30px;border-radius:8px;display:grid;place-items:center;padding:0 7px;
+  background:var(--surface-2);border:1px solid var(--line-2);font-size:12px;font-weight:600;color:var(--accent-2);letter-spacing:.5px;white-space:nowrap;
+}
+.mac-feats button.on .k{background:var(--accent);color:#fff;border-color:transparent}
+.mac-feats b{display:block;font-size:14px;font-weight:600;letter-spacing:-.01em;margin-bottom:2px}
+.mac-feats small{display:block;color:var(--muted);font-size:12.5px;line-height:1.4}
+@media(max-width:760px){
+  .mac-feats{grid-template-columns:1fr 1fr;gap:8px}
+  .mac-feats button{padding:11px 12px;gap:9px}
+  .mac-feats b{font-size:13px}
+  .mac-feats small{font-size:11.5px}
+}
+@media(max-width:440px){.mac-feats small{display:none}}
+@media(max-width:760px){.mac-feats button{flex-direction:column;gap:8px}.mac-feats b{font-size:13px}}
+/* narrow canvas layout for phones */
+.mac-stage.narrow .mac-canvas{width:520px;height:560px}
+.mac-stage.narrow .mb span:not(.sp){display:none}
+.mac-stage.narrow .mb span.sp{display:block}
+.mac-stage.narrow .mb img{display:block}
+.mac-stage.narrow .mail{left:20px;top:60px;width:480px;height:480px}
+.mac-stage.narrow .pal{width:440px;top:96px}
+.mac-stage.narrow .pal-row em{display:none}
+.mac-stage.narrow .mwin{left:14px;top:54px;width:492px;height:490px}
+.mac-stage.narrow .mw-body{grid-template-columns:120px 1fr}
+.mac-stage.narrow .mw-list{display:none}
+.mac-stage.narrow .mw-search{display:none}
+.mac-stage.narrow .spot{width:440px;top:130px}
+.mac-stage.narrow .spot-row em{display:none}
 
 /* ============ privacy ============ */
 .privacy{background:var(--bg-2);border-block:1px solid var(--line)}
@@ -1300,47 +1348,46 @@ Hassan</div></div>
 
 <!-- ================= MAC ================= -->
 <section class="sec mac" id="mac">
-  <div class="wrap mac-grid">
-    <div class="rv">
-      <span class="eyebrow"><i class="dot"></i> macOS</span>
-      <h2>Also on<br><span class="grad">your Mac</span>.</h2>
-      <p class="lede">A native Mac app, not a phone app in a window. Press a shortcut over whatever you are doing, type a few letters, press Return, and the snippet is on your clipboard. Your library is already there, synced through iCloud.</p>
-      <ul class="mac-list">
-        <li><span class="k" title="Option and Space">⌥ Space</span><span><b>Search from anywhere</b><small>One shortcut opens the palette over whatever you are doing. Return copies, Esc closes.</small></span></li>
-        <li><span class="k" title="Control, Option and 1">⌃⌥1</span><span><b>Hot snippets</b><small>Give your most used snippets their own shortcut, such as Control, Option and 1. Press it and it is copied, no palette needed.</small></span></li>
-        <li><span class="k"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16M3 10h6"/></svg></span><span><b>A full library window</b><small>Sidebar with folders and tags, your list, and the snippet open beside it. Edits save as you type.</small></span></li>
-        <li><span class="k" title="Command and Space">⌘ Space</span><span><b>Snippets in Spotlight</b><small>Find a snippet by title, text, tag or folder from Spotlight itself. One switch turns it off if you would rather not.</small></span></li>
-        <li><span class="k"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg></span><span><b>Menu bar or Dock</b><small>Turn the Dock icon off and SnipStash lives in the menu bar. Launch it at login and it is always a shortcut away.</small></span></li>
-      </ul>
-      <ul class="final-ticks mac-ticks">
-        <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Templates, images and files included</li>
-        <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Images paste as pictures</li>
-        <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Same library as your iPhone, live</li>
-        <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Covered by the one purchase</li>
-      </ul>
-      <p class="mac-note">The Mac app is on the App Store now, as part of the same SnipStash listing. Install it on your Mac and your library is there the moment iCloud catches up.</p>
+  <div class="wrap">
+    <div class="head mac-head rv">
+      <div>
+        <span class="eyebrow"><i class="dot"></i> macOS</span>
+        <h2>Also on <span class="grad">your Mac</span>.</h2>
+        <p class="lede">A native Mac app. Press a shortcut over whatever you are doing, type a few letters, press Return, and the snippet is on your clipboard. Same library as your iPhone, synced through your own iCloud.</p>
+      </div>
     </div>
 
-    <div class="pal-wrap rv" aria-hidden="true">
-      <div class="menubar"><img src="images/icon.png" alt=""><span>Wed 9:41</span></div>
-      <div class="mac-scenes" id="macScenes">
-      <div class="scene on">
-      <div class="pal">
-        <div class="pal-search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><span>sign</span><span class="cur"></span><span class="hint">⌥ Space</span></div>
-        <div class="pal-chips"><span class="on">Recent</span><span>Code</span><span>Email</span><span>Links</span><span>Personal</span><span>Work</span><span>#clients</span><span>#brand</span></div>
-        <div class="pal-rows">
-          <div class="pal-row sel"><span class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span><span>Email sign-off<small>Best regards, Hassan</small></span><em>#email</em><kbd>⌃⌥1</kbd></div>
-          <div class="pal-row"><span class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span><span>Client sign-off, formal<small>Kind regards, Hassan Nawaz Khan</small></span><em>#email #clients</em></div>
-          <div class="pal-row"><span class="ic"><svg viewBox="0 0 24 24"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5"/></svg></span><span>Sign commits<small>git config commit.gpgsign true</small></span><em>#code #git</em><kbd>⌃⌥4</kbd></div>
-          <div class="pal-row"><span class="ic"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="5" rx="1.5"/><rect x="4" y="10" width="16" height="5" rx="1.5"/><rect x="4" y="17" width="16" height="4" rx="1.5"/></svg></span><span>Project kickoff pack<small>Hi {Client}, …</small></span><em>#clients</em></div>
+    <div class="mac-stage rv" id="macStage" aria-hidden="true">
+      <div class="mac-canvas" id="macCanvas">
+        <div class="mb"><span class="apple"></span><b id="mbApp">Mail</b><span>File</span><span>Edit</span><span>View</span><span>Message</span><span class="sp"></span><img src="images/icon.png" alt=""><span>Wed 9:41</span></div>
+
+        <div class="win mail show" id="mail">
+          <div class="win-t"><span class="tl"><i></i><i></i><i></i></span><span class="mail-tools"><i></i><i></i><i></i><i></i></span><b class="send">↑</b></div>
+          <div class="mail-f"><span>To:</span><em>Maya at Studio North</em></div>
+          <div class="mail-f"><span>Subject:</span>Re: Kickoff next week</div>
+          <div class="mail-f"><span>From:</span>Hassan Nawaz Khan</div>
+          <div class="mail-b">Hi Maya,
+
+Thanks for the call today. Everything we discussed is in the attached pack, and the first review is booked for the Friday after next.
+
+<span id="mailOut"></span><i class="cur"></i></div>
         </div>
-        <div class="pal-foot"><span><b>↑↓</b>navigate</span><span><b>↩</b>copy</span><span><b>esc</b>dismiss</span><span><b>⌘O</b>library</span><span class="cnt">25 snippets</span></div>
-        <div class="pal-toast"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Copied. Press ⌘V to paste.</div>
-      </div>
-      </div>
-      <div class="scene">
-        <div class="mwin">
-          <div class="mw-title"><span class="tl"><i></i><i></i><i></i></span><b>SnipStash</b><span class="mw-search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>Search</span></div>
+
+        <div class="pal" id="pal">
+          <div class="pal-search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><span class="q" id="palQ"></span><span class="cur"></span><span class="hint">⌥ Space</span></div>
+          <div class="pal-chips"><span class="on">Recent</span><span>Code</span><span>Email</span><span>Links</span><span>Personal</span><span>Work</span><span>#clients</span><span>#brand</span></div>
+          <div class="pal-rows">
+            <div class="pal-row" data-q="email sign-off"><span class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span><span>Email sign-off<small>Best regards, Hassan</small></span><em>#email</em><kbd>⌃⌥1</kbd></div>
+            <div class="pal-row" data-q="project kickoff pack"><span class="ic"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="5" rx="1.5"/><rect x="4" y="10" width="16" height="5" rx="1.5"/><rect x="4" y="17" width="16" height="4" rx="1.5"/></svg></span><span>Project kickoff pack<small>Hi {Client}, …</small></span><em>#clients</em></div>
+            <div class="pal-row" data-q="client sign-off formal"><span class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span><span>Client sign-off, formal<small>Kind regards, Hassan Nawaz Khan</small></span><em>#email #clients</em></div>
+            <div class="pal-row" data-q="book a call"><span class="ic"><svg viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg></span><span>Book a call<small>https://cal.example.com/studio/30min</small></span><em>#links</em></div>
+            <div class="pal-row" data-q="sign commits"><span class="ic"><svg viewBox="0 0 24 24"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5"/></svg></span><span>Sign commits<small>git config commit.gpgsign true</small></span><em>#code #git</em><kbd>⌃⌥4</kbd></div>
+          </div>
+          <div class="pal-foot"><span><b>↑↓</b>navigate</span><span><b>↩</b>copy</span><span><b>esc</b>dismiss</span><span><b>⌘O</b>library</span><span class="cnt">25 snippets</span></div>
+        </div>
+
+        <div class="win mwin" id="lib">
+          <div class="win-t"><span class="tl"><i></i><i></i><i></i></span><b>SnipStash</b><span class="mw-search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>Search</span></div>
           <div class="mw-body">
             <div class="mw-side">
               <small>Library</small>
@@ -1354,6 +1401,10 @@ Hassan</div></div>
               <div><svg viewBox="0 0 24 24"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5"/></svg>Code<em>5</em></div>
               <div><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>Email<em>4</em></div>
               <div><svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a3 3 0 0 1 6 0v2"/></svg>Work<em>8</em></div>
+              <small>Tags</small>
+              <div><b>#</b>clients<em>5</em></div>
+              <div><b>#</b>code<em>5</em></div>
+              <div><b>#</b>brand<em>4</em></div>
             </div>
             <div class="mw-list">
               <div><span class="ic pal5"></span><span>Brand palette<small>Five colours, hex in the file name.</small></span></div>
@@ -1362,41 +1413,50 @@ Hassan</div></div>
               <div><span class="ic org5"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h11M4 17h14"/></svg></span><span>Kickoff questions<small>Goal: Audience:…</small></span></div>
               <div><span class="ic"><svg viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg></span><span>Book a call<small>https://cal.example.com/studio/30min</small></span></div>
               <div><span class="ic"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h11M4 17h14"/></svg></span><span>Amend last commit<small>git commit --amend --no-edit</small></span></div>
+              <div><span class="ic"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h11M4 17h14"/></svg></span><span>Invoice terms<small>Payment due within 14 days…</small></span></div>
             </div>
             <div class="mw-detail">
               <div class="mw-dt"><b>Project kickoff pack</b><span>Edit</span></div>
               <p>Hi {Client},</p>
               <p>Delighted to be working with you. Here's how the first two weeks run:</p>
               <div class="mw-img"><svg viewBox="0 0 120 80"><rect x="18" y="14" width="16" height="52"/><circle cx="66" cy="42" r="24"/></svg></div>
-              <p>Week 1 is discovery, week 2 is the first review.</p>
-              <div class="mw-tags"><span>#clients</span><span>#onboarding</span><em>Used 12×</em></div>
+              <p>Week 1 is discovery, week 2 is the first review. I'll send a short update every Friday.</p>
+              <div class="mw-tags"><span>#clients</span><span>#onboarding</span><em>Used 12× · Created Aug 22</em></div>
               <div class="mw-bar"><span class="pri">Copy <kbd>⌥⌘C</kbd></span><span>Share</span><span>Email</span></div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="scene">
-        <div class="mwin mset">
-          <div class="mw-title"><span class="tl"><i></i><i></i><i></i></span><b>SnipStash Settings</b></div>
-          <div class="ms-tabs"><span class="on">General</span><span>Sync</span><span>Pro</span><span>About</span></div>
-          <div class="ms-body">
-            <small>Search</small>
-            <div class="ms-row"><span>Search shortcut</span><kbd>⌥ Space</kbd></div>
-            <p>Works from any app. Type to find a snippet, press Return to copy it, then ⌘V to paste.</p>
-            <div class="ms-row"><span>Show snippets in Spotlight</span><i class="tog on"></i></div>
-            <p>Find snippets with ⌘Space by title, text, tag or folder. Turn this off to keep snippet text out of system search on this Mac.</p>
-            <small>Appearance</small>
-            <div class="ms-row"><span>Theme</span><span class="seg"><b>System</b><b class="on">Light</b><b>Dark</b></span></div>
-            <small>App</small>
-            <div class="ms-row"><span>Launch at login</span><i class="tog on"></i></div>
-            <div class="ms-row"><span>Show Dock icon</span><i class="tog"></i></div>
-            <p>With the Dock icon off, SnipStash lives in the menu bar. It still appears in the Dock while the library window is open.</p>
-          </div>
+
+        <div class="spot" id="spot">
+          <div class="spot-f"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><span class="q" id="spotQ"></span><span class="cur"></span></div>
+          <div class="spot-r"><div>
+            <small>SnipStash</small>
+            <div class="spot-row sel"><img src="images/icon.png" alt="">Email sign-off<em>Best regards, Hassan</em></div>
+            <div class="spot-row"><img src="images/icon.png" alt="">Client sign-off, formal<em>Kind regards, Hassan Nawaz Khan</em></div>
+            <div class="spot-row"><img src="images/icon.png" alt="">Sign commits<em>git config commit.gpgsign true</em></div>
+          </div></div>
         </div>
+
+        <div class="hud" id="hud"><kbd>⌥</kbd><kbd>Space</kbd></div>
+        <div class="mtoast" id="mtoast"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg><span>Copied. Press ⌘V to paste.</span></div>
       </div>
-      </div>
-      <div class="mac-tabs" id="macTabs"><button class="on" type="button">Search palette</button><button type="button">Library window</button><button type="button">Settings</button></div>
     </div>
+
+    <div class="mac-feats rv" id="macFeats">
+      <button class="on" type="button"><span class="k">⌥ Space</span><span><b>Search from anywhere</b><small>Type a few letters, press Return, paste.</small></span></button>
+      <button type="button"><span class="k">⌃⌥1</span><span><b>Hot snippets</b><small>Your most used get their own key. No palette.</small></span></button>
+      <button type="button"><span class="k">⌘O</span><span><b>A full library window</b><small>Folders, tags, templates, an editor that saves as you type.</small></span></button>
+      <button type="button"><span class="k">⌘ Space</span><span><b>In Spotlight too</b><small>Find snippets from system search. One switch turns it off.</small></span></button>
+    </div>
+
+    <ul class="final-ticks mac-ticks rv">
+      <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Menu bar or Dock, your call</li>
+      <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Images paste as pictures</li>
+      <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Templates, images and files included</li>
+      <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Same library as your iPhone, live</li>
+      <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Covered by the one purchase</li>
+    </ul>
+    <p class="mac-note rv">The Mac app is on the App Store now, as part of the same SnipStash listing. Install it and your library is there the moment iCloud catches up.</p>
   </div>
 </section>
 
@@ -1826,29 +1886,83 @@ Hassan</div></div>
     document.addEventListener('visibilitychange', function(){ if(document.hidden){ stop = true; } else { stop = false; cycle(); } });
   })();
 
-  /* ---- mac scene rotation ---- */
+  /* ---- mac desktop stage ---- */
   (function(){
-    var wrap = document.getElementById('macScenes'); if(!wrap) return;
-    var scenes = wrap.querySelectorAll('.scene'), tabs = document.querySelectorAll('#macTabs button');
-    var cur = 0, timer = null, visible = false, holdUntil = 0, STEP = 6500;
-    var stage = wrap.parentNode;
-    stage.style.setProperty('--mac-step', STEP + 'ms');
-    function show(k){
-      cur = (k + scenes.length) % scenes.length;
-      scenes.forEach(function(sc, i){ sc.classList.toggle('on', i === cur); });
-      tabs.forEach(function(t, i){ t.classList.toggle('on', i === cur); t.classList.remove('run'); });
-      void tabs[cur].offsetWidth; tabs[cur].classList.add('run');
+    var stage = document.getElementById('macStage'); if(!stage) return;
+    var canvas = document.getElementById('macCanvas'), W = 880, H = 520;
+    function fit(){
+      var w = stage.clientWidth, narrow = w < 620;
+      stage.classList.toggle('narrow', narrow);
+      var cw = narrow ? 520 : W, ch = narrow ? 560 : H, s = w / cw;
+      canvas.style.transform = 'scale(' + s + ')'; canvas.style.left = '0px'; stage.style.height = (ch * s) + 'px';
     }
-    function tick(){ if(!visible || document.hidden || Date.now() < holdUntil || stage.matches(':hover')) return; show(cur + 1); }
-    tabs.forEach(function(t, i){ t.addEventListener('click', function(){ holdUntil = Date.now() + 12000; show(i); }); });
+    if('ResizeObserver' in window) new ResizeObserver(fit).observe(stage); addEventListener('resize', fit); fit();
+    var $ = function(id){ return document.getElementById(id); };
+    var mail = $('mail'), out = $('mailOut'), pal = $('pal'), palQ = $('palQ'), rows = pal.querySelectorAll('.pal-row');
+    var lib = $('lib'), spot = $('spot'), spotQ = $('spotQ'), hud = $('hud'), toast = $('mtoast'), toastT = toast.querySelector('span'), app = $('mbApp');
+    var feats = document.querySelectorAll('#macFeats button');
+    var SIGN = 'Best regards,\nHassan';
+    var gen = 0, cur = 0, visible = false, holdUntil = 0;
+    function wait(ms){ return new Promise(function(r){ setTimeout(r, reduce ? 0 : ms); }); }
+    function chk(g){ if(g !== gen) throw 0; }
+    function reset(){
+      [pal, lib, spot, hud, toast].forEach(function(e){ e.classList.remove('show'); });
+      spot.classList.remove('res'); mail.classList.add('show'); out.textContent = ''; palQ.textContent = ''; spotQ.textContent = '';
+      rows.forEach(function(r){ r.classList.remove('hid', 'sel'); }); app.textContent = 'Mail';
+    }
+    function keys(list){
+      hud.innerHTML = list.map(function(k){ return '<kbd>' + k + '</kbd>'; }).join('');
+      hud.classList.add('show'); hud.classList.remove('press'); void hud.offsetWidth; hud.classList.add('press');
+    }
+    async function type(el, text, ms, g){ for(var i = 0; i < text.length; i++){ el.textContent += text[i]; await wait(ms); chk(g); } }
+    var scenes = [
+      async function(g){
+        await wait(700); chk(g); keys(['⌥', 'Space']); await wait(420); chk(g);
+        pal.classList.add('show'); await wait(650); chk(g);
+        await type(palQ, 'sign', 115, g);
+        rows.forEach(function(r){ r.classList.toggle('hid', r.dataset.q.indexOf('sign') < 0); }); rows[0].classList.add('sel');
+        await wait(950); chk(g); keys(['↩']); await wait(320); chk(g);
+        pal.classList.remove('show'); toastT.textContent = 'Copied. Press ⌘V to paste.'; toast.classList.add('show');
+        await wait(1050); chk(g); keys(['⌘', 'V']); toast.classList.remove('show'); await wait(260); chk(g);
+        await type(out, SIGN, 28, g); await wait(1700); chk(g); hud.classList.remove('show'); await wait(500);
+      },
+      async function(g){
+        await wait(700); chk(g); keys(['⌃', '⌥', '1']); await wait(380); chk(g);
+        toastT.textContent = 'Email sign-off copied'; toast.classList.add('show'); await wait(1100); chk(g);
+        keys(['⌘', 'V']); toast.classList.remove('show'); await wait(260); chk(g);
+        await type(out, SIGN, 28, g); await wait(1700); chk(g); hud.classList.remove('show'); await wait(500);
+      },
+      async function(g){
+        await wait(600); chk(g); keys(['⌘', 'O']); await wait(380); chk(g);
+        app.textContent = 'SnipStash'; lib.classList.add('show'); await wait(900); chk(g); hud.classList.remove('show'); await wait(4200);
+      },
+      async function(g){
+        await wait(600); chk(g); keys(['⌘', 'Space']); await wait(380); chk(g);
+        spot.classList.add('show'); await wait(550); chk(g); await type(spotQ, 'sign', 120, g);
+        spot.classList.add('res'); await wait(900); chk(g); hud.classList.remove('show'); await wait(3400);
+      }
+    ];
+    function mark(k){ feats.forEach(function(b, i){ b.classList.toggle('on', i === k); }); }
+    async function play(k){
+      var g = ++gen; cur = k; mark(k); reset();
+      try{ await scenes[k](g); }catch(e){ return; }
+      if(reduce) return;
+      while(g === gen && (stage.matches(':hover') || Date.now() < holdUntil || document.hidden)){ await wait(600); }
+      if(g !== gen || !visible) return;
+      play((k + 1) % scenes.length);
+    }
+    feats.forEach(function(b, i){ b.addEventListener('click', function(){ holdUntil = Date.now() + 9000; play(i); }); });
     if('IntersectionObserver' in window){
-      new IntersectionObserver(function(e){ visible = e[0].isIntersecting; if(visible) show(cur); }, {threshold:0.35}).observe(wrap);
-    } else { visible = true; }
-    if(!reduce) timer = setInterval(tick, STEP);
-    show(0);
+      new IntersectionObserver(function(e){
+        var v = e[0].isIntersecting;
+        if(v && !visible){ visible = true; play(cur); }
+        else if(!v && visible){ visible = false; gen++; }
+      }, {threshold:0.3}).observe(stage);
+    } else { visible = true; play(0); }
+    if(reduce){ reset(); pal.classList.add('show'); palQ.textContent = 'sign'; rows.forEach(function(r){ r.classList.toggle('hid', r.dataset.q.indexOf('sign') < 0); }); rows[0].classList.add('sel'); }
   })();
 
-  /* ---- faq accordion, auto-advancing ---- */
+  /* ---- faq accordion, auto-advancing ---- */  /* ---- faq accordion, auto-advancing ---- */
   (function(){
     var ab = document.getElementById('ask-btn'), an = document.getElementById('ask-note');
     if(ab){ ab.addEventListener('click', function(){
