@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SnipStash: Snippet Manager for iPhone and iPad</title>
-<meta name="description" content="Save the text you retype all day, then paste it anywhere from your keyboard. One-time purchase, no subscription. Syncs privately through your own iCloud.">
+<meta name="description" content="Save the text you retype all day, then paste it anywhere from your keyboard. Templates send text, images and files together, in order. One-time purchase, no subscription. Syncs privately through your own iCloud.">
 <link rel="canonical" href="https://khancreators.netlify.app/apps/snipstash/">
 
 <meta property="og:title" content="SnipStash: Snippet Manager for iPhone and iPad">
@@ -541,10 +541,102 @@ header.compact .prog{opacity:1}
 .mock .tagrow{display:flex;gap:5px;flex-wrap:wrap;padding-top:2px}
 .mock .tag{font-size:11px;color:var(--accent-2);background:color-mix(in srgb,var(--accent) 14%,transparent);
   border-radius:6px;padding:3px 8px}
+.mock .kinds{display:flex;gap:5px;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,#000 84%,transparent);mask-image:linear-gradient(90deg,#000 84%,transparent)}
+.mock .kinds span{flex:none;font-size:11px;font-weight:500;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:3px 9px}
+.mock .kinds span.on{background:var(--accent);color:#fff;border-color:transparent}
 .mock .src{display:flex;gap:6px;flex-wrap:wrap}
 .mock .src span{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--muted);
   background:var(--surface-2);border:1px solid var(--line);border-radius:999px;padding:5px 10px}
 .mock .src i{width:6px;height:6px;border-radius:2px;background:var(--accent-2);flex:none;font-style:normal}
+
+/* ============ templates ============ */
+.tpl-sec{overflow:hidden}
+.tpl-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,64px);align-items:center}
+@media(max-width:900px){.tpl-grid{grid-template-columns:1fr;gap:36px}}
+.tpl-sec h2{margin-top:16px}
+.tpl-sec .lede{margin-top:14px}
+.tpl-stage{position:relative;width:100%;max-width:440px;margin:0 auto;display:flex;justify-content:center;padding:30px 0}
+@media(min-width:901px){.tpl-stage{order:-1}}
+.tpl-stage::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(55% 55% at 50% 50%, var(--glow) 0%, transparent 70%);opacity:.9;
+}
+.tpl{
+  position:relative;width:min(320px,100%);border-radius:30px;overflow:hidden;
+  background:#F2F2F7;color:#111;border:1px solid var(--line-2);box-shadow:var(--shadow);
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",Inter,system-ui,sans-serif;font-size:12px;line-height:1.4;
+  user-select:none;-webkit-user-select:none;
+}
+.tp-top{display:flex;justify-content:space-between;align-items:center;padding:12px 20px 0;font-weight:600;font-size:11px}
+.tp-top .isl{width:48px;height:14px;border-radius:999px;background:#111}
+.tp-hdr{display:flex;align-items:center;gap:8px;padding:12px 12px 6px}
+.tp-hdr i{width:24px;height:24px;border-radius:50%;background:#fff;display:grid;place-items:center;font-style:normal;font-size:16px;line-height:1;color:#333;flex:none;padding-bottom:2px}
+.tp-hdr b{flex:1;font-size:13px;font-weight:600;letter-spacing:-.01em}
+.tp-hdr span{background:#fff;border-radius:999px;padding:4px 10px;font-size:11px;font-weight:500}
+.tp-kind{display:flex;align-items:center;gap:8px;padding:2px 12px 8px}
+.tp-kind .chip{display:inline-flex;align-items:center;gap:5px;background:#fff;border-radius:999px;padding:4px 9px;font-size:10.5px;font-weight:500}
+.tp-kind .chip svg{width:11px;height:11px;stroke:#111;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.tp-kind i{width:9px;height:9px;border-radius:50%;background:#34C759}
+.tp-body{padding:0 12px 10px;display:grid;gap:7px}
+.tp-block{
+  background:#fff;border-radius:12px;padding:9px 11px;font-size:11.5px;line-height:1.45;color:#111;position:relative;
+  box-shadow:0 0 0 0 transparent;transition:box-shadow .3s, opacity .3s, transform .3s;
+}
+.tp-block.img{padding:0;background:#5870F5;aspect-ratio:120/62;overflow:hidden;display:grid;place-items:center}
+.tp-block.img svg{width:52%;height:auto;fill:#F6C453}
+.tp-block.on{box-shadow:0 0 0 2px #5870F5, 0 10px 24px -12px rgba(88,112,245,.7);transform:scale(1.015)}
+.tp-block.done{opacity:.5}
+.var .v-name{color:#3B4FD8;font-weight:500}
+.var .v-val{display:none;background:#E4E8FF;color:#3B4FD8;border-radius:4px;padding:0 4px;font-weight:600}
+.var.filled .v-name{display:none}
+.var.filled .v-val{display:inline}
+.tp-tags{display:flex;gap:6px}
+.tp-tags span{background:#E4E8FF;color:#3B4FD8;border-radius:999px;padding:3px 9px;font-size:10.5px;font-weight:500}
+.tp-meta{color:#8a8a8e;font-size:10.5px;padding:0 2px}
+.tp-bar{display:flex;gap:7px;align-items:center;padding:6px 12px 16px}
+.tp-bar span{display:inline-flex;align-items:center;justify-content:center;gap:5px;font-weight:600;font-size:11.5px;border-radius:999px;height:32px}
+.tp-bar .pri{flex:1;background:#4C5FE0;color:#fff}
+.tp-bar .sec2{flex:1;background:#E5E5EA;color:#3B4FD8}
+.tp-bar .rnd{width:32px;background:#E5E5EA;color:#3B4FD8}
+.tp-bar svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.tp-tabs{display:flex;justify-content:center;gap:4px;margin:0 auto 12px;width:min(230px,80%);background:#fff;border-radius:999px;padding:4px;box-shadow:0 4px 14px -6px rgba(0,0,0,.18)}
+.tp-tabs span{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:8.5px;font-weight:500;color:#333;padding:5px 0;border-radius:999px}
+.tp-tabs span.on{background:#E5E5EA;color:#3B4FD8}
+.tp-tabs svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.tp-sheet{
+  position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:20px 20px 0 0;padding:8px 14px 16px;
+  box-shadow:0 -12px 34px -10px rgba(0,0,0,.28);transform:translateY(108%);transition:transform .5s cubic-bezier(.2,.8,.3,1);
+}
+.tp-sheet.show{transform:none}
+.tp-grab{width:34px;height:4px;border-radius:2px;background:#D1D1D6;margin:0 auto 10px}
+.tp-pane{display:none}
+.tp-sheet.m-fill .tp-pane.p-fill{display:block}
+.tp-sheet.m-step .tp-pane.p-step{display:block}
+.tp-pane b{display:block;font-size:13px;font-weight:600;letter-spacing:-.01em}
+.tp-pane small{display:block;color:#8a8a8e;font-size:10.5px;margin-top:2px}
+.tp-field{display:flex;align-items:center;gap:8px;background:#F2F2F7;border-radius:10px;padding:8px 11px;margin:10px 0;font-size:12px}
+.tp-field span{color:#8a8a8e;font-size:10.5px;text-transform:uppercase;letter-spacing:.8px;font-weight:600}
+.tp-field em{font-style:normal;font-weight:500;color:#111}
+.tp-field .cur{width:1.5px;height:13px;background:#3B4FD8;animation:blink 1.1s steps(1) infinite;margin-left:-4px}
+.tp-segs{display:flex;gap:5px;margin:10px 0}
+.tp-segs i{flex:1;height:5px;border-radius:3px;background:#E5E5EA;transition:background .3s}
+.tp-segs i.on{background:#5870F5}
+.tp-segs i.done{background:#34C759}
+.tp-btn{display:flex;align-items:center;justify-content:center;gap:6px;background:#4C5FE0;color:#fff;border-radius:999px;padding:9px;font-weight:600;font-size:12px;transition:background .3s, transform .15s}
+.tp-btn svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.tp-btn.ok{background:#34C759}
+.tp-btn.press{transform:scale(.97)}
+.tpl .ps-toast{top:30%}
+.tp-finger{
+  position:absolute;width:22px;height:22px;border-radius:50%;left:50%;top:60%;z-index:3;pointer-events:none;
+  background:color-mix(in srgb,var(--accent) 35%,transparent);border:1.5px solid var(--accent-2);box-shadow:0 6px 18px -6px var(--glow);
+  opacity:0;translate:-50% -50%;transition:opacity .3s, top .5s cubic-bezier(.2,.8,.3,1), left .5s cubic-bezier(.2,.8,.3,1), scale .15s;
+}
+.tp-finger.show{opacity:1}
+.tp-finger.tap{scale:.7}
+.tf1{left:-8px;top:2.5%;animation:bob 6s ease-in-out infinite}
+.tf2{right:-8px;top:46%;animation:bob 6s ease-in-out infinite 1.1s}
+@media(max-width:600px){.tpl-stage .float{display:none}}
 
 /* ============ mac ============ */
 .mac{background:var(--bg-2);border-block:1px solid var(--line);overflow:hidden}
@@ -806,6 +898,7 @@ footer{border-top:1px solid var(--line);padding:32px 0;color:var(--muted);font-s
     <a class="brand" href="#top"><img src="images/icon.png" alt=""><span>SnipStash</span></a>
     <div class="sp"></div>
     <a class="lnk" href="#features">Features</a>
+    <a class="lnk" href="#templates">Templates</a>
     <a class="lnk" href="#mac">Mac</a>
     <a class="lnk" href="#privacy">Privacy</a>
     <a class="lnk" href="#pricing">Pricing</a>
@@ -822,6 +915,7 @@ footer{border-top:1px solid var(--line);padding:32px 0;color:var(--muted);font-s
 <ul class="dots" id="dots" aria-label="Page sections">
   <li><a href="#top" data-s="top"><span>Top</span></a></li>
   <li><a href="#features" data-s="features"><span>Features</span></a></li>
+  <li><a href="#templates" data-s="templates"><span>Templates</span></a></li>
   <li><a href="#mac" data-s="mac"><span>Mac</span></a></li>
   <li><a href="#privacy" data-s="privacy"><span>Privacy</span></a></li>
   <li><a href="#pricing" data-s="pricing"><span>Pricing</span></a></li>
@@ -900,6 +994,8 @@ Hassan</div></div>
       <li class="u"><svg viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/></svg>AI prompts</li>
       <li><b></b> Works offline</li>
       <li class="u"><svg viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 12h6M9 16h6"/></svg>Invoice details</li>
+      <li><b></b> Templates send text, images and files together</li>
+      <li class="u"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="5" rx="1.5"/><rect x="4" y="10" width="16" height="5" rx="1.5"/><rect x="4" y="17" width="16" height="4" rx="1.5"/></svg>Client welcome packs</li>
       <li><b></b> Built by two people</li>
       <li class="u"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/></svg>Canned replies</li>
     </ul>
@@ -914,6 +1010,8 @@ Hassan</div></div>
       <li class="u"><svg viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/></svg>AI prompts</li>
       <li><b></b> Works offline</li>
       <li class="u"><svg viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 12h6M9 16h6"/></svg>Invoice details</li>
+      <li><b></b> Templates send text, images and files together</li>
+      <li class="u"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="5" rx="1.5"/><rect x="4" y="10" width="16" height="5" rx="1.5"/><rect x="4" y="17" width="16" height="4" rx="1.5"/></svg>Client welcome packs</li>
       <li><b></b> Built by two people</li>
       <li class="u"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/></svg>Canned replies</li>
     </ul>
@@ -994,7 +1092,7 @@ Hassan</div></div>
           <span class="num">02</span>
         </div>
         <h3>Save anything, fast</h3>
-        <p>Text, links, images, documents and files. Add it in the app, or share it in from anywhere the share sheet appears.</p>
+        <p>Text, links, images, documents and files, and templates that hold all of them. Add it in the app, or share it in from anywhere the share sheet appears.</p>
         <div class="mock" aria-hidden="true">
           <div class="src">
             <span><i></i> Safari</span><span><i></i> Mail</span><span><i></i> Notes</span><span><i></i> Files</span>
@@ -1012,12 +1110,13 @@ Hassan</div></div>
           <span class="num">03</span>
         </div>
         <h3>Find it instantly</h3>
-        <p>Full-text search across titles and bodies. Tags, folders and colour labels, and the ones you use most float to the top.</p>
+        <p>Full-text search across titles and bodies. Narrow it to text, links, images, files or templates, or by tag, folder and colour label. The ones you use most float to the top.</p>
         <div class="mock" aria-hidden="true">
           <div class="fld">
             <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
             <span>git</span><span class="cur"></span>
           </div>
+          <div class="kinds"><span class="on">All</span><span>Text</span><span>Links</span><span>Images</span><span>Files</span><span>Templates</span></div>
           <div class="row">
             <span class="sq"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h11M4 17h14"/></svg></span>
             <span><b>Amend last commit</b><small>git commit --amend --no-edit</small></span>
@@ -1033,7 +1132,7 @@ Hassan</div></div>
           <span class="num">04</span>
         </div>
         <h3>One tap to copy</h3>
-        <p>A single tap and a haptic tick. Images, files and links all copy in the right format for wherever they're going.</p>
+        <p>A single tap and a haptic tick. Images, files and links all copy in the right format for wherever they're going. Every snippet keeps a use count, so you can see which ones earn their place.</p>
       </article>
 
       <article class="card b-sm rv">
@@ -1058,6 +1157,64 @@ Hassan</div></div>
   </div>
 </section>
 
+<!-- ================= TEMPLATES ================= -->
+<section class="sec tpl-sec" id="templates">
+  <div class="wrap tpl-grid">
+    <div class="rv">
+      <span class="eyebrow"><i class="dot"></i> New · Templates</span>
+      <h2>Send the whole message,<br><span class="grad">not the pieces</span>.</h2>
+      <p class="lede">A template is a saved message made of several parts: text, images and files, kept in the order you send them. Welcome a new client, send a quote with its price list, share directions with a map photo. Build it once, send it in one go.</p>
+      <ul class="mac-list">
+        <li><span class="k"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="5" rx="1.5"/><rect x="4" y="10" width="16" height="5" rx="1.5"/><rect x="4" y="17" width="16" height="4" rx="1.5"/></svg></span><span><b>Blocks, in order</b><small>Text, image, text, PDF is four blocks. Drag to reorder, insert a block wherever you are. Same editor on iPhone, iPad and Mac.</small></span></li>
+        <li><span class="k">{ }</span><span><b>{Variables}, no setup</b><small>Type {Client name} in any text block and it becomes a fill-in. SnipStash asks for the values when you send, prefilled from last time. Works on the free plan.</small></span></li>
+        <li><span class="k"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></span><span><b>Four ways to send</b><small>Copy as rich text with the images inline. Share through the share sheet. Email, with files as real attachments. Or send it step by step.</small></span></li>
+        <li><span class="k"><svg viewBox="0 0 24 24"><path d="M4 6h4M4 12h4M4 18h4M12 6h8M12 12h8M12 18h8"/></svg></span><span><b>Step by step, for chat apps</b><small>WhatsApp, Telegram and Messages will not take text and pictures in one paste. SnipStash hands you one block at a time, so the order survives.</small></span></li>
+      </ul>
+      <p class="mac-note">Three starter templates are ready to open pre-filled the first time you look: welcome a new client, send a quote, share directions. Templates sync through your own iCloud, show up in search and Spotlight, and sit in the Mac palette. The keyboard can type a template's text; its images and files come from the app.</p>
+    </div>
+
+    <div class="tpl-stage rv" aria-hidden="true">
+      <div class="tpl" id="tpl">
+        <div class="tp-top"><span>9:41</span><span class="isl"></span><span>●●●</span></div>
+        <div class="tp-hdr"><i>‹</i><b>Project kickoff pack</b><span>Edit</span></div>
+        <div class="tp-kind"><span class="chip"><svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1M9 10h6M9 14h6"/></svg>Template</span><i></i></div>
+        <div class="tp-body">
+          <div class="tp-block" data-i="0">Hi <span class="var" id="tpVar"><span class="v-name">{Client}</span><span class="v-val">Maya</span></span>,<br><br>Delighted to be working with you. Here's how the first two weeks run:</div>
+          <div class="tp-block img" data-i="1"><svg viewBox="0 0 120 80"><rect x="18" y="14" width="16" height="52"/><circle cx="66" cy="42" r="24"/></svg></div>
+          <div class="tp-block" data-i="2">Week 1 is discovery, week 2 is the first review. I'll send a short update every Friday.</div>
+          <div class="tp-tags"><span>#clients</span><span>#onboarding</span></div>
+          <div class="tp-meta">Used 12 times · Last used 3 days ago</div>
+        </div>
+        <div class="tp-bar"><span class="pri"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copy</span><span class="sec2"><svg viewBox="0 0 24 24"><path d="M12 3v12M8 7l4-4 4 4"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>Share</span><span class="rnd"><svg viewBox="0 0 24 24"><path d="M21 3L10 14M21 3l-7 18-4-7-7-4z"/></svg></span></div>
+        <div class="tp-tabs"><span class="on"><svg viewBox="0 0 24 24"><path d="M3 10h18v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/><path d="M5 10V6a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v4M9 14h6"/></svg>Library</span><span><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>Search</span><span><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"/></svg>Settings</span></div>
+        <div class="tp-sheet" id="tpSheet">
+          <div class="tp-grab"></div>
+          <div class="tp-pane p-fill">
+            <b>Fill in</b><small>Remembered from last time</small>
+            <div class="tp-field"><span>Client</span><em id="tpTyped"></em><i class="cur"></i></div>
+            <div class="tp-btn" id="tpGo">Continue</div>
+          </div>
+          <div class="tp-pane p-step">
+            <b>Send step by step</b><small>Paste each step into WhatsApp, Telegram or Messages.</small>
+            <div class="tp-segs" id="tpSegs"><i></i><i></i><i></i></div>
+            <div class="tp-btn" id="tpBtn"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy Step 1 of 3</span></div>
+          </div>
+        </div>
+        <div class="ps-toast" id="tpToast"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg><span>Step 1 copied</span></div>
+        <div class="tp-finger" id="tpFinger"></div>
+      </div>
+      <div class="float tf1">
+        <span class="chip" style="background:color-mix(in srgb,var(--accent) 22%,transparent)"><svg viewBox="0 0 24 24" stroke="var(--accent-2)"><rect x="4" y="3" width="16" height="5" rx="1.5"/><rect x="4" y="10" width="16" height="5" rx="1.5"/><rect x="4" y="17" width="16" height="4" rx="1.5"/></svg></span>
+        <span>3 blocks<small>text, image, text</small></span>
+      </div>
+      <div class="float tf2">
+        <span class="chip" style="background:color-mix(in srgb,var(--ok) 20%,transparent)"><svg viewBox="0 0 24 24" stroke="var(--ok)"><path d="M20 6L9 17l-5-5"/></svg></span>
+        <span>Order kept<small>in WhatsApp too</small></span>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ================= MAC ================= -->
 <section class="sec mac" id="mac">
   <div class="wrap mac-grid">
@@ -1070,7 +1227,7 @@ Hassan</div></div>
         <li><span class="k" title="Control, Option and 1">⌃⌥1</span><span><b>Hot snippets</b><small>Give your most used snippets their own shortcut, such as Control, Option and 1. Press it and it is copied, no palette needed.</small></span></li>
         <li><span class="k"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16M3 10h6"/></svg></span><span><b>A full library window</b><small>Folders, tags, search, drag to reorder, and an editor that saves as you type.</small></span></li>
         <li><span class="k"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M21 16l-5-5-8 8"/></svg></span><span><b>Images paste as pictures</b><small>Copy an image snippet and it lands in Messages or Notes as the image itself.</small></span></li>
-        <li><span class="k"><svg viewBox="0 0 24 24"><path d="M7 18a4 4 0 0 1-.6-7.95A6 6 0 0 1 18 9a4.5 4.5 0 0 1-.5 9z"/></svg></span><span><b>Same library, live</b><small>Edit on the Mac and it appears on your iPhone. Nothing to export or import.</small></span></li>
+        <li><span class="k"><svg viewBox="0 0 24 24"><path d="M7 18a4 4 0 0 1-.6-7.95A6 6 0 0 1 18 9a4.5 4.5 0 0 1-.5 9z"/></svg></span><span><b>Same library, live</b><small>Edit on the Mac and it appears on your iPhone. Templates included. Nothing to export or import.</small></span></li>
         <li><span class="k"><svg viewBox="0 0 24 24"><path d="M5 8h14l-1 12H6z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg></span><span><b>One purchase</b><small>SnipStash Pro covers iPhone, iPad and Mac. Nothing extra to buy.</small></span></li>
       </ul>
       <p class="mac-note">The Mac app is being tested now and will ship as an update to the same App Store listing. Following on the App Store is the easiest way to know when it lands.</p>
@@ -1129,6 +1286,8 @@ Hassan</div></div>
         <ul>
           <li>25 snippets</li>
           <li>First 5 snippets in the keyboard</li>
+          <li>1 template, with up to 2 images or files</li>
+          <li>{Variables} in templates</li>
           <li>Share extension, search, tags and folders</li>
           <li>Shortcuts and Siri</li>
         </ul>
@@ -1144,6 +1303,7 @@ Hassan</div></div>
           <li>Your full library in the keyboard</li>
           <li>iCloud sync across your devices</li>
           <li>Image, document and file snippets</li>
+          <li>Unlimited templates, up to 10 images and files each</li>
         </ul>
         <a class="btn" href="https://apps.apple.com/app/id6802945896">Get SnipStash Pro</a>
       </div>
@@ -1203,6 +1363,14 @@ Hassan</div></div>
         <div class="qb"><div class="qi"><p>Yes, and plenty of people do. If you retype the same prompts into ChatGPT or Claude, save them once and paste them from the keyboard. Tags and folders work the same way for prompts as for email replies.</p></div></div>
       </div>
       <div class="q rv">
+        <button class="qh" aria-expanded="false"><span class="n"></span><span class="t">What is a template?</span><span class="pm"></span></button>
+        <div class="qb"><div class="qi"><p>A saved message made of several parts: text, images and files, kept in the order you send them. Type {Client name} in any text block and SnipStash asks for the value when you send, prefilled with what you used last time. Free includes one template with up to two images or files, and variables work on it. Pro makes templates unlimited, with up to ten images and files each. A template you have already saved is never locked.</p></div></div>
+      </div>
+      <div class="q rv">
+        <button class="qh" aria-expanded="false"><span class="n"></span><span class="t">Can I send a template to WhatsApp or Messages?</span><span class="pm"></span></button>
+        <div class="qb"><div class="qi"><p>Yes, step by step. Those apps will not take text and pictures in one paste, so SnipStash hands you one block at a time: Copy Step 1 of 3, then 2, then 3. You paste and send each one and the order survives. Mail and Notes take the whole thing in a single paste, and Email attaches the files properly.</p></div></div>
+      </div>
+      <div class="q rv">
         <button class="qh" aria-expanded="false"><span class="n"></span><span class="t">Who makes SnipStash?</span><span class="pm"></span></button>
         <div class="qb"><div class="qi"><p>Two people, Hassan and Bilal. It's young, and the roadmap is genuinely being shaped by the people using it. Write to us and you'll get a reply from one of us.</p></div></div>
       </div>
@@ -1216,7 +1384,7 @@ Hassan</div></div>
   <div class="wrap">
     <img class="final-icon rv" src="images/icon.png" alt="" width="88" height="88" loading="lazy">
     <h2 class="rv">Save it once.<br><span class="grad">Paste it everywhere</span>.</h2>
-    <p class="lede rv">Free to try, 25 snippets, no account needed.</p>
+    <p class="lede rv">Free to try, 25 snippets and a template, no account needed.</p>
     <div class="rv"><a class="btn" href="https://apps.apple.com/app/id6802945896">Download on the App Store</a></div>
     <ul class="final-ticks rv">
       <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>No subscription</li>
@@ -1382,7 +1550,7 @@ Hassan</div></div>
     if(dots.length && 'IntersectionObserver' in window){
       var map = {};
       dots.forEach(function(a){ map[a.dataset.s] = a; });
-      var secs = ['top','features','mac','privacy','pricing','faq'].map(function(id){ return document.getElementById(id); }).filter(Boolean);
+      var secs = ['top','features','templates','mac','privacy','pricing','faq'].map(function(id){ return document.getElementById(id); }).filter(Boolean);
       var io2 = new IntersectionObserver(function(entries){
         entries.forEach(function(en){
           if(en.isIntersecting){
@@ -1446,6 +1614,64 @@ Hassan</div></div>
       new IntersectionObserver(function(e){
         if(e[0].isIntersecting){ stop = false; cycle(); } else { stop = true; }
       }, {threshold:0.3}).observe(demo);
+    } else { cycle(); }
+    document.addEventListener('visibilitychange', function(){ if(document.hidden){ stop = true; } else { stop = false; cycle(); } });
+  })();
+
+  /* ---- template step-by-step demo ---- */
+  (function(){
+    var box = document.getElementById('tpl'); if(!box) return;
+    var sheet = document.getElementById('tpSheet'), typed = document.getElementById('tpTyped'), go = document.getElementById('tpGo');
+    var varEl = document.getElementById('tpVar'), segs = document.querySelectorAll('#tpSegs i'), btn = document.getElementById('tpBtn');
+    var btnT = btn.querySelector('span'), toast = document.getElementById('tpToast'), toastT = toast.querySelector('span'), finger = document.getElementById('tpFinger');
+    var blocks = Array.prototype.slice.call(box.querySelectorAll('.tp-block'));
+    var running = false, stop = false;
+    function wait(ms){ return new Promise(function(r){ setTimeout(r, reduce ? 0 : ms); }); }
+    function moveTo(el){
+      var d = box.getBoundingClientRect(), c = el.getBoundingClientRect();
+      finger.style.left = (c.left - d.left + c.width / 2) + 'px';
+      finger.style.top  = (c.top - d.top + c.height / 2) + 'px';
+    }
+    async function press(el){
+      moveTo(el); finger.classList.add('show'); await wait(500);
+      finger.classList.add('tap'); el.classList.add('press'); await wait(160);
+      finger.classList.remove('tap'); el.classList.remove('press');
+    }
+    function reset(){
+      sheet.classList.remove('show','m-fill','m-step'); typed.textContent = ''; varEl.classList.remove('filled');
+      blocks.forEach(function(b){ b.classList.remove('on','done'); });
+      segs.forEach(function(s){ s.classList.remove('on','done'); });
+      btn.classList.remove('ok'); toast.classList.remove('show'); finger.classList.remove('show','tap');
+    }
+    async function cycle(){
+      if(running) return; running = true;
+      while(!stop){
+        reset(); await wait(900);
+        sheet.classList.add('show','m-fill'); await wait(700);
+        var name = 'Maya';
+        for(var i = 0; i < name.length && !stop; i++){ typed.textContent += name[i]; await wait(110); }
+        await wait(400); await press(go); if(stop) break;
+        varEl.classList.add('filled'); sheet.classList.remove('m-fill'); sheet.classList.add('m-step');
+        await wait(700);
+        for(var k = 0; k < 3 && !stop; k++){
+          blocks[k].classList.add('on'); segs[k].classList.add('on'); btnT.textContent = 'Copy Step ' + (k + 1) + ' of 3';
+          await wait(900); await press(btn);
+          toastT.textContent = 'Step ' + (k + 1) + ' copied'; toast.classList.add('show');
+          await wait(900); toast.classList.remove('show');
+          blocks[k].classList.remove('on'); blocks[k].classList.add('done'); segs[k].classList.remove('on'); segs[k].classList.add('done');
+          await wait(350);
+        }
+        if(stop) break;
+        finger.classList.remove('show'); btn.classList.add('ok'); btnT.textContent = 'Every step sent';
+        await wait(2400);
+        sheet.classList.remove('show'); await wait(700);
+      }
+      running = false;
+    }
+    if('IntersectionObserver' in window){
+      new IntersectionObserver(function(e){
+        if(e[0].isIntersecting){ stop = false; cycle(); } else { stop = true; }
+      }, {threshold:0.3}).observe(box);
     } else { cycle(); }
     document.addEventListener('visibilitychange', function(){ if(document.hidden){ stop = true; } else { stop = false; cycle(); } });
   })();
