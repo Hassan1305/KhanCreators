@@ -663,7 +663,7 @@ header.compact .prog{opacity:1}
 .mac-note{color:var(--muted);font-size:13.5px;margin:18px 0 0}
 
 /* menu bar palette mock */
-.pal-wrap{position:relative;display:flex;justify-content:center;padding:34px 0 10px}
+.pal-wrap{position:relative;display:flex;flex-direction:column;align-items:center;gap:14px;padding:34px 0 10px}
 .pal-wrap::before{
   content:"";position:absolute;inset:0;pointer-events:none;
   background:radial-gradient(55% 55% at 50% 45%, var(--glow) 0%, transparent 70%);opacity:.9;
@@ -714,6 +714,93 @@ header.compact .prog{opacity:1}
   animation:rowflash 6s ease-in-out infinite;
 }
 @keyframes rowflash{0%,58%,66%,100%{opacity:0}61%{opacity:.35}}
+
+/* mac scenes rotation */
+.mac-scenes{display:grid;grid-template-columns:minmax(0,1fr);width:100%;min-width:0;justify-items:center}
+.mac-scenes .scene,.pal,.mwin{contain:inline-size}
+.mac-scenes .scene{grid-area:1/1;width:100%;display:flex;justify-content:center;align-items:flex-start;opacity:0;translate:0 10px;transition:opacity .5s ease, translate .6s cubic-bezier(.2,.8,.3,1);pointer-events:none}
+.mac-scenes .scene.on{opacity:1;translate:0 0;pointer-events:auto}
+.mac-scenes .scene:not(.on) .pal-toast,.mac-scenes .scene:not(.on) .pal-row.sel::after{animation:none}
+.mac-tabs{position:relative;display:flex;gap:6px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px}
+.mac-tabs button{position:relative;overflow:hidden;font-size:12px;font-weight:600;color:var(--muted);border-radius:999px;padding:6px 13px;transition:color .3s, background .3s}
+.mac-tabs button.on{color:var(--ink);background:var(--surface-2)}
+.mac-tabs button::after{content:"";position:absolute;left:0;bottom:0;height:2px;width:100%;background:var(--accent);transform:scaleX(0);transform-origin:left}
+.mac-tabs button.on.run::after{animation:tabfill var(--mac-step,6500ms) linear forwards}
+@keyframes tabfill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.pal-wrap:hover .mac-tabs button.on.run::after{animation-play-state:paused}
+
+/* library + settings window mocks */
+.mwin{
+  width:min(560px,100%);border-radius:12px;background:var(--bg);border:1px solid var(--line-2);box-shadow:var(--shadow);overflow:hidden;
+  font-family:var(--sans);font-size:10px;line-height:1.35;color:var(--ink);
+}
+.mw-title{display:flex;align-items:center;gap:10px;padding:8px 12px;border-bottom:1px solid var(--line);background:var(--surface)}
+.mw-title b{font-size:11px;font-weight:600}
+.tl{display:flex;gap:5px}
+.tl i{width:9px;height:9px;border-radius:50%;background:#FF5F57}
+.tl i:nth-child(2){background:#FEBC2E}.tl i:nth-child(3){background:#28C840}
+.mw-search{margin-left:auto;display:flex;align-items:center;gap:5px;color:var(--muted);background:var(--surface-2);border:1px solid var(--line);border-radius:6px;padding:3px 8px;width:110px}
+.mw-search svg{width:10px;height:10px;stroke:var(--muted);fill:none;stroke-width:2.2}
+.mw-body{display:grid;grid-template-columns:104px 138px 1fr 112px;min-height:250px}
+.mw-side{background:var(--surface);border-right:1px solid var(--line);padding:6px}
+.mw-side small,.mw-insp small,.ms-body small{display:block;font-size:8.5px;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);font-weight:600;margin:8px 4px 3px}
+.mw-side small:first-child{margin-top:2px}
+.mw-side div{display:flex;align-items:center;gap:6px;padding:3px 6px;border-radius:5px;color:var(--ink);white-space:nowrap}
+.mw-side div.on{background:var(--surface-2)}
+.mw-side svg{width:10px;height:10px;stroke:var(--accent-2);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.mw-side b{color:var(--accent-2);font-weight:600;width:10px;text-align:center}
+.mw-side em{margin-left:auto;font-style:normal;color:var(--muted);font-size:9px}
+.mw-list{border-right:1px solid var(--line);padding:6px 5px}
+.mw-list > div{display:flex;gap:7px;align-items:flex-start;padding:6px 6px;border-radius:7px;border-bottom:1px solid var(--line)}
+.mw-list > div.sel{background:var(--accent);color:#fff;border-bottom-color:transparent}
+.mw-list > div.sel small{color:rgba(255,255,255,.8)}
+.mw-list > div > span:last-child{min-width:0;font-weight:600}
+.mw-list small{display:block;font-weight:400;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mw-list i{font-style:normal;font-weight:400;color:var(--muted);font-size:9px;margin-left:3px}
+.mw-list .sel i{color:rgba(255,255,255,.8)}
+.mw-list .ic{width:20px;height:20px;border-radius:5px;background:var(--surface-2);display:grid;place-items:center;flex:none}
+.mw-list .ic svg{width:10px;height:10px;stroke:var(--muted);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.mw-list .ic.txt5{background:#D6E8FF}.mw-list .ic.txt5 svg{stroke:#2E7CF6}
+.mw-list .ic.org5{background:#FFE7CC}.mw-list .ic.org5 svg{stroke:#E8862B}
+.mw-list .ic.tpl5{background:#D8F5DF}.mw-list .ic.tpl5 svg{stroke:#2FA84F}
+.mw-list .ic.pal5{background:linear-gradient(90deg,#34C759 0 33%,#FFCC00 33% 66%,#FF3B30 66%)}
+.mw-detail{padding:10px 12px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.mw-dt{display:flex;align-items:center;justify-content:space-between;margin-bottom:2px}
+.mw-dt b{font-size:12px;font-weight:700}
+.mw-dt span{font-size:9px;color:var(--muted);border:1px solid var(--line);border-radius:5px;padding:2px 6px}
+.mw-detail p{margin:0;font-size:10px;color:var(--ink)}
+.mw-img{background:#5870F5;border-radius:6px;aspect-ratio:120/62;width:60%;display:grid;place-items:center}
+.mw-img svg{width:50%;fill:#F6C453}
+.mw-bar{margin-top:auto;display:flex;gap:5px;padding-top:8px}
+.mw-bar span{display:inline-flex;align-items:center;gap:4px;font-size:9.5px;font-weight:600;border-radius:999px;padding:4px 9px;background:var(--surface-2);border:1px solid var(--line);color:var(--ink)}
+.mw-bar .pri{background:var(--accent);color:#fff;border-color:transparent;flex:1;justify-content:center}
+.mw-bar kbd{font-family:var(--sans);font-size:8.5px;opacity:.8;font-weight:500}
+.mw-insp{border-left:1px solid var(--line);background:var(--surface);padding:6px 8px}
+.mw-insp > div{display:flex;align-items:center;justify-content:space-between;gap:6px;padding:3px 0;font-size:9.5px}
+.mw-insp span{color:var(--muted)}
+.mw-insp b{font-weight:600}
+.mw-insp .fld{display:block;background:var(--surface-2);border:1px solid var(--line);border-radius:5px;padding:4px 6px;font-size:9px}
+.mw-insp .fld.c{text-align:center;font-weight:600;font-size:8.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mw-insp .swatches{display:flex;gap:3px}
+.mw-insp .swatches i{width:10px;height:10px;border-radius:50%;flex:none}
+.mw-insp .swatches i.on{box-shadow:0 0 0 2px var(--bg),0 0 0 3px var(--accent-2)}
+.tog{display:inline-block;width:22px;height:13px;border-radius:999px;background:var(--line-2);position:relative;flex:none}
+.tog::after{content:"";position:absolute;top:1.5px;left:1.5px;width:10px;height:10px;border-radius:50%;background:#fff;transition:left .3s}
+.tog.on{background:var(--accent)}
+.tog.on::after{left:10.5px}
+.mset{width:min(420px,100%)}
+.ms-tabs{display:flex;justify-content:center;gap:2px;padding:8px;border-bottom:1px solid var(--line)}
+.ms-tabs span{font-size:9.5px;padding:3px 9px;border-radius:5px;color:var(--muted)}
+.ms-tabs span.on{background:var(--accent);color:#fff}
+.ms-body{padding:8px 14px 14px}
+.ms-body small{margin:8px 0 4px}
+.ms-row{display:flex;align-items:center;justify-content:space-between;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:7px;padding:6px 9px;font-size:10px;margin-top:4px}
+.ms-row kbd{font-family:var(--sans);font-size:9px;color:var(--muted);border:1px solid var(--line);border-radius:4px;padding:2px 6px}
+.ms-body p{margin:5px 2px 0;font-size:8.5px;color:var(--muted);line-height:1.4}
+.seg{display:inline-flex;background:var(--surface-2);border-radius:5px;padding:2px;gap:2px}
+.seg b{font-weight:500;font-size:9px;padding:2px 7px;border-radius:4px;color:var(--muted)}
+.seg b.on{background:var(--accent);color:#fff}
+@media(max-width:640px){.mw-body{grid-template-columns:96px 1fr}.mw-insp,.mw-list{display:none}.mw-search{display:none}}
 
 /* ============ privacy ============ */
 .privacy{background:var(--bg-2);border-block:1px solid var(--line)}
@@ -1239,6 +1326,8 @@ Hassan</div></div>
 
     <div class="pal-wrap rv" aria-hidden="true">
       <div class="menubar"><img src="images/icon.png" alt=""><span>Wed 9:41</span></div>
+      <div class="mac-scenes" id="macScenes">
+      <div class="scene on">
       <div class="pal">
         <div class="pal-search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><span>sign</span><span class="cur"></span><span class="hint">⌥ Space</span></div>
         <div class="pal-chips"><span class="on">Recent</span><span>Code</span><span>Email</span><span>Links</span><span>Personal</span><span>Work</span><span>#clients</span><span>#brand</span></div>
@@ -1251,6 +1340,82 @@ Hassan</div></div>
         <div class="pal-foot"><span><b>↑↓</b>navigate</span><span><b>↩</b>copy</span><span><b>esc</b>dismiss</span><span><b>⌘O</b>library</span><span class="cnt">25 snippets</span></div>
         <div class="pal-toast"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Copied. Press ⌘V to paste.</div>
       </div>
+      </div>
+      <div class="scene">
+        <div class="mwin">
+          <div class="mw-title"><span class="tl"><i></i><i></i><i></i></span><b>SnipStash</b><span class="mw-search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>Search</span></div>
+          <div class="mw-body">
+            <div class="mw-side">
+              <small>Library</small>
+              <div class="on"><svg viewBox="0 0 24 24"><path d="M3 10h18v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/><path d="M5 10V6a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v4M9 14h6"/></svg>All Snippets<em>25</em></div>
+              <div><svg viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"/></svg>Hot Snippets</div>
+              <div><svg viewBox="0 0 24 24"><path d="M12 17v5M8 3h8l-1 6 3 3H6l3-3z"/></svg>Pinned<em>3</em></div>
+              <div><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M21 16l-5-5-8 8"/></svg>Images<em>3</em></div>
+              <div><svg viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/></svg>Files<em>1</em></div>
+              <div><svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1"/></svg>Templates<em>1</em></div>
+              <small>Folders</small>
+              <div><svg viewBox="0 0 24 24"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5"/></svg>Code<em>5</em></div>
+              <div><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>Email<em>4</em></div>
+              <div><svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a3 3 0 0 1 6 0v2"/></svg>Work<em>8</em></div>
+              <small>Tags</small>
+              <div><b>#</b>admin<em>5</em></div>
+              <div><b>#</b>clients<em>5</em></div>
+              <div><b>#</b>code<em>5</em></div>
+            </div>
+            <div class="mw-list">
+              <div><span class="ic pal5"></span><span>Brand palette<small>Five colours, hex in the file name.</small></span></div>
+              <div class="sel"><span class="ic tpl5"><svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1"/></svg></span><span>Project kickoff pack <i>⎘ 1</i><small>Hi {Client},</small></span></div>
+              <div><span class="ic txt5"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h11M4 17h14"/></svg></span><span>Proposal follow-up<small>Just circling back on the proposal…</small></span></div>
+              <div><span class="ic org5"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h11M4 17h14"/></svg></span><span>Kickoff questions<small>Goal: Audience:…</small></span></div>
+              <div><span class="ic"><svg viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg></span><span>Book a call<small>https://cal.example.com/studio/30min</small></span></div>
+              <div><span class="ic"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h11M4 17h14"/></svg></span><span>Amend last commit<small>git commit --amend --no-edit</small></span></div>
+            </div>
+            <div class="mw-detail">
+              <div class="mw-dt"><b>Project kickoff pack</b><span>Edit</span></div>
+              <p>Hi {Client},</p>
+              <p>Delighted to be working with you. Here's how the first two weeks run:</p>
+              <div class="mw-img"><svg viewBox="0 0 120 80"><rect x="18" y="14" width="16" height="52"/><circle cx="66" cy="42" r="24"/></svg></div>
+              <p>Week 1 is discovery, week 2 is the first review.</p>
+              <div class="mw-bar"><span class="pri">Copy <kbd>⌥⌘C</kbd></span><span>Share</span><span>Email</span></div>
+            </div>
+            <div class="mw-insp">
+              <div><span>Type</span><b>Template</b></div>
+              <div><span>Folder</span><b>None</b></div>
+              <div><span>Pinned</span><i class="tog"></i></div>
+              <small>Tags</small>
+              <div class="fld">clients, onboarding</div>
+              <small>Colour</small>
+              <div class="swatches"><i style="background:#FF3B30"></i><i style="background:#FF9500"></i><i style="background:#FFCC00"></i><i class="on" style="background:#34C759"></i><i style="background:#007AFF"></i><i style="background:#AF52DE"></i></div>
+              <small>Hot snippet</small>
+              <div class="fld c">Record Shortcut</div>
+              <small>Info</small>
+              <div><span>Used</span><b>12×</b></div>
+              <div><span>Created</span><b>Aug 22</b></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="scene">
+        <div class="mwin mset">
+          <div class="mw-title"><span class="tl"><i></i><i></i><i></i></span><b>SnipStash Settings</b></div>
+          <div class="ms-tabs"><span class="on">General</span><span>Sync</span><span>Pro</span><span>About</span></div>
+          <div class="ms-body">
+            <small>Search</small>
+            <div class="ms-row"><span>Search shortcut</span><kbd>⌥ Space</kbd></div>
+            <p>Works from any app. Type to find a snippet, press Return to copy it, then ⌘V to paste.</p>
+            <div class="ms-row"><span>Show snippets in Spotlight</span><i class="tog on"></i></div>
+            <p>Find snippets with ⌘Space by title, text, tag or folder. Turn this off to keep snippet text out of system search on this Mac.</p>
+            <small>Appearance</small>
+            <div class="ms-row"><span>Theme</span><span class="seg"><b>System</b><b class="on">Light</b><b>Dark</b></span></div>
+            <small>App</small>
+            <div class="ms-row"><span>Launch at login</span><i class="tog on"></i></div>
+            <div class="ms-row"><span>Show Dock icon</span><i class="tog"></i></div>
+            <p>With the Dock icon off, SnipStash lives in the menu bar. It still appears in the Dock while the library window is open.</p>
+          </div>
+        </div>
+      </div>
+      </div>
+      <div class="mac-tabs" id="macTabs"><button class="on" type="button">Search palette</button><button type="button">Library window</button><button type="button">Settings</button></div>
     </div>
   </div>
 </section>
@@ -1679,6 +1844,28 @@ Hassan</div></div>
       }, {threshold:0.3}).observe(box);
     } else { cycle(); }
     document.addEventListener('visibilitychange', function(){ if(document.hidden){ stop = true; } else { stop = false; cycle(); } });
+  })();
+
+  /* ---- mac scene rotation ---- */
+  (function(){
+    var wrap = document.getElementById('macScenes'); if(!wrap) return;
+    var scenes = wrap.querySelectorAll('.scene'), tabs = document.querySelectorAll('#macTabs button');
+    var cur = 0, timer = null, visible = false, holdUntil = 0, STEP = 6500;
+    var stage = wrap.parentNode;
+    stage.style.setProperty('--mac-step', STEP + 'ms');
+    function show(k){
+      cur = (k + scenes.length) % scenes.length;
+      scenes.forEach(function(sc, i){ sc.classList.toggle('on', i === cur); });
+      tabs.forEach(function(t, i){ t.classList.toggle('on', i === cur); t.classList.remove('run'); });
+      void tabs[cur].offsetWidth; tabs[cur].classList.add('run');
+    }
+    function tick(){ if(!visible || document.hidden || Date.now() < holdUntil || stage.matches(':hover')) return; show(cur + 1); }
+    tabs.forEach(function(t, i){ t.addEventListener('click', function(){ holdUntil = Date.now() + 12000; show(i); }); });
+    if('IntersectionObserver' in window){
+      new IntersectionObserver(function(e){ visible = e[0].isIntersecting; if(visible) show(cur); }, {threshold:0.35}).observe(wrap);
+    } else { visible = true; }
+    if(!reduce) timer = setInterval(tick, STEP);
+    show(0);
   })();
 
   /* ---- faq accordion, auto-advancing ---- */
