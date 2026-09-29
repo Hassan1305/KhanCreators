@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Namaz Lock: Put the Phone Down at Prayer Time</title>
+<meta name="description" content="At each of the five daily prayers, Namaz Lock locks the apps that pull you away, then gets out of your way. Tap “I prayed” and your phone is yours again. Free core, no ads, 6 languages, Android and iPhone.">
+<link rel="canonical" href="https://khancreators.netlify.app/apps/NamazLock/">
+
+<meta property="og:title" content="Namaz Lock: Your phone waits until you've prayed">
+<meta property="og:description" content="Locks the apps you choose at each prayer time. Tap “I prayed” to unlock. Free forever, no ads, Android and iPhone.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://khancreators.netlify.app/apps/NamazLock/">
+<meta property="og:image" content="https://khancreators.netlify.app/apps/NamazLock/images/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://khancreators.netlify.app/apps/NamazLock/images/og.jpg">
+<meta name="theme-color" content="#0B120E">
+
+<link rel="icon" type="image/png" href="images/favicon.png">
+<link rel="apple-touch-icon" href="images/icon.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,500;1,9..144,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+/* ============ tokens (from the app's design system) ============ */
+:root{
+  --bg:#0B120E;
+  --bg-2:#111A15;
+  --surface:rgba(255,255,255,.035);
+  --surface-2:rgba(255,255,255,.06);
+  --line:rgba(214,236,222,.10);
+  --line-2:rgba(214,236,222,.17);
+  --ink:#EEF2EE;
+  --muted:#A3B2A7;
+  --green:#3FB47C;
+  --green-2:#1F8A5C;
+  --green-deep:#0F3D28;
+  --gold:#D9B25C;
+  --gold-2:#F0D595;
+  --glow:rgba(63,180,124,.30);
+  --gold-glow:rgba(217,178,92,.25);
+  --r:20px;
+  --display:"Fraunces",Georgia,serif;
+  --sans:"Plus Jakarta Sans",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  --arabic:"Amiri","Noto Naskh Arabic",serif;
+  --shadow:0 30px 80px -30px rgba(0,0,0,.85);
+}
+:root[data-theme="light"]{
+  --bg:#EEF5F0;
+  --bg-2:#FFFFFF;
+  --surface:rgba(18,57,40,.04);
+  --surface-2:rgba(18,57,40,.07);
+  --line:rgba(18,57,40,.11);
+  --line-2:rgba(18,57,40,.19);
+  --ink:#152318;
+  --muted:#4B5C4F;
+  --green:#1F8A5C;
+  --green-2:#17714A;
+  --green-deep:#125939;
+  --gold:#A97F2A;
+  --gold-2:#8A6519;
+  --glow:rgba(31,138,92,.20);
+  --gold-glow:rgba(169,127,42,.18);
+  --shadow:0 30px 70px -34px rgba(18,57,40,.38);
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;overflow-x:clip}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:var(--sans);font-size:17px;line-height:1.62;
+  -webkit-font-smoothing:antialiased;transition:background .35s,color .35s;
+}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+:focus-visible{outline:2px solid var(--green);outline-offset:3px;border-radius:6px}
+
+.wrap{width:100%;max-width:1120px;margin:0 auto;padding:0 20px}
+section{position:relative}
+.sec{padding:clamp(64px,9vw,120px) 0}
+
+/* ============ type ============ */
+h1,h2,h3{font-family:var(--display);font-weight:700;line-height:1.05;margin:0;letter-spacing:-.02em}
+h1{font-size:clamp(40px,5.7vw,74px)}
+h2{font-size:clamp(32px,5vw,54px)}
+h3{font-family:var(--sans);font-weight:700;font-size:18.5px;line-height:1.35;letter-spacing:-.01em;margin:0 0 8px}
+.gold{color:var(--gold);font-style:italic;font-weight:500}
+.greenit{color:var(--green);font-style:italic;font-weight:500}
+.lede{color:var(--muted);font-size:clamp(16px,1.9vw,19px);max-width:52ch;margin:0}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:9px;
+  background:var(--surface);border:1px solid var(--line-2);
+  border-radius:999px;padding:7px 15px 7px 12px;
+  font-size:11.5px;letter-spacing:1.6px;text-transform:uppercase;font-weight:700;color:var(--gold);
+}
+.eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--green);flex:none;box-shadow:0 0 0 4px var(--glow);animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 3px var(--glow)}50%{box-shadow:0 0 0 8px transparent}}
+.ar{font-family:var(--arabic);direction:rtl}
+
+/* ============ header ============ */
+header{
+  position:sticky;top:0;z-index:60;
+  background:color-mix(in srgb, var(--bg) 82%, transparent);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border-bottom:1px solid transparent;transition:border-color .3s;
+}
+header.stuck{border-bottom-color:var(--line)}
+.nav{display:flex;align-items:center;gap:8px;height:64px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:-.02em;font-size:17px}
+.brand img{width:32px;height:32px;border-radius:9px}
+.nav .sp{flex:1}
+.nav .lnk{color:var(--muted);font-size:14.5px;font-weight:600;padding:8px 12px;border-radius:9px;transition:.2s}
+.nav .lnk:hover{color:var(--ink);background:var(--surface)}
+@media(max-width:820px){.nav .lnk{display:none}}
+.icon-btn{width:38px;height:38px;border-radius:50%;border:1px solid var(--line-2);display:grid;place-items:center;background:var(--surface);transition:.2s;flex:none}
+.icon-btn:hover{background:var(--surface-2)}
+.icon-btn svg{width:17px;height:17px;stroke:var(--ink);fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+:root[data-theme="light"] .sun{display:none}
+:root[data-theme="dark"] .moon{display:none}
+
+/* ============ buttons ============ */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  padding:13px 22px;border-radius:999px;font-weight:700;font-size:15px;
+  background:var(--green-2);color:#fff;border:1px solid transparent;
+  transition:transform .18s cubic-bezier(.2,.8,.3,1), box-shadow .25s, filter .2s;
+  box-shadow:0 12px 30px -12px var(--glow);white-space:nowrap;
+}
+.btn:hover{transform:translateY(-2px);filter:brightness(1.08)}
+.btn.ghost{background:var(--surface);color:var(--ink);border-color:var(--line-2);box-shadow:none}
+.btn.ghost:hover{background:var(--surface-2)}
+.btn.sm{padding:9px 16px;font-size:13.5px}
+.btn svg{width:19px;height:19px;flex:none}
+.store{padding:10px 20px 10px 16px;text-align:left;line-height:1.1}
+.store small{display:block;font-size:10.5px;font-weight:600;opacity:.8;letter-spacing:.3px}
+.store b{font-size:16px;font-weight:700}
+.store svg{width:24px;height:24px;fill:currentColor}
+
+/* ============ hero ============ */
+.hero{padding:clamp(36px,6vw,80px) 0 clamp(60px,8vw,100px);overflow:hidden}
+.hero::before{
+  content:"";position:absolute;inset:-20% -10% auto -10%;height:760px;pointer-events:none;
+  background:radial-gradient(40% 45% at 70% 35%, var(--glow) 0%, transparent 70%),
+             radial-gradient(30% 35% at 88% 70%, var(--gold-glow) 0%, transparent 70%);
+  filter:blur(10px);
+}
+.hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(34px,5vw,64px);align-items:center;position:relative;z-index:1}
+@media(max-width:900px){.hero-grid{grid-template-columns:1fr}}
+.hero h1{margin:22px 0 0}
+.hero .lede{margin:22px 0 0}
+.cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+.proof{display:flex;flex-wrap:wrap;gap:10px 26px;margin-top:34px;padding-top:24px;border-top:1px solid var(--line);max-width:520px}
+.proof div{min-width:0}
+@media(max-width:560px){.proof{display:grid;grid-template-columns:1fr 1fr;gap:18px}}
+.proof b{display:block;font-family:var(--display);font-size:30px;font-weight:700;line-height:1;color:var(--ink)}
+.proof span{font-size:12.5px;color:var(--muted);font-weight:500}
+.proof-note{font-size:11.5px;color:var(--muted);opacity:.75;margin-top:10px}
+
+/* ---- phone ---- */
+.stage{position:relative;display:flex;flex-direction:column;align-items:center}
+.phone{
+  position:relative;width:min(290px,78vw);aspect-ratio:9/19.3;border-radius:44px;padding:10px;
+  background:linear-gradient(145deg,#2a302c,#0c0f0d);box-shadow:var(--shadow),inset 0 0 0 1px rgba(255,255,255,.08);
+}
+.screen{position:relative;width:100%;height:100%;border-radius:35px;overflow:hidden;background:#0D0F0D;color:#EEF2EE;isolation:isolate}
+.notch{position:absolute;top:10px;left:50%;translate:-50% 0;width:78px;height:20px;border-radius:999px;background:#000;z-index:5}
+.sbar{position:absolute;top:0;left:0;right:0;display:flex;justify-content:space-between;padding:12px 24px 0;font-size:11px;font-weight:700;z-index:4;color:#fff}
+
+/* lock layer */
+.lock{position:absolute;inset:0;display:flex;flex-direction:column;z-index:2;transition:opacity .5s, transform .6s cubic-bezier(.2,.8,.3,1)}
+.lock .scene{position:absolute;inset:0;z-index:-1}
+.lock .scene img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1s ease}
+.lock .scene img.on{opacity:1}
+.lock .scene::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,12,9,.45) 0%,rgba(6,12,9,.05) 28%,rgba(6,12,9,.75) 58%,#08100C 100%)}
+.lk-body{flex:1;display:flex;flex-direction:column;padding:56px 20px 22px}
+.lk-app{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:600;color:rgba(255,255,255,.8)}
+.lk-app i{width:22px;height:22px;border-radius:6px;display:grid;place-items:center;font-style:normal;font-size:12px;font-weight:800;color:#fff;background:linear-gradient(45deg,#f9a825,#e1306c,#833ab4)}
+.lk-eyebrow{margin-top:auto;font-size:10px;letter-spacing:1.6px;font-weight:800;color:#F0D595;text-transform:uppercase}
+.lk-name{font-family:var(--display);font-size:44px;font-weight:700;line-height:1;margin-top:6px;letter-spacing:-.02em}
+.lk-meta{font-size:11.5px;color:rgba(255,255,255,.75);margin-top:8px;display:flex;align-items:center;gap:6px}
+.lk-meta svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2.2}
+.lk-bar{height:4px;border-radius:4px;background:rgba(255,255,255,.18);margin-top:10px;overflow:hidden}
+.lk-bar i{display:block;height:100%;width:40%;background:#3FB47C;border-radius:4px;transition:width 1s ease}
+.lk-dhikr{margin-top:18px;padding:14px;border-radius:16px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);backdrop-filter:blur(6px)}
+.lk-dhikr .ar{font-size:21px;line-height:1.7;text-align:center;color:#fff}
+.lk-dhikr p{margin:4px 0 0;font-size:10.5px;line-height:1.45;text-align:center;color:rgba(255,255,255,.72)}
+.lk-btn{margin-top:16px;width:100%;padding:13px;border-radius:999px;background:#EAF6F0;color:#0F3D28;font-weight:800;font-size:14px;position:relative;overflow:hidden;transition:transform .15s}
+.lk-btn:active{transform:scale(.97)}
+.lk-btn::after{content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:0 0 0 0 rgba(63,180,124,.6);animation:ring 2.4s ease-out infinite}
+@keyframes ring{0%{box-shadow:0 0 0 0 rgba(234,246,240,.55)}70%,100%{box-shadow:0 0 0 14px rgba(234,246,240,0)}}
+.lk-later{margin-top:10px;text-align:center;font-size:11px;color:rgba(255,255,255,.6)}
+
+/* unlocked layer */
+.home{position:absolute;inset:0;z-index:1;background:#0D0F0D;padding:50px 14px 14px;display:flex;flex-direction:column;gap:8px;font-size:11px}
+.home-top{display:flex;justify-content:space-between;align-items:flex-start;padding:0 4px}
+.home-top small{display:block;color:#8F998F;font-size:10px}
+.home-top b{font-size:17px}
+.streak{background:#2a2414;border-radius:10px;padding:5px 10px;text-align:center;color:#D9B25C;font-weight:800;line-height:1.15}
+.streak small{font-size:7.5px;letter-spacing:.8px;color:#D9B25C;display:block}
+.pr{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:12px;background:#161A16;border:1px solid rgba(255,255,255,.06)}
+.pr .g{width:26px;height:26px;border-radius:8px;border:1px solid rgba(255,255,255,.1);display:grid;place-items:center;font-family:var(--arabic);font-size:10px;color:#3FB47C}
+.pr b{display:block;font-size:11.5px}
+.pr small{color:#8F998F;font-size:9.5px}
+.pr .st{margin-left:auto;font-size:9px;font-weight:700;padding:3px 8px;border-radius:999px;background:#1F231F;color:#8F998F}
+.pr .st.ok{background:rgba(63,180,124,.16);color:#3FB47C}
+.pr .st.now{background:rgba(63,180,124,.16);color:#3FB47C}
+.pr.cur{border-color:rgba(63,180,124,.55)}
+.pr.cur .g{background:#1F8A5C;color:#fff;border-color:transparent}
+.toast{
+  position:absolute;left:50%;top:44%;translate:-50% 0;z-index:6;white-space:nowrap;
+  background:#EAF6F0;color:#0F3D28;border-radius:999px;padding:9px 16px;font-weight:800;font-size:12.5px;
+  display:flex;align-items:center;gap:7px;opacity:0;scale:.85;transition:opacity .3s, scale .35s cubic-bezier(.2,.8,.3,1);pointer-events:none;
+  box-shadow:0 20px 40px -10px rgba(0,0,0,.6);
+}
+.toast svg{width:15px;height:15px;stroke:#1F8A5C;fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.toast.show{opacity:1;scale:1}
+.screen.unlocked .lock{opacity:0;transform:translateY(-8%);pointer-events:none}
+
+.hint{margin-top:18px;font-size:12.5px;color:var(--muted);display:flex;align-items:center;gap:8px;font-weight:600}
+.hint svg{width:15px;height:15px;stroke:var(--gold);fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;animation:bob 2.2s ease-in-out infinite}
+@keyframes bob{0%,100%{translate:0 0}50%{translate:0 -4px}}
+.pills{display:flex;gap:6px;margin-top:14px;flex-wrap:wrap;justify-content:center}
+.pills button{font-size:12px;font-weight:700;padding:6px 12px;border-radius:999px;border:1px solid var(--line-2);color:var(--muted);transition:.2s}
+.pills button.on{background:var(--green-2);border-color:transparent;color:#fff}
+
+.float{
+  position:absolute;z-index:3;background:var(--bg-2);border:1px solid var(--line-2);border-radius:14px;padding:10px 13px;
+  box-shadow:var(--shadow);display:flex;align-items:center;gap:10px;font-size:12.5px;font-weight:700;white-space:nowrap;
+}
+.float small{display:block;color:var(--muted);font-size:11px;font-weight:500}
+.float .chip{width:28px;height:28px;border-radius:8px;display:grid;place-items:center;flex:none}
+.float svg{width:15px;height:15px;stroke-width:2.2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.f1{left:-11%;top:24%;animation:float 6s ease-in-out infinite}
+.f2{right:-9%;top:43%;animation:float 6s ease-in-out infinite 1s}
+@keyframes float{0%,100%{translate:0 0}50%{translate:0 -10px}}
+@media(max-width:560px){.f1{left:-2%;top:22%}.f2{display:none}.float{font-size:11.5px;padding:8px 10px}}
+
+/* ============ problem strip ============ */
+.quote-band{padding:clamp(56px,8vw,96px) 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--surface)}
+.quote-band p{font-family:var(--display);font-size:clamp(26px,4vw,44px);line-height:1.2;margin:0;max-width:24ch;letter-spacing:-.015em}
+.quote-band p span{color:var(--muted)}
+.quote-band .sub{font-family:var(--sans);font-size:17px;color:var(--muted);max-width:60ch;margin-top:22px;line-height:1.6}
+
+/* ============ how it works ============ */
+.head{max-width:680px}
+.head .lede{margin-top:18px}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:48px;counter-reset:s}
+@media(max-width:860px){.steps{grid-template-columns:1fr}}
+.card{background:var(--bg-2);border:1px solid var(--line);border-radius:var(--r);padding:26px}
+:root[data-theme="dark"] .card{background:var(--surface)}
+.step{position:relative}
+.step .n{font-family:var(--display);font-size:15px;font-weight:700;color:var(--gold);letter-spacing:.5px}
+.step h3{margin-top:14px}
+.step p{margin:0;color:var(--muted);font-size:15.5px}
+.step .vis{height:132px;margin:-4px -6px 18px;border-radius:14px;background:var(--surface-2);display:grid;place-items:center;overflow:hidden;position:relative}
+.apps{display:grid;grid-template-columns:repeat(4,34px);gap:10px}
+.apps i{width:34px;height:34px;border-radius:10px;position:relative;display:grid;place-items:center;font-style:normal;font-size:13px;font-weight:800;color:#fff}
+.apps i.sel::after{content:"✓";position:absolute;right:-5px;top:-5px;width:15px;height:15px;border-radius:50%;background:var(--green-2);color:#fff;font-size:9px;display:grid;place-items:center;border:2px solid var(--bg-2)}
+.clock{display:flex;align-items:center;gap:14px}
+.clock .ring{width:64px;height:64px;border-radius:50%;border:3px solid var(--line-2);position:relative}
+.clock .ring::before,.clock .ring::after{content:"";position:absolute;left:50%;bottom:50%;width:3px;border-radius:2px;background:var(--ink);transform-origin:bottom center;translate:-50% 0}
+.clock .ring::before{height:18px;rotate:190deg}
+.clock .ring::after{height:25px;rotate:240deg;background:var(--gold)}
+.clock .lockico{width:44px;height:44px;border-radius:12px;background:var(--green-2);display:grid;place-items:center}
+.clock .lockico svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.prayed-pill{background:#EAF6F0;color:#0F3D28;font-weight:800;font-size:14px;padding:11px 26px;border-radius:999px;box-shadow:0 10px 30px -10px var(--glow)}
+
+/* ============ windows timeline ============ */
+.tl-card{margin-top:48px;padding:clamp(22px,4vw,36px)}
+.tl-status{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px}
+.tl-time{font-family:var(--display);font-size:clamp(40px,6vw,58px);font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+.tl-badge{display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border-radius:999px;font-weight:700;font-size:14.5px;transition:.3s}
+.tl-badge svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.tl-badge.locked{background:rgba(63,180,124,.14);color:var(--green)}
+.tl-badge.free{background:var(--surface-2);color:var(--muted)}
+.tl-desc{color:var(--muted);margin:14px 0 0;font-size:15.5px;min-height:3.2em}
+.track{position:relative;height:58px;margin-top:28px;border-radius:14px;background:var(--surface-2);overflow:hidden}
+.seg{position:absolute;top:0;bottom:0;display:flex;align-items:flex-end;padding:0 0 7px 8px;font-size:11.5px;font-weight:700;color:#fff;overflow:hidden;white-space:nowrap;
+  border-left:2px solid rgba(0,0,0,.25);transition:filter .3s, opacity .3s}
+.seg.dim{opacity:.45}
+.seg.act{filter:brightness(1.12) saturate(1.1)}
+.cursor{position:absolute;top:-6px;bottom:-6px;width:2px;background:var(--ink);pointer-events:none;border-radius:2px}
+.cursor::before{content:"";position:absolute;top:0;left:50%;translate:-50% 0;width:12px;height:12px;border-radius:50%;background:var(--ink);box-shadow:0 0 0 4px var(--bg)}
+.ticks{display:flex;justify-content:space-between;font-size:11.5px;color:var(--muted);margin-top:8px;font-variant-numeric:tabular-nums}
+.slider{width:100%;margin-top:18px;accent-color:var(--green-2);height:28px;cursor:pointer}
+.tl-foot{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:14px;font-size:13px;color:var(--muted)}
+.tl-foot i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:7px;vertical-align:-1px}
+
+/* ============ feature grid ============ */
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:48px}
+@media(max-width:940px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.grid{grid-template-columns:1fr}}
+.feat .ic{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:rgba(63,180,124,.12);margin-bottom:18px}
+.feat .ic svg{width:21px;height:21px;stroke:var(--green);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.feat.goldc .ic{background:var(--gold-glow)}
+.feat.goldc .ic svg{stroke:var(--gold)}
+.feat p{margin:0;color:var(--muted);font-size:15.5px}
+.feat.wide{grid-column:span 2;display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:center}
+@media(max-width:600px){.feat.wide{grid-column:auto;grid-template-columns:1fr}}
+.langs{display:flex;flex-wrap:wrap;gap:8px}
+.langs span{padding:7px 13px;border-radius:999px;border:1px solid var(--line-2);font-size:14px;font-weight:600;background:var(--surface)}
+.langs span.ar,.langs span.urdu{font-family:var(--arabic);font-size:17px;line-height:1.2}
+
+/* ============ gallery ============ */
+.gal{display:grid;grid-template-columns:1.25fr 1fr;gap:16px;margin-top:48px}
+@media(max-width:860px){.gal{grid-template-columns:1fr}}
+.shot{border-radius:var(--r);overflow:hidden;border:1px solid var(--line);background:var(--bg-2);position:relative}
+.shot img{width:100%;height:100%;object-fit:cover}
+.shot.big{grid-row:span 2}
+.shot figcaption{position:absolute;left:14px;bottom:14px;background:rgba(8,16,12,.72);color:#fff;backdrop-filter:blur(8px);padding:7px 13px;border-radius:999px;font-size:12.5px;font-weight:700}
+.gal .shot:not(.big){aspect-ratio:1270/760}
+
+/* ============ privacy / values ============ */
+.values{display:grid;grid-template-columns:1fr 1fr;gap:clamp(30px,5vw,64px);align-items:center}
+@media(max-width:860px){.values{grid-template-columns:1fr}}
+.checks{list-style:none;margin:26px 0 0;padding:0;display:grid;gap:14px}
+.checks li{display:flex;gap:13px;align-items:flex-start;font-size:16px}
+.checks svg{width:22px;height:22px;flex:none;margin-top:2px}
+.checks b{display:block}
+.checks span{color:var(--muted);font-size:15px}
+.ayah{padding:clamp(28px,4vw,44px);text-align:center;background:linear-gradient(160deg,rgba(63,180,124,.10),rgba(217,178,92,.08));border:1px solid var(--line-2);border-radius:28px}
+.ayah .ar{font-size:clamp(30px,4.4vw,44px);line-height:1.7;color:var(--ink)}
+.ayah p{margin:10px 0 0;font-family:var(--display);font-style:italic;font-size:19px;color:var(--ink)}
+.ayah small{display:block;margin-top:8px;color:var(--gold);font-weight:700;font-size:13px;letter-spacing:.4px}
+
+/* ============ pricing ============ */
+.plans{display:grid;grid-template-columns:1.1fr .9fr;gap:18px;margin-top:48px}
+@media(max-width:860px){.plans{grid-template-columns:1fr}}
+.plan{padding:clamp(24px,3.5vw,34px);border-radius:24px;position:relative;overflow:hidden}
+.plan::before{content:"";position:absolute;left:0;right:0;top:0;height:4px}
+.plan.free::before{background:var(--green-2)}
+.plan.plus::before{background:var(--gold)}
+.plan .tag{font-size:12px;font-weight:800;letter-spacing:1.4px;text-transform:uppercase}
+.plan.free .tag{color:var(--green)}
+.plan.plus .tag{color:var(--gold)}
+.plan .price{font-family:var(--display);font-size:52px;font-weight:700;line-height:1;margin-top:14px}
+.plan .price small{font-family:var(--sans);font-size:15px;font-weight:500;color:var(--muted);margin-left:6px}
+.plan ul{list-style:none;padding:0;margin:24px 0 0;display:grid;gap:11px}
+.plan li{display:flex;gap:11px;align-items:flex-start;font-size:15.5px}
+.plan li svg{width:19px;height:19px;flex:none;margin-top:3px;fill:none;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.plan.free li svg{stroke:var(--green)}
+.plan.plus li svg{stroke:var(--gold)}
+.plan .note{margin-top:24px;padding:12px 16px;border-radius:12px;font-weight:700;font-size:14.5px}
+.plan.free .note{background:rgba(63,180,124,.12);color:var(--green)}
+.plan.plus .note{background:var(--gold-glow);color:var(--gold)}
+.tip{color:var(--muted);font-size:14.5px;margin-top:20px}
+
+/* ============ faq ============ */
+.faq-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:clamp(30px,5vw,64px)}
+@media(max-width:860px){.faq-grid{grid-template-columns:1fr}}
+details{border-bottom:1px solid var(--line);padding:4px 0}
+summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:18px 0;font-weight:700;font-size:16.5px}
+summary::-webkit-details-marker{display:none}
+summary i{width:28px;height:28px;border-radius:50%;border:1px solid var(--line-2);display:grid;place-items:center;flex:none;transition:transform .3s, background .3s}
+summary i::before{content:"+";font-style:normal;font-weight:500;font-size:18px;line-height:1}
+details[open] summary i{transform:rotate(45deg);background:var(--surface-2)}
+details p{margin:0 0 20px;color:var(--muted);font-size:15.5px;max-width:62ch}
+
+/* ============ final ============ */
+.final{padding:clamp(70px,10vw,130px) 0;text-align:center;overflow:hidden}
+.final::before{content:"";position:absolute;inset:0;background:url(images/scene-maghrib.jpg) center/cover;opacity:.22;z-index:-1}
+.final::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,var(--bg) 0%,transparent 35%,transparent 65%,var(--bg) 100%);z-index:-1}
+.final h2{max-width:16ch;margin:0 auto}
+.final .lede{margin:18px auto 0}
+.final .cta{justify-content:center}
+footer{border-top:1px solid var(--line);padding:34px 0 44px;color:var(--muted);font-size:14px}
+.foot{display:flex;flex-wrap:wrap;gap:14px 28px;align-items:center;justify-content:space-between}
+.foot nav{display:flex;flex-wrap:wrap;gap:6px 20px}
+.foot nav a:hover{color:var(--ink)}
+
+/* reveal */
+.rv{opacity:0;transform:translateY(22px);transition:opacity .7s ease, transform .8s cubic-bezier(.2,.8,.3,1)}
+.rv.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){
+  .rv{opacity:1;transform:none;transition:none}
+  *{animation:none!important}
+}
+</style>
+</head>
+<body>
+
+<header id="top">
+  <div class="wrap nav">
+    <a class="brand" href="#"><img src="images/icon.png" alt="" width="32" height="32">Namaz Lock</a>
+    <span class="sp"></span>
+    <a class="lnk" href="#how">How it works</a>
+    <a class="lnk" href="#windows">Prayer windows</a>
+    <a class="lnk" href="#features">Features</a>
+    <a class="lnk" href="#pricing">Pricing</a>
+    <a class="lnk" href="#faq">FAQ</a>
+    <button class="icon-btn" id="theme" aria-label="Toggle light and dark mode">
+      <svg class="sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      <svg class="moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+    </button>
+    <a class="btn sm" href="#get">Get the app</a>
+  </div>
+</header>
+
+<main>
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow"><span class="dot"></span>Android &amp; iPhone · Free forever</span>
+      <h1>Your phone waits<br>until <span class="gold">you've prayed</span>.</h1>
+      <p class="lede">At each of the five daily prayers, Namaz Lock locks the apps that pull you away. Tap “I prayed” and your phone is yours again. No ads, no verification, no guilt.</p>
+      <div class="cta" id="get">
+        <a class="btn store" href="https://play.google.com/store/apps/details?id=com.hasnikhan.SalahLock" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.6 1.8a1.5 1.5 0 0 0-.6 1.2v18a1.5 1.5 0 0 0 .6 1.2l10.1-10.2zm11.5 8.8 2.9-2.9L5.5.6l9.6 10zm0 2.8-9.6 10 12.5-7.1zm4.2-4.9-3.3 3.5 3.3 3.5 2.7-1.6c1-.6 1-2.2 0-2.8z"/></svg>
+          <span><small>GET IT ON</small><b>Google Play</b></span>
+        </a>
+        <a class="btn ghost store" href="https://apps.apple.com/us/app/namaz-lock-muslim-focus/id6800233934" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.4 12.6c0-2.6 2.1-3.8 2.2-3.9-1.2-1.8-3.1-2-3.7-2-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.4-.9-1.7 0-3.3 1-4.2 2.6-1.8 3.1-.5 7.7 1.3 10.2.8 1.2 1.8 2.6 3.1 2.6 1.3-.1 1.7-.8 3.3-.8 1.5 0 1.9.8 3.3.8 1.4 0 2.2-1.2 3-2.5 1-1.4 1.4-2.8 1.4-2.9 0 0-2.4-1-2.4-4.1zM13.9 4.9c.7-.8 1.2-2 1-3.1-1 0-2.2.7-2.9 1.5-.6.7-1.2 1.9-1 3 1.1.1 2.2-.6 2.9-1.4z"/></svg>
+          <span><small>Download on the</small><b>App Store</b></span>
+        </a>
+      </div>
+      <div class="proof">
+        <div><b data-count="470">470</b><span>people</span></div>
+        <div><b data-count="32">32</b><span>countries</span></div>
+        <div><b data-count="1168">1,168</b><span>prayers logged</span></div>
+        <div><b data-count="916">916</b><span>times the lock stepped in</span></div>
+      </div>
+      <div class="proof-note">First two months after launch, Aug 1 – Sep 28, 2026.</div>
+    </div>
+
+    <div class="stage">
+      <div class="float f1">
+        <span class="chip" style="background:rgba(217,178,92,.18)"><svg viewBox="0 0 24 24" style="stroke:var(--gold)"><path d="M12 2c1 3 4 4 4 8a4 4 0 0 1-8 0c0-2 1-3 1-3s0 2 2 2c0-3-1-5 1-7z"/></svg></span>
+        <span><span id="streakN">12</span> day streak<small>All five, every day</small></span>
+      </div>
+      <div class="float f2">
+        <span class="chip" style="background:rgba(63,180,124,.16)"><svg viewBox="0 0 24 24" style="stroke:var(--green)"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span>
+        <span>Instagram · YouTube · X<small>Locked until you pray</small></span>
+      </div>
+      <div class="phone">
+        <div class="screen" id="screen">
+          <div class="notch"></div>
+          <div class="sbar"><span id="clock">6:41</span><span>●●● 5G</span></div>
+
+          <!-- home (after unlock) -->
+          <div class="home" aria-hidden="true">
+            <div class="home-top"><div><small>Assalamu alaikum</small><b>Today</b></div><div class="streak"><span id="streak2">12</span><small>DAY STREAK</small></div></div>
+            <div id="homeList"></div>
+          </div>
+
+          <!-- lock -->
+          <div class="lock">
+            <div class="scene" id="scene">
+              <img src="images/scene-fajr.jpg" alt="" data-p="fajr">
+              <img src="images/scene-dhuhr.jpg" alt="" data-p="dhuhr">
+              <img src="images/scene-asr.jpg" alt="" data-p="asr">
+              <img src="images/scene-maghrib.jpg" alt="" data-p="maghrib" class="on">
+              <img src="images/scene-isha.jpg" alt="" data-p="isha">
+            </div>
+            <div class="lk-body">
+              <div class="lk-app"><i>◎</i><span>Instagram is paused</span></div>
+              <div class="lk-eyebrow">Time to pray</div>
+              <div class="lk-name" id="lkName">Maghrib</div>
+              <div class="lk-meta"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span id="lkMeta">Window closes in 1h 11m</span></div>
+              <div class="lk-bar"><i id="lkBar"></i></div>
+              <div class="lk-dhikr">
+                <div class="ar" id="lkAr">سُبْحَانَ اللَّهِ وَبِحَمْدِهِ</div>
+                <p id="lkTr">Glory be to Allah and praise Him.</p>
+              </div>
+              <button class="lk-btn" id="prayed">I prayed</button>
+              <div class="lk-later">Not able to pray right now?</div>
+            </div>
+          </div>
+
+          <div class="toast" id="toast"><svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></svg><span id="toastTxt">Maghrib logged · apps unlocked</span></div>
+        </div>
+      </div>
+      <div class="hint" id="hint"><svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg>Tap “I prayed” to unlock</div>
+      <div class="pills" id="pills" role="group" aria-label="Choose a prayer">
+        <button data-p="fajr">Fajr</button><button data-p="dhuhr">Dhuhr</button><button data-p="asr">Asr</button><button data-p="maghrib" class="on">Maghrib</button><button data-p="isha">Isha</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROBLEM ============ -->
+<section class="quote-band">
+  <div class="wrap rv">
+    <p>The adhan goes off. <span>Twenty minutes later, you're still scrolling.</span></p>
+    <div class="sub">Prayer is meant to be a pause: a few quiet minutes away from everything else, five times a day. For a lot of us, the phone is what breaks that pause. Prayer apps tell you the time. Namaz Lock helps you act on it, and measures success by how quickly you close it.</div>
+  </div>
+</section>
+
+<!-- ============ HOW ============ -->
+<section class="sec" id="how">
+  <div class="wrap">
+    <div class="head rv">
+      <span class="eyebrow"><span class="dot"></span>How it works</span>
+      <h2 style="margin-top:16px">Three steps.<br><span class="greenit">Then it gets out of your way.</span></h2>
+    </div>
+    <div class="steps">
+      <div class="card step rv">
+        <div class="vis">
+          <div class="apps">
+            <i class="sel" style="background:linear-gradient(45deg,#f9a825,#e1306c,#833ab4)">◎</i>
+            <i class="sel" style="background:#FF0033">▶</i>
+            <i class="sel" style="background:#111">𝕏</i>
+            <i style="background:#25D366">✆</i>
+            <i class="sel" style="background:#000;box-shadow:inset 0 0 0 1px #333">♪</i>
+            <i style="background:#1877F2">f</i>
+            <i style="background:#4285F4">◉</i>
+            <i class="sel" style="background:#FF4500">●</i>
+          </div>
+        </div>
+        <span class="n">01</span>
+        <h3>Pick what to pause</h3>
+        <p>Choose the apps that pull you away: social feeds, video, games. Everything else, like calls and maps, keeps working.</p>
+      </div>
+      <div class="card step rv">
+        <div class="vis">
+          <div class="clock"><div class="ring"></div><div class="lockico"><svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div></div>
+        </div>
+        <span class="n">02</span>
+        <h3>At prayer time, they lock</h3>
+        <p>Open one during a prayer window and you see the prayer, the time left, and a line of remembrance instead of a feed.</p>
+      </div>
+      <div class="card step rv">
+        <div class="vis"><span class="prayed-pill">I prayed</span></div>
+        <span class="n">03</span>
+        <h3>Tap “I prayed”</h3>
+        <p>Your apps unlock instantly and the prayer is logged. No camera, no proof. It runs on trust, between you and Allah.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WINDOWS ============ -->
+<section class="sec" id="windows" style="padding-top:0">
+  <div class="wrap">
+    <div class="head rv">
+      <span class="eyebrow"><span class="dot"></span>Real prayer windows</span>
+      <h2 style="margin-top:16px">A lock that feels fair,<br><span class="gold">not like a punishment</span>.</h2>
+      <p class="lede">Each lock lasts only as long as that prayer's real window: Dhuhr until Asr, Maghrib until Isha. Miss one and your phone never stays locked for the rest of the day. Drag through a day to see.</p>
+    </div>
+    <div class="card tl-card rv">
+      <div class="tl-status">
+        <div class="tl-time" id="tlTime">6:55 PM</div>
+        <div class="tl-badge locked" id="tlBadge"><svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><span>Maghrib · apps locked</span></div>
+      </div>
+      <p class="tl-desc" id="tlDesc"></p>
+      <div class="track" id="track"><div class="cursor" id="cursor"></div></div>
+      <div class="ticks"><span>12 AM</span><span>6 AM</span><span>12 PM</span><span>6 PM</span><span>12 AM</span></div>
+      <input class="slider" type="range" id="slider" min="0" max="1439" value="1135" aria-label="Time of day">
+      <div class="tl-foot">
+        <span><i style="background:var(--green-2)"></i>Prayer window: chosen apps lock until you tap “I prayed”</span>
+        <span><i style="background:var(--surface-2);border:1px solid var(--line-2)"></i>No prayer due: phone is fully yours</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FEATURES ============ -->
+<section class="sec" id="features" style="padding-top:0">
+  <div class="wrap">
+    <div class="head rv">
+      <span class="eyebrow"><span class="dot"></span>Built with care</span>
+      <h2 style="margin-top:16px">Made for the people<br><span class="greenit">who actually pray</span>.</h2>
+    </div>
+    <div class="grid">
+      <div class="card feat rv">
+        <div class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+        <h3>Accurate prayer times</h3>
+        <p>Location-based, with 7 calculation methods including ISNA, MWL, Umm al-Qura, Karachi and Diyanet. Works fully offline.</p>
+      </div>
+      <div class="card feat rv">
+        <div class="ic"><svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V10l7-6 7 6v11M10 21v-5h4v5"/></svg></div>
+        <h3>Your mosque's jamat times</h3>
+        <p>Pray at a fixed time with your community? Set it, and reminders and the lock follow your masjid instead of only the sun.</p>
+      </div>
+      <div class="card feat goldc rv">
+        <div class="ic"><svg viewBox="0 0 24 24"><path d="M12 21s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.6-7 10-7 10z"/></svg></div>
+        <h3>Excused days, privately</h3>
+        <p>Pause blocking and keep your streak during menstruation or postpartum, when prayer isn't due. Off by default, never synced, never leaves the phone.</p>
+      </div>
+      <div class="card feat wide rv">
+        <div>
+          <div class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></div>
+          <h3>Six languages, right-to-left done properly</h3>
+          <p>The whole interface mirrors in Arabic and Urdu, not just the strings. Quranic Arabic is set in Amiri so every diacritic lands where it should.</p>
+        </div>
+        <div class="langs">
+          <span>English</span><span class="urdu" lang="ur">اردو</span><span class="ar" lang="ar">العربية</span><span>Türkçe</span><span>Bahasa Indonesia</span><span>Français</span>
+        </div>
+      </div>
+      <div class="card feat rv">
+        <div class="ic"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></div>
+        <h3>A gentle history</h3>
+        <p>Streaks, on-time rates, made-up (qada) prayers and which prayer slips most, so you know where to start, not where you failed.</p>
+      </div>
+      <div class="card feat rv">
+        <div class="ic"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5"/></svg></div>
+        <h3>Hisn al-Muslim duas</h3>
+        <p>The full Fortress of the Muslim library, searchable and available offline, with an optional dua reminder when you unlock your phone.</p>
+      </div>
+      <div class="card feat rv">
+        <div class="ic"><svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0"/></svg></div>
+        <h3>A Sunday recap</h3>
+        <p>“You prayed 31 of 35 this week.” One calm summary a week. Prayer alerts stay on the device, so they arrive on time even offline.</p>
+      </div>
+      <div class="card feat rv">
+        <div class="ic"><svg viewBox="0 0 24 24"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M11 18h2"/></svg></div>
+        <h3>Android and iPhone</h3>
+        <p>On Android, a native overlay locks the app. On iPhone, Apple's Screen Time shield sends you straight back to mark your prayer.</p>
+      </div>
+    </div>
+
+    <div class="gal">
+      <figure class="shot big rv" style="margin:0"><img src="images/phone-on-mat.jpg" alt="Namaz Lock's Today screen on a phone resting on a green prayer mat"><figcaption>Today: all five prayers at a glance</figcaption></figure>
+      <figure class="shot rv" style="margin:0"><img src="images/light-dark.jpg" alt="Namaz Lock home screen in light and dark themes"><figcaption>Light and dark</figcaption></figure>
+      <figure class="shot rv" style="margin:0"><img src="images/languages.jpg" alt="Namaz Lock in Arabic and Urdu, right-to-left"><figcaption>Arabic and Urdu, right-to-left</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- ============ VALUES ============ -->
+<section class="sec" style="padding-top:0">
+  <div class="wrap values">
+    <div class="rv">
+      <span class="eyebrow"><span class="dot"></span>Our promises</span>
+      <h2 style="margin-top:16px">Between you<br>and <span class="gold">your Lord</span>.</h2>
+      <ul class="checks">
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-6"/></svg><div><b>We never try to verify your prayer</b><span>No camera, no motion tracking. Confirmation is honesty-based, by design.</span></div></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-6"/></svg><div><b>We never paywall worship</b><span>Prayer times, blocking, streaks and duas are free forever.</span></div></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-6"/></svg><div><b>No ads. Ever.</b><span>Not on the lock screen, not anywhere.</span></div></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-6"/></svg><div><b>No account needed</b><span>Sign in only if you want backup and sync across devices.</span></div></li>
+      </ul>
+    </div>
+    <div class="ayah rv">
+      <div class="ar" lang="ar">وَأَقِمِ الصَّلَاةَ لِذِكْرِي</div>
+      <p>“And establish prayer for My remembrance.”</p>
+      <small>AL-QUR'AN 20:14</small>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PRICING ============ -->
+<section class="sec" id="pricing" style="padding-top:0">
+  <div class="wrap">
+    <div class="head rv">
+      <span class="eyebrow"><span class="dot"></span>Pricing</span>
+      <h2 style="margin-top:16px">Never paywall <span class="greenit">worship</span>.</h2>
+      <p class="lede">Everything you need to pray on time is free, with no trial and no expiry. Plus pays for depth, not access.</p>
+    </div>
+    <div class="plans">
+      <div class="card plan free rv">
+        <div class="tag">Free, forever</div>
+        <div class="price">$0</div>
+        <ul>
+          <li><svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></svg>Prayer times, 7 calculation methods</li>
+          <li><svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></svg>App blocking and the lock screen</li>
+          <li><svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></svg>Streaks and qada tracking</li>
+          <li><svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></svg>Dua reminders and Hisn al-Muslim</li>
+          <li><svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></svg>Prayer notifications and jamat times</li>
+          <li><svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></svg>Excused days, 6 languages, works offline</li>
+        </ul>
+        <div class="note">No trial. No expiry. No ads.</div>
+      </div>
+      <div class="card plan plus rv">
+        <div class="tag">Plus</div>
+        <div class="price">$9.99<small>once, or $1.99 / month</small></div>
+        <ul>
+          <li><svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></svg>Advanced analytics and weekday patterns</li>
+          <li><svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></svg>Write your own duas and rotations</li>
+          <li><svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></svg>Cloud backup and sync across devices</li>
+        </ul>
+        <div class="note">Regional pricing in each store</div>
+      </div>
+    </div>
+    <p class="tip rv">There's also a tip jar. It unlocks nothing, on purpose: some people just want to support a worship app.</p>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="sec" id="faq" style="padding-top:0">
+  <div class="wrap faq-grid">
+    <div class="rv">
+      <span class="eyebrow"><span class="dot"></span>FAQ</span>
+      <h2 style="margin-top:16px">Questions,<br><span class="gold">answered</span>.</h2>
+    </div>
+    <div class="rv">
+      <details open><summary>What happens if I miss a prayer?<i></i></summary><p>The lock releases on its own when that prayer's window ends, so your phone is never held hostage. The prayer shows as missed in your history, and you can log it later as qada.</p></details>
+      <details><summary>Does it check that I actually prayed?<i></i></summary><p>No, and it never will. Tapping “I prayed” is enough. Namaz Lock is a nudge to put the phone down, not a judge.</p></details>
+      <details><summary>What if I can't pray right now?<i></i></summary><p>Snooze it for 5 or 15 minutes, or until the window ends. Women can turn on excused days to pause blocking during menstruation or postpartum without losing their streak.</p></details>
+      <details><summary>Which apps can I lock?<i></i></summary><p>Any you choose. Most people pick social media, video and games. Calls, messages and maps stay available unless you add them yourself.</p></details>
+      <details><summary>What permissions does it need?<i></i></summary><p>On Android: usage access and display over other apps, so it knows when a chosen app opens and can cover it. On iPhone: Screen Time. The app walks you through each one. Location is used only to calculate prayer times.</p></details>
+      <details><summary>Do I need an account?<i></i></summary><p>No. Everything works on the device. An account is only for optional backup and sync with Plus.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FINAL ============ -->
+<section class="final">
+  <div class="wrap rv">
+    <img src="images/icon.png" alt="" width="72" height="72" style="margin:0 auto 22px;border-radius:18px;box-shadow:var(--shadow)">
+    <h2>Give the pause <span class="gold">back to prayer</span>.</h2>
+    <p class="lede">Free on Android and iPhone. Set it up in two minutes.</p>
+    <div class="cta">
+      <a class="btn store" href="https://play.google.com/store/apps/details?id=com.hasnikhan.SalahLock" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.6 1.8a1.5 1.5 0 0 0-.6 1.2v18a1.5 1.5 0 0 0 .6 1.2l10.1-10.2zm11.5 8.8 2.9-2.9L5.5.6l9.6 10zm0 2.8-9.6 10 12.5-7.1zm4.2-4.9-3.3 3.5 3.3 3.5 2.7-1.6c1-.6 1-2.2 0-2.8z"/></svg>
+        <span><small>GET IT ON</small><b>Google Play</b></span>
+      </a>
+      <a class="btn ghost store" href="https://apps.apple.com/us/app/namaz-lock-muslim-focus/id6800233934" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.4 12.6c0-2.6 2.1-3.8 2.2-3.9-1.2-1.8-3.1-2-3.7-2-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.4-.9-1.7 0-3.3 1-4.2 2.6-1.8 3.1-.5 7.7 1.3 10.2.8 1.2 1.8 2.6 3.1 2.6 1.3-.1 1.7-.8 3.3-.8 1.5 0 1.9.8 3.3.8 1.4 0 2.2-1.2 3-2.5 1-1.4 1.4-2.8 1.4-2.9 0 0-2.4-1-2.4-4.1zM13.9 4.9c.7-.8 1.2-2 1-3.1-1 0-2.2.7-2.9 1.5-.6.7-1.2 1.9-1 3 1.1.1 2.2-.6 2.9-1.4z"/></svg>
+        <span><small>Download on the</small><b>App Store</b></span>
+      </a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <a class="brand" href="/"><img src="images/icon.png" alt="" width="28" height="28">Khan Creators</a>
+    <nav>
+      <a href="https://hassan1305.github.io/salahlock-privacy/" target="_blank" rel="noopener">Privacy policy</a>
+      <a href="mailto:ch.hasni.khan@gmail.com?subject=Namaz%20Lock">Support</a>
+      <a href="/">More apps</a>
+    </nav>
+    <span>© 2026 Khan Creators</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var root=document.documentElement;
+  try{var t=localStorage.getItem('nl-theme');if(t)root.dataset.theme=t;else if(matchMedia('(prefers-color-scheme: light)').matches)root.dataset.theme='light'}catch(e){}
+  document.getElementById('theme').onclick=function(){
+    root.dataset.theme=root.dataset.theme==='dark'?'light':'dark';
+    try{localStorage.setItem('nl-theme',root.dataset.theme)}catch(e){}
+  };
+  var hdr=document.querySelector('header');
+  addEventListener('scroll',function(){hdr.classList.toggle('stuck',scrollY>8)},{passive:true});
+
+  /* ---------- sample day (Lahore-like times) ---------- */
+  var P=[
+    {k:'fajr',   n:'Fajr',   ar:'فجر',  s:265, e:350,  eN:'Sunrise', c:'#4E6FA8'},
+    {k:'dhuhr',  n:'Dhuhr',  ar:'ظہر',  s:729, e:948,  eN:'Asr',     c:'#2F9E6B'},
+    {k:'asr',    n:'Asr',    ar:'عصر',  s:948, e:1120, eN:'Maghrib', c:'#1F8A5C'},
+    {k:'maghrib',n:'Maghrib',ar:'مغرب', s:1120,e:1192, eN:'Isha',    c:'#C0713A'},
+    {k:'isha',   n:'Isha',   ar:'عشاء', s:1192,e:1412, eN:'midnight',c:'#3C4A7A'}
+  ];
+  var D=[
+    {a:'سُبْحَانَ اللَّهِ وَبِحَمْدِهِ',t:'Glory be to Allah and praise Him.'},
+    {a:'لَا إِلَٰهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ',t:'There is no god but Allah, alone, without partner.'},
+    {a:'حَسْبُنَا اللَّهُ وَنِعْمَ الْوَكِيلُ',t:'Allah is sufficient for us, and He is the best disposer of affairs.'},
+    {a:'رَبِّ اشْرَحْ لِي صَدْرِي وَيَسِّرْ لِي أَمْرِي',t:'My Lord, expand my chest and ease my task for me.'},
+    {a:'أَسْتَغْفِرُ اللَّهَ',t:'I seek forgiveness from Allah.'}
+  ];
+  function fmt(m){m=((m%1440)+1440)%1440;var h=Math.floor(m/60),mm=m%60,ap=h<12?'AM':'PM';h=h%12||12;return h+':'+(mm<10?'0':'')+mm+' '+ap}
+  function dur(m){var h=Math.floor(m/60),mm=m%60;return (h?h+'h ':'')+mm+'m'}
+
+  /* ---------- hero phone ---------- */
+  var screen=document.getElementById('screen'),cur=3,streak=12,timer;
+  var imgs=[].slice.call(document.querySelectorAll('#scene img'));
+  var pills=[].slice.call(document.querySelectorAll('#pills button'));
+  function renderHome(i){
+    var h='';
+    P.forEach(function(p,j){
+      var st=j<i?'<span class="st ok">✓ Prayed</span>':j===i?'<span class="st ok">✓ Prayed</span>':'<span class="st">Upcoming</span>';
+      h+='<div class="pr'+(j===i?' cur':'')+'"><span class="g">'+p.ar+'</span><div><b>'+p.n+'</b><small>'+fmt(p.s)+'</small></div>'+st+'</div>';
+    });
+    document.getElementById('homeList').innerHTML=h;
+    document.getElementById('homeList').style.cssText='display:grid;gap:7px';
+  }
+  function show(i){
+    cur=i;var p=P[i];
+    screen.classList.remove('unlocked');
+    document.getElementById('toast').classList.remove('show');
+    imgs.forEach(function(im){im.classList.toggle('on',im.dataset.p===p.k)});
+    pills.forEach(function(b){b.classList.toggle('on',b.dataset.p===p.k)});
+    var now=p.s+Math.round((p.e-p.s)*0.2);
+    document.getElementById('clock').textContent=fmt(now).replace(/ [AP]M/,'');
+    document.getElementById('lkName').textContent=p.n;
+    document.getElementById('lkMeta').textContent='Window closes in '+dur(p.e-now);
+    document.getElementById('lkBar').style.width='80%';
+    var d=D[i];document.getElementById('lkAr').textContent=d.a;document.getElementById('lkTr').textContent=d.t;
+    document.getElementById('toastTxt').textContent=p.n+' logged · apps unlocked';
+    renderHome(i);
+  }
+  document.getElementById('prayed').onclick=function(){
+    screen.classList.add('unlocked');
+    var t=document.getElementById('toast');t.classList.add('show');
+    setTimeout(function(){t.classList.remove('show')},1800);
+    if(cur===4){streak++;document.getElementById('streakN').textContent=streak;}
+    document.getElementById('streak2').textContent=streak;
+    document.getElementById('hint').style.opacity=0;
+    clearTimeout(timer);timer=setTimeout(function(){show((cur+1)%5)},3200);
+  };
+  pills.forEach(function(b,i){b.onclick=function(){clearTimeout(timer);show(i)}});
+  show(3);
+
+  /* ---------- timeline ---------- */
+  var track=document.getElementById('track'),cursorEl=document.getElementById('cursor'),slider=document.getElementById('slider');
+  P.forEach(function(p){
+    var s=document.createElement('div');s.className='seg';s.dataset.k=p.k;
+    s.style.left=(p.s/1440*100)+'%';s.style.width=((p.e-p.s)/1440*100)+'%';s.style.background=p.c;
+    s.textContent=p.n;track.insertBefore(s,cursorEl);
+  });
+  var segs=[].slice.call(track.querySelectorAll('.seg'));
+  var lockSvg='<svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>';
+  var openSvg='<svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 7.5-2"/></svg>';
+  function upd(){
+    var m=+slider.value;cursorEl.style.left=(m/1440*100)+'%';
+    document.getElementById('tlTime').textContent=fmt(m);
+    var a=null;P.forEach(function(p){if(m>=p.s&&m<p.e)a=p});
+    segs.forEach(function(s){s.classList.toggle('act',a&&s.dataset.k===a.k);s.classList.toggle('dim',!!a&&s.dataset.k!==a.k)});
+    var b=document.getElementById('tlBadge'),d=document.getElementById('tlDesc');
+    if(a){
+      b.className='tl-badge locked';b.innerHTML=lockSvg+'<span>'+a.n+' · apps locked</span>';
+      d.textContent='The '+a.n+' window is open until '+a.eN+' at '+fmt(a.e)+'. Your chosen apps stay locked until you tap “I prayed”. If you don’t, they unlock on their own in '+dur(a.e-m)+'.';
+    }else{
+      var next=P.filter(function(p){return p.s>m})[0]||P[0];
+      var wait=(next.s-m+1440)%1440;
+      b.className='tl-badge free';b.innerHTML=openSvg+'<span>No prayer due · phone is free</span>';
+      d.textContent=(m>=350&&m<729?'After sunrise there is no prayer due until Dhuhr. ':'After midnight there is no prayer due until Fajr. ')+'Nothing is locked. '+next.n+' begins in '+dur(wait)+'.';
+    }
+  }
+  slider.oninput=upd;
+  track.addEventListener('pointerdown',function(e){
+    function mv(ev){var r=track.getBoundingClientRect();slider.value=Math.max(0,Math.min(1439,Math.round((ev.clientX-r.left)/r.width*1440)));upd()}
+    mv(e);track.setPointerCapture(e.pointerId);track.onpointermove=mv;
+    track.onpointerup=function(){track.onpointermove=null};
+  });
+  upd();
+
+  /* ---------- reveal ---------- */
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.12});
+  document.querySelectorAll('.rv').forEach(function(el){io.observe(el)});
+})();
+</script>
+</body>
+</html>
