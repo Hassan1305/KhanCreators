@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Morning Line: One Quote at a Time</title>
+<meta name="description" content="A calm quotes app for iPhone. One quote at a time, 6,246 of them, shuffled so none repeats for months. And when you've read enough, it tells you to go read a real book.">
+<link rel="canonical" href="https://khancreators.netlify.app/apps/morning-line/">
+<meta property="og:title" content="Morning Line: One quote at a time">
+<meta property="og:description" content="6,246 quotes, no feed, no account. It even tells you when to stop.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://khancreators.netlify.app/apps/morning-line/">
+<meta property="og:image" content="https://khancreators.netlify.app/apps/morning-line/images/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://khancreators.netlify.app/apps/morning-line/images/og.png">
+<meta name="theme-color" content="#161511">
+<link rel="icon" type="image/png" href="images/favicon.png">
+<link rel="apple-touch-icon" href="images/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ============ tokens: the app's own two palettes ============ */
+:root{
+  /* candlelit library */
+  --bg:#161511; --surface:#1F1D18; --surface-2:#242119;
+  --ink:#F2EAD8; --ink-2:#B8AD92; --ink-3:#7C7462;
+  --gold:#C89B3C; --gold-muted:#8A6E2F; --gold-soft:rgba(200,155,60,.14);
+  --on-gold:#161511; --line:#2A2820; --line-2:#3A362A;
+  --glow:radial-gradient(60% 50% at 50% 38%, rgba(200,155,60,.13), transparent 70%);
+  --shadow:0 40px 90px -40px rgba(0,0,0,.9);
+  --serif:"Lora",Georgia,"Times New Roman",serif;
+  --sans:"Inter",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+}
+:root[data-theme="light"]{
+  /* morning paper */
+  --bg:#F5EFE3; --surface:#FBF7EC; --surface-2:#F0E9D8;
+  --ink:#2B2517; --ink-2:#6E6450; --ink-3:#9C9078;
+  --gold:#A87B28; --gold-muted:#C89B3C; --gold-soft:rgba(168,123,40,.12);
+  --on-gold:#FFFFFF; --line:#E3DAC5; --line-2:#D6CBB1;
+  --glow:radial-gradient(60% 50% at 50% 38%, rgba(168,123,40,.10), transparent 70%);
+  --shadow:0 40px 80px -44px rgba(60,45,15,.45);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;overflow-x:clip}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16.5px;line-height:1.6;-webkit-font-smoothing:antialiased;transition:background .6s ease,color .6s ease}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;padding:0}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:4px}
+.wrap{width:100%;max-width:1100px;margin:0 auto;padding:0 20px}
+.sec{padding:clamp(80px,11vw,150px) 0;position:relative}
+.rule{width:56px;height:2px;background:var(--gold);border:0;margin:0}
+.kicker{font-size:11.5px;letter-spacing:2.4px;text-transform:uppercase;font-weight:600;color:var(--gold)}
+h1,h2,h3{font-family:var(--serif);font-weight:500;margin:0;letter-spacing:-.01em;line-height:1.1}
+h2{font-size:clamp(32px,5vw,56px)}
+h2 em{font-style:italic;color:var(--gold)}
+.lede{color:var(--ink-2);font-size:clamp(16px,1.8vw,18.5px);max-width:52ch;margin:18px 0 0}
+.btn{display:inline-flex;align-items:center;gap:10px;background:var(--gold);color:var(--on-gold);font-weight:600;font-size:14.5px;padding:12px 20px;border-radius:999px;transition:transform .2s, filter .2s;white-space:nowrap}
+.btn:hover{transform:translateY(-2px);filter:brightness(1.07)}
+.btn svg{width:20px;height:20px;fill:currentColor}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line-2)}
+.btn.ghost:hover{background:var(--surface)}
+.btn small{display:block;font-size:10px;font-weight:500;opacity:.8;letter-spacing:.3px;line-height:1.1}
+.btn b{display:block;font-size:15.5px;line-height:1.15}
+
+/* ============ masthead ============ */
+.mast{border-bottom:1px solid var(--line);position:relative;z-index:5}
+.mast-top{display:flex;align-items:center;gap:14px;height:62px}
+.mark{display:flex;align-items:center;gap:10px;font-family:var(--serif);font-size:19px;font-weight:600;letter-spacing:.01em}
+.mark img{width:30px;height:30px;border-radius:8px}
+.mast .sp{flex:1}
+.mast nav a{font-size:13.5px;color:var(--ink-2);padding:6px 10px;border-radius:6px;transition:color .2s}
+.mast nav a:hover{color:var(--ink)}
+@media(max-width:820px){.mast nav{display:none}}
+.theme{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--ink-2);border:1px solid var(--line-2);border-radius:999px;padding:6px 12px 6px 8px;transition:background .2s}
+.theme:hover{background:var(--surface)}
+.theme i{width:18px;height:18px;border-radius:50%;background:linear-gradient(90deg,#161511 50%,#F5EFE3 50%);border:1px solid var(--line-2);transition:transform .6s}
+:root[data-theme="light"] .theme i{transform:rotate(180deg)}
+.dateline{display:flex;justify-content:space-between;gap:16px;border-top:1px solid var(--line);padding:9px 0;font-size:11.5px;letter-spacing:1.6px;text-transform:uppercase;color:var(--ink-3);font-weight:500}
+.dateline span:nth-child(2){color:var(--gold)}
+@media(max-width:640px){.dateline span:nth-child(3){display:none}.dateline{font-size:10.5px;letter-spacing:1.2px;white-space:nowrap}}
+@media(max-width:400px){.dateline span:first-child{display:none}.dateline{justify-content:center}}
+.getsm{font-size:13px;padding:8px 14px}
+@media(max-width:480px){.theme span{display:none}.theme{padding:7px}}
+
+/* ============ hero reader ============ */
+.hero{position:relative;min-height:calc(100svh - 104px);display:flex;flex-direction:column;background:var(--glow)}
+.reader{flex:1;display:grid;place-items:center;position:relative;padding:clamp(40px,6vw,70px) 0 30px;cursor:pointer;user-select:none;-webkit-user-select:none;outline:none}
+.qmark{position:absolute;left:50%;top:clamp(8px,4vw,40px);translate:-50% 0;font-family:var(--serif);font-size:clamp(120px,16vw,200px);line-height:1;color:var(--gold);opacity:.16;pointer-events:none}
+.stage{position:relative;width:100%;max-width:860px;min-height:clamp(260px,34vw,340px);margin:0 auto;padding:0 24px}
+.q{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 24px;transition:transform .75s cubic-bezier(.2,.8,.2,1),opacity .6s ease}
+.q.below{transform:translateY(70px);opacity:0}
+.q.above{transform:translateY(-70px);opacity:0}
+.q blockquote{margin:0;font-family:var(--serif);font-weight:400;font-size:clamp(28px,4.4vw,52px);line-height:1.28;letter-spacing:-.005em;text-wrap:balance;max-width:24ch}
+.q blockquote.md{font-size:clamp(24px,3.5vw,42px);max-width:28ch}
+.q blockquote.sm{font-size:clamp(21px,2.9vw,34px);max-width:32ch}
+.q cite{display:flex;align-items:center;gap:12px;margin-top:26px;font-style:normal;font-size:15px;color:var(--ink-2);letter-spacing:.2px}
+.q cite::before{content:"";width:28px;height:1px;background:var(--gold)}
+.q .eyebrow{font-size:11px;letter-spacing:2.2px;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:22px}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:18px 0 26px;border-top:1px solid var(--line)}
+.acts{display:flex;align-items:center;gap:6px}
+.ic{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--line-2);transition:background .2s, transform .15s}
+.ic:hover{background:var(--surface)}
+.ic:active{transform:scale(.92)}
+.ic svg{width:18px;height:18px;stroke:var(--ink-2);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:fill .2s, stroke .2s}
+.ic.on svg{fill:var(--gold);stroke:var(--gold)}
+.next{display:inline-flex;align-items:center;gap:10px;font-size:14px;font-weight:600;color:var(--ink);padding:11px 18px;border-radius:999px;border:1px solid var(--line-2);transition:background .2s}
+.next:hover{background:var(--surface)}
+.next svg{width:16px;height:16px;stroke:var(--gold);fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;animation:nudge 2.4s ease-in-out infinite}
+@keyframes nudge{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}
+.count{font-size:12.5px;color:var(--ink-3);font-variant-numeric:tabular-nums;letter-spacing:.3px}
+.count b{color:var(--ink-2);font-weight:600}
+.hint{font-size:12px;color:var(--ink-3)}
+@media(max-width:640px){.hint{display:none}}
+.toast{position:fixed;left:50%;bottom:28px;translate:-50% 20px;background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:999px;font-size:13.5px;font-weight:600;opacity:0;pointer-events:none;transition:opacity .3s, translate .3s;z-index:90}
+.toast.show{opacity:1;translate:-50% 0}
+
+/* the nudge, for real */
+.nudge-veil{position:absolute;inset:0;z-index:6;display:grid;place-items:center;padding:20px;background:color-mix(in srgb,var(--bg) 70%,transparent);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:opacity .45s}
+.nudge-veil.show{opacity:1;pointer-events:auto}
+.ncard{max-width:430px;width:100%;background:var(--surface-2);border:1px solid var(--line-2);border-radius:22px;padding:30px 28px 24px;box-shadow:var(--shadow);text-align:center;transform:translateY(16px) scale(.98);transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+.nudge-veil.show .ncard{transform:none}
+.ncard .book{width:46px;height:46px;border-radius:50%;background:var(--gold-soft);display:grid;place-items:center;margin:0 auto 16px}
+.ncard .book svg{width:22px;height:22px;stroke:var(--gold);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.ncard h3{font-size:25px;line-height:1.25}
+.ncard p{color:var(--ink-2);margin:10px 0 0;font-size:15.5px}
+.ncard .meta{font-size:12px;color:var(--ink-3);margin-top:14px}
+.ncard .row{display:flex;flex-direction:column;gap:8px;margin-top:22px}
+.ncard .row .btn{justify-content:center}
+.ncard .row button.link{font-size:14px;color:var(--ink-2);padding:8px}
+.ncard .row button.link:hover{color:var(--ink)}
+
+/* ============ get it strip ============ */
+.get{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.get .note{font-size:13px;color:var(--ink-3)}
+.get .note a{color:var(--ink-2);text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--line-2)}
+
+/* ============ intro statement ============ */
+.statement{font-family:var(--serif);font-size:clamp(26px,3.6vw,40px);line-height:1.35;max-width:30ch;margin:0}
+.statement span{color:var(--ink-3)}
+
+/* ============ nudge section ============ */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:clamp(40px,7vw,90px);align-items:center}
+@media(max-width:880px){.split{grid-template-columns:1fr}}
+.counter{margin-top:30px;display:grid;grid-template-columns:repeat(30,1fr);gap:4px;max-width:440px}
+.counter i{aspect-ratio:1/2.2;border-radius:2px;background:var(--line-2);transition:background .3s}
+.counter i.on{background:var(--ink-3)}
+.counter i.t{background:var(--gold)}
+.counter-lbl{display:flex;justify-content:space-between;max-width:440px;font-size:12px;color:var(--ink-3);margin-top:8px}
+.phone{width:min(300px,80vw);margin:0 auto;aspect-ratio:9/19;border-radius:44px;padding:10px;background:#0b0a08;box-shadow:var(--shadow),0 0 0 1px var(--line-2)}
+.pscr{position:relative;height:100%;border-radius:35px;overflow:hidden;background:#161511;color:#F2EAD8;display:flex;flex-direction:column}
+.pscr .top{display:flex;justify-content:space-between;align-items:center;padding:14px 22px 0;font-size:11px;font-weight:600;font-family:var(--sans)}
+.pscr .isl{position:absolute;top:10px;left:50%;translate:-50% 0;width:76px;height:20px;border-radius:999px;background:#000}
+.pscr .hdr{display:flex;justify-content:space-between;padding:18px 18px 0;font-size:10.5px;color:#B8AD92;font-family:var(--sans)}
+.pscr .hdr .pill{border:1px solid #3A362A;border-radius:999px;padding:3px 9px}
+.pscr .bg-q{flex:1;display:grid;place-items:center;padding:0 22px;text-align:center;font-family:var(--serif);font-size:17px;line-height:1.35;filter:blur(1.5px);opacity:.35}
+.pscr .sheet{position:absolute;left:12px;right:12px;bottom:14px;background:#242119;border:1px solid #3A362A;border-radius:22px;padding:22px 18px 16px;text-align:center}
+.pscr .sheet h4{font-family:var(--serif);font-weight:500;font-size:17.5px;margin:0;line-height:1.3;min-height:46px;transition:opacity .4s}
+.pscr .sheet p{font-size:12px;color:#B8AD92;margin:8px 0 0;line-height:1.5;min-height:54px;transition:opacity .4s}
+.pscr .sheet .b1{margin-top:14px;background:#C89B3C;color:#161511;font-weight:600;font-size:12.5px;padding:10px;border-radius:999px}
+.pscr .sheet .b2{margin-top:6px;font-size:12px;color:#7C7462;padding:6px}
+.fade{opacity:0}
+.fine{margin-top:26px;padding:16px 18px;border-left:2px solid var(--gold);background:var(--surface);border-radius:0 12px 12px 0;font-size:14.5px;color:var(--ink-2);max-width:48ch}
+.fine b{color:var(--ink)}
+
+/* ============ the deck ============ */
+.deck-card{margin-top:52px;display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(28px,5vw,60px);align-items:center;padding:clamp(26px,4vw,44px);background:var(--surface);border:1px solid var(--line);border-radius:26px}
+@media(max-width:880px){.deck-card{grid-template-columns:1fr}}
+.cards{position:relative;height:230px;display:grid;place-items:center}
+.cards i{position:absolute;width:150px;height:210px;border-radius:14px;background:var(--surface-2);border:1px solid var(--line-2);box-shadow:0 18px 30px -18px rgba(0,0,0,.6);transition:transform .8s cubic-bezier(.2,.8,.2,1)}
+.cards i:last-child{display:grid;place-items:center;font-family:var(--serif);font-size:54px;color:var(--gold)}
+.big{font-family:var(--serif);font-size:clamp(46px,7vw,76px);line-height:1;font-weight:500;font-variant-numeric:tabular-nums}
+.big small{font-family:var(--sans);font-size:15px;color:var(--ink-2);font-weight:500;margin-left:8px}
+.slider-row{margin-top:26px}
+.slider-row label{display:flex;justify-content:space-between;font-size:13.5px;color:var(--ink-2)}
+.slider-row label b{color:var(--ink);font-variant-numeric:tabular-nums}
+input[type=range]{width:100%;margin-top:10px;accent-color:var(--gold);height:26px;cursor:pointer}
+.deck-out{margin-top:16px;font-size:15.5px;color:var(--ink-2)}
+.deck-out b{color:var(--gold);font-weight:600}
+
+/* ============ the shelf ============ */
+.shelf-wrap{margin-top:56px}
+.shelf{display:flex;align-items:flex-end;gap:clamp(6px,1.2vw,12px);padding:0 clamp(8px,3vw,30px);border-bottom:10px solid var(--surface-2);box-shadow:0 14px 0 -6px var(--line);min-height:300px;overflow-x:auto;scrollbar-width:none}
+.shelf::-webkit-scrollbar{display:none}
+.spine{flex:1 0 64px;max-width:110px;position:relative;border-radius:5px 5px 0 0;padding:16px 0;display:flex;flex-direction:column;align-items:center;justify-content:space-between;color:#F2EAD8;transition:transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .3s;box-shadow:inset -6px 0 0 rgba(0,0,0,.18), inset 5px 0 0 rgba(255,255,255,.05)}
+.spine:hover{transform:translateY(-10px)}
+.spine.on{transform:translateY(-22px);box-shadow:inset -6px 0 0 rgba(0,0,0,.18), 0 0 0 2px var(--gold)}
+.spine .t{writing-mode:vertical-rl;transform:rotate(180deg);font-family:var(--serif);font-size:clamp(15px,1.8vw,19px);letter-spacing:.5px;white-space:nowrap}
+.spine .n{font-size:10.5px;font-weight:600;letter-spacing:.5px;opacity:.75;font-variant-numeric:tabular-nums}
+.spine::before,.spine::after{content:"";position:absolute;left:10%;right:10%;height:1px;background:rgba(242,234,216,.35)}
+.spine::before{top:10px}.spine::after{bottom:36px}
+.open{margin-top:34px;display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:start;min-height:120px}
+@media(max-width:640px){.open{grid-template-columns:1fr}}
+.open .lbl{font-size:11.5px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:600;padding-top:8px;min-width:130px}
+.open blockquote{margin:0;font-family:var(--serif);font-size:clamp(22px,2.8vw,30px);line-height:1.35;transition:opacity .35s}
+.open cite{display:block;margin-top:12px;font-style:normal;color:var(--ink-2);font-size:14.5px;transition:opacity .35s}
+.open .again{margin-top:14px;font-size:13.5px;color:var(--gold);font-weight:600}
+
+/* ============ glance ============ */
+.glance{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:52px}
+@media(max-width:900px){.glance{grid-template-columns:1fr}}
+.g{background:var(--surface);border:1px solid var(--line);border-radius:24px;padding:22px;display:flex;flex-direction:column}
+.g .scene{height:250px;border-radius:16px;position:relative;overflow:hidden;margin-bottom:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px}
+.g h3{font-size:22px}
+.g p{margin:8px 0 0;color:var(--ink-2);font-size:15px}
+.g .tag{font-size:11px;letter-spacing:1.6px;text-transform:uppercase;color:var(--ink-3);font-weight:600;margin-top:auto;padding-top:14px}
+.ls{background:linear-gradient(160deg,#2b3350,#141827 60%,#0d0f18)}
+.ls .time{font-family:var(--sans);font-size:58px;font-weight:600;color:#fff;letter-spacing:-2px;line-height:1}
+.ls .day{font-size:12.5px;color:rgba(255,255,255,.8);font-weight:500;margin-bottom:4px}
+.ls .acc{margin-top:14px;width:88%;background:rgba(255,255,255,.14);backdrop-filter:blur(10px);border-radius:14px;padding:10px 12px;color:#fff;font-family:var(--serif);font-size:13px;line-height:1.35}
+.ls .acc small{display:block;font-family:var(--sans);font-size:10.5px;opacity:.75;margin-top:3px}
+.hs{background:linear-gradient(150deg,#384a3a,#1c2620 55%,#101611)}
+.wid{width:94%;background:#161511;border-radius:20px;padding:16px 16px 12px;color:#F2EAD8;box-shadow:0 20px 40px -20px rgba(0,0,0,.8)}
+.wid q{display:block;font-family:var(--serif);font-size:14.5px;line-height:1.4;quotes:none}
+.wid div{display:flex;justify-content:space-between;align-items:center;margin-top:10px;font-size:11.5px;color:#B8AD92}
+.wid div span:last-child{color:#C89B3C;font-size:14px}
+.apps{display:flex;gap:14px;margin-top:22px}
+.apps i{width:40px;height:40px;border-radius:11px;background:rgba(255,255,255,.14)}
+.apps i:last-child{background:#161511;display:grid;place-items:center;color:#C89B3C;font-family:var(--serif);font-size:24px;font-style:normal;box-shadow:inset 0 0 0 1px rgba(200,155,60,.5)}
+.nt{background:linear-gradient(160deg,#5b4a35,#2a2219 55%,#15110c)}
+.notif{width:94%;background:rgba(245,239,227,.9);color:#2B2517;border-radius:18px;padding:12px 14px;box-shadow:0 16px 30px -16px rgba(0,0,0,.6);animation:drop 5s ease-in-out infinite}
+@keyframes drop{0%,8%{transform:translateY(-130%);opacity:0}16%,84%{transform:none;opacity:1}94%,100%{transform:translateY(-130%);opacity:0}}
+.notif .h{display:flex;align-items:center;gap:8px;font-size:11px;color:#6E6450;font-weight:600}
+.notif .h i{width:18px;height:18px;border-radius:5px;background:#161511;color:#C89B3C;display:grid;place-items:center;font-style:normal;font-family:var(--serif);font-size:13px}
+.notif .h span:last-child{margin-left:auto;font-weight:500}
+.notif b{display:block;font-size:12.5px;margin-top:6px}
+.notif p{margin:2px 0 0;font-family:var(--serif);font-size:13px;line-height:1.4;color:#2B2517}
+
+/* ============ two lights ============ */
+.lights{margin-top:52px;display:grid;grid-template-columns:1fr 1fr;border-radius:26px;overflow:hidden;border:1px solid var(--line)}
+@media(max-width:720px){.lights{grid-template-columns:1fr}}
+.lt{padding:clamp(28px,4vw,46px);text-align:left;position:relative;min-height:320px;display:flex;flex-direction:column;transition:filter .3s}
+.lt.dark{background:#161511;color:#F2EAD8}
+.lt.light{background:#F5EFE3;color:#2B2517}
+.lt .nm{font-size:11.5px;letter-spacing:2px;text-transform:uppercase;font-weight:600}
+.lt.dark .nm{color:#C89B3C}.lt.light .nm{color:#A87B28}
+.lt blockquote{margin:auto 0 0;font-family:var(--serif);font-size:clamp(22px,2.6vw,28px);line-height:1.35;padding-top:40px}
+.lt cite{display:block;margin-top:12px;font-style:normal;font-size:14px;opacity:.7}
+.lt .use{margin-top:22px;font-size:13px;font-weight:600;display:inline-flex;align-items:center;gap:8px;opacity:.85}
+.lt .use::before{content:"";width:12px;height:12px;border-radius:50%;border:1.5px solid currentColor}
+:root[data-theme="dark"] .lt.dark .use::before,:root[data-theme="light"] .lt.light .use::before{background:currentColor}
+.lt:hover{filter:brightness(1.04)}
+
+/* ============ left out ============ */
+.out{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);margin-top:52px}
+@media(max-width:880px){.out{grid-template-columns:repeat(2,1fr)}}
+.out div{padding:26px 22px 26px 0;border-bottom:1px solid var(--line)}
+.out s{font-family:var(--serif);font-size:24px;text-decoration-color:var(--gold);text-decoration-thickness:2px;color:var(--ink)}
+.out p{margin:8px 0 0;color:var(--ink-2);font-size:14.5px;padding-right:10px}
+
+/* ============ voices ============ */
+.voices{overflow:hidden;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:26px 0;mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent)}
+.track{display:flex;gap:44px;width:max-content;animation:scroll 60s linear infinite;font-family:var(--serif);font-size:clamp(22px,2.6vw,30px);font-style:italic;color:var(--ink-2);white-space:nowrap}
+.track span::after{content:"·";margin-left:44px;color:var(--gold);font-style:normal}
+@keyframes scroll{to{transform:translateX(-50%)}}
+
+/* ============ price ============ */
+.price{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:52px}
+@media(max-width:760px){.price{grid-template-columns:1fr}}
+.pc{background:var(--surface);border:1px solid var(--line);border-radius:24px;padding:clamp(24px,3.5vw,36px)}
+.pc .amt{font-family:var(--serif);font-size:52px;line-height:1;margin-top:14px}
+.pc .amt small{font-family:var(--sans);font-size:14.5px;color:var(--ink-2);margin-left:6px}
+.pc ul{list-style:none;padding:0;margin:22px 0 0;display:grid;gap:10px}
+.pc li{display:flex;gap:12px;font-size:15px;color:var(--ink-2)}
+.pc li::before{content:"";flex:none;width:6px;height:6px;border-radius:50%;background:var(--gold);margin-top:9px}
+.pc.gold{border-color:var(--gold-muted);background:linear-gradient(170deg,var(--gold-soft),transparent 60%),var(--surface)}
+
+/* ============ faq ============ */
+.faq{display:grid;grid-template-columns:.8fr 1.2fr;gap:clamp(30px,6vw,80px)}
+@media(max-width:860px){.faq{grid-template-columns:1fr}}
+details{border-bottom:1px solid var(--line)}
+summary{list-style:none;cursor:pointer;padding:20px 0;display:flex;justify-content:space-between;gap:16px;font-family:var(--serif);font-size:19.5px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";color:var(--gold);font-family:var(--sans);font-size:22px;line-height:1;transition:transform .3s}
+details[open] summary::after{transform:rotate(45deg)}
+details p{margin:0 0 20px;color:var(--ink-2);font-size:15.5px;max-width:62ch}
+
+/* ============ end ============ */
+.end{text-align:center;padding:clamp(90px,12vw,160px) 0;background:var(--glow)}
+.end .qm{font-family:var(--serif);font-size:110px;line-height:.6;color:var(--gold);opacity:.5}
+.end h2{max-width:18ch;margin:26px auto 0}
+.end .get{justify-content:center;margin-top:34px}
+footer{border-top:1px solid var(--line);padding:30px 0 40px;font-size:13.5px;color:var(--ink-3)}
+footer .wrap{display:flex;flex-wrap:wrap;gap:12px 26px;justify-content:space-between;align-items:center}
+footer nav{display:flex;gap:18px;flex-wrap:wrap}
+footer a:hover{color:var(--ink)}
+
+.rv{opacity:0;transform:translateY(24px);transition:opacity .9s ease,transform 1s cubic-bezier(.2,.8,.2,1)}
+.rv.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="mast">
+  <div class="wrap">
+    <div class="mast-top">
+      <a class="mark" href="#"><img src="images/icon.png" alt="" width="30" height="30">Morning Line</a>
+      <span class="sp"></span>
+      <nav>
+        <a href="#nudge">The nudge</a>
+        <a href="#deck">The deck</a>
+        <a href="#shelf">The shelf</a>
+        <a href="#price">Price</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+      <a class="btn getsm" href="https://apps.apple.com/app/id6805128520" target="_blank" rel="noopener">Get it</a>
+      <button class="theme" id="themeBtn" aria-label="Switch between candlelit and morning paper themes"><i></i><span id="themeLbl">Candlelit</span></button>
+    </div>
+    <div class="dateline"><span id="today">Tuesday, 29 September 2026</span><span id="issue">Today's line</span><span>6,246 quotes · one at a time</span></div>
+  </div>
+</header>
+
+<main>
+<!-- ============ HERO: the page is the app ============ -->
+<section class="hero" aria-label="Read a few lines">
+  <div class="reader" id="reader" tabindex="0" aria-live="polite" aria-label="Quote reader. Click or press the down arrow for the next quote.">
+    <div class="qmark" aria-hidden="true">“</div>
+    <div class="stage" id="stage"></div>
+    <div class="nudge-veil" id="veil" role="dialog" aria-modal="true" aria-labelledby="nTitle">
+      <div class="ncard">
+        <div class="book"><svg viewBox="0 0 24 24"><path d="M2 4h7a3 3 0 0 1 3 3v13a2 2 0 0 0-2-2H2zM22 4h-7a3 3 0 0 0-3 3v13a2 2 0 0 1 2-2h8z"/></svg></div>
+        <h3 id="nTitle">Quotes won't do the whole job.</h3>
+        <p id="nBody">A line can spark something. It can't build it. Go read a chapter of something real.</p>
+        <div class="meta" id="nMeta">You've read 7 lines. In the app, this appears after 20 to 30.</div>
+        <div class="row">
+          <a class="btn" href="#get" id="nGo">Fair. Show me the app</a>
+          <button class="link" id="nKeep">Keep scrolling</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="bar">
+      <div class="acts">
+        <button class="ic" id="favBtn" aria-label="Save this quote" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M12 20.5s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.6a4.3 4.3 0 0 1 7.5 2.7c0 5.6-7.5 10.2-7.5 10.2z"/></svg></button>
+        <button class="ic" id="shareBtn" aria-label="Share this quote"><svg viewBox="0 0 24 24"><path d="M12 3v12M7 8l5-5 5 5M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></svg></button>
+        <span class="count" id="count"><b>1</b> of 6,246</span>
+      </div>
+      <span class="hint">Tap the quote, or press ↓</span>
+      <button class="next" id="nextBtn">Next line <svg viewBox="0 0 24 24"><path d="M12 5v14M6 13l6 6 6-6"/></svg></button>
+    </div>
+  </div>
+</section>
+
+<section class="sec" style="padding-bottom:0" id="get">
+  <div class="wrap">
+    <p class="statement rv">That's the whole app. <span>One quote, full screen. Swipe up for the next. No feed, no account, no noise.</span></p>
+    <div class="get rv" style="margin-top:34px">
+      <a class="btn" href="https://apps.apple.com/app/id6805128520" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.4 12.6c0-2.6 2.1-3.8 2.2-3.9-1.2-1.8-3.1-2-3.7-2-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.4-.9-1.7 0-3.3 1-4.2 2.6-1.8 3.1-.5 7.7 1.3 10.2.8 1.2 1.8 2.6 3.1 2.6 1.3-.1 1.7-.8 3.3-.8 1.5 0 1.9.8 3.3.8 1.4 0 2.2-1.2 3-2.5 1-1.4 1.4-2.8 1.4-2.9 0 0-2.4-1-2.4-4.1zM13.9 4.9c.7-.8 1.2-2 1-3.1-1 0-2.2.7-2.9 1.5-.6.7-1.2 1.9-1 3 1.1.1 2.2-.6 2.9-1.4z"/></svg>
+        <span><small>Download on the</small><b>App Store</b></span>
+      </a>
+      <span class="note">iPhone and iPad. Android is in testing: <a href="mailto:ch.hasni.khan@gmail.com?subject=Morning%20Line%20Android%20beta">ask to join</a>.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ THE NUDGE ============ -->
+<section class="sec" id="nudge">
+  <div class="wrap split">
+    <div class="rv">
+      <div class="kicker">The nudge</div>
+      <h2 style="margin-top:16px">A quotes app that<br>tells you <em>to stop</em>.</h2>
+      <p class="lede">Most apps are built to keep you scrolling. Morning Line counts instead. Somewhere between 20 and 30 quotes a day, it suggests you put the phone down and go read something real.</p>
+      <p class="lede">Choose to keep going and it asks again sooner, after 10 to 15 more. It never locks you out. It just won't pretend another quote is the same as doing the thing.</p>
+      <div class="counter" id="counter" aria-hidden="true"></div>
+      <div class="counter-lbl"><span>Today's quotes</span><span id="counterLbl">nudge at 24</span></div>
+      <div class="fine"><b>How ads fit in.</b> The app is free with a small banner. The one full-screen ad appears only when you pick “Keep scrolling”. Take the nudge and close the app, and you never see it.</div>
+    </div>
+    <div class="rv">
+      <div class="phone" aria-hidden="true">
+        <div class="pscr">
+          <div class="isl"></div>
+          <div class="top"><span>7:42</span><span>●●●</span></div>
+          <div class="hdr"><span class="pill">All quotes ▾</span><span>♡ &nbsp;⚙</span></div>
+          <div class="bg-q">The impediment to action advances action. What stands in the way becomes the way.</div>
+          <div class="sheet">
+            <h4 id="pT">Inspiration isn't the hard part.</h4>
+            <p id="pB">Doing the thing is. Step away and go do one small piece of it.</p>
+            <div class="b1">Close the app</div>
+            <div class="b2">Keep scrolling</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ THE DECK ============ -->
+<section class="sec" id="deck" style="padding-top:0">
+  <div class="wrap">
+    <div class="rv" style="max-width:720px">
+      <div class="kicker">The deck</div>
+      <h2 style="margin-top:16px">Dealt like cards,<br><em>not picked at random</em>.</h2>
+      <p class="lede">Random apps repeat themselves within days. Morning Line shuffles all 6,246 quotes into a deck only your phone knows, deals them in order, and remembers your place. Every quote comes up once before any comes back.</p>
+    </div>
+    <div class="deck-card rv">
+      <div class="cards" id="cards" aria-hidden="true"><i></i><i></i><i></i><i></i><i>“</i></div>
+      <div>
+        <div class="big" id="daysOut">250<small>days before a repeat</small></div>
+        <div class="slider-row">
+          <label for="perDay"><span>Quotes you read a day</span><b id="perDayV">25</b></label>
+          <input type="range" id="perDay" min="5" max="60" step="1" value="25">
+        </div>
+        <div class="deck-out" id="deckOut">Start today and the first quote you could see twice turns up around <b>June 2027</b>.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ THE SHELF ============ -->
+<section class="sec" id="shelf" style="padding-top:0">
+  <div class="wrap">
+    <div class="rv" style="max-width:720px">
+      <div class="kicker">The shelf</div>
+      <h2 style="margin-top:16px">Eight decks,<br><em>each keeps your place</em>.</h2>
+      <p class="lede">In the mood for courage, not success? Switch decks. Each one is shuffled on its own and remembers exactly where you stopped, so you can wander between them and never lose your page. Pull one off the shelf.</p>
+    </div>
+    <div class="shelf-wrap rv">
+      <div class="shelf" id="shelfEl" role="list"></div>
+      <div class="open" aria-live="polite">
+        <div class="lbl" id="openLbl">Courage · 476</div>
+        <div>
+          <blockquote id="openQ">Failure is not fatal: it is the courage to continue that counts.</blockquote>
+          <cite id="openA">Winston Churchill</cite>
+          <button class="again" id="openAgain">Another from this deck →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ VOICES ============ -->
+<div class="voices" aria-label="Some of the 2,839 authors in the app">
+  <div class="track" id="voices"></div>
+</div>
+
+<!-- ============ GLANCE ============ -->
+<section class="sec" id="glance">
+  <div class="wrap">
+    <div class="rv" style="max-width:720px">
+      <div class="kicker">Without opening it</div>
+      <h2 style="margin-top:16px">A line wherever<br><em>you glance</em>.</h2>
+    </div>
+    <div class="glance">
+      <div class="g rv">
+        <div class="scene ls" aria-hidden="true">
+          <div class="day" id="lsDay">Tuesday 29 September</div>
+          <div class="time">7:41</div>
+          <div class="acc">Do what you can, with what you have, where you are.<small>Theodore Roosevelt</small></div>
+        </div>
+        <h3>Lock Screen</h3>
+        <p>A quiet line under the clock on iPhone, before you've even unlocked.</p>
+        <div class="tag">iPhone · Lock Screen widget</div>
+      </div>
+      <div class="g rv">
+        <div class="scene hs" aria-hidden="true">
+          <div class="wid"><q>Luck is what happens when preparation meets opportunity.</q><div><span>Seneca</span><span>⟳</span></div></div>
+          <div class="apps"><i></i><i></i><i></i><i>”</i></div>
+        </div>
+        <h3>Home Screen</h3>
+        <p>Refreshes through the day, or tap ⟳ for another. Tap the quote to open it in the app.</p>
+        <div class="tag">iPhone, iPad and Android</div>
+      </div>
+      <div class="g rv">
+        <div class="scene nt" aria-hidden="true">
+          <div class="notif"><div class="h"><i>”</i><span>MORNING LINE</span><span>9:00</span></div><b>Quote of the Day</b><p>With the new day comes new strength and new thoughts.</p></div>
+        </div>
+        <h3>Once a day</h3>
+        <p>One notification at the time you choose, with a real quote in it. Never more than one.</p>
+        <div class="tag">Scheduled on your phone · works offline</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TWO LIGHTS ============ -->
+<section class="sec" style="padding-top:0">
+  <div class="wrap">
+    <div class="rv" style="max-width:720px">
+      <div class="kicker">Two lights</div>
+      <h2 style="margin-top:16px">Candlelit at night.<br><em>Morning paper</em> by day.</h2>
+      <p class="lede">Serif type, warm ink and gold leaf, in both. Try them here: this page switches too.</p>
+    </div>
+    <div class="lights rv">
+      <button class="lt dark" data-set="dark">
+        <span class="nm">Candlelit library</span>
+        <blockquote>If you have a garden and a library, you have everything you need.</blockquote>
+        <cite>Cicero</cite>
+        <span class="use">Use this light</span>
+      </button>
+      <button class="lt light" data-set="light">
+        <span class="nm">Morning paper</span>
+        <blockquote>With the new day comes new strength and new thoughts.</blockquote>
+        <cite>Eleanor Roosevelt</cite>
+        <span class="use">Use this light</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ LEFT OUT ============ -->
+<section class="sec" style="padding-top:0">
+  <div class="wrap">
+    <div class="rv" style="max-width:720px">
+      <div class="kicker">What we left out</div>
+      <h2 style="margin-top:16px">Built as much by<br>what <em>isn't</em> there.</h2>
+    </div>
+    <div class="out rv">
+      <div><s>Streaks</s><p>No badges, no guilt for skipping a day. Just three quiet numbers if you want them.</p></div>
+      <div><s>Accounts</s><p>No sign-up, no email. Open it and read.</p></div>
+      <div><s>A feed</s><p>No likes, no comments, no algorithm deciding what you see next.</p></div>
+      <div><s>Signal</s><p>All 6,246 quotes live on your phone. It works on a plane.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PRICE ============ -->
+<section class="sec" id="price" style="padding-top:0">
+  <div class="wrap">
+    <div class="rv" style="max-width:720px">
+      <div class="kicker">Price</div>
+      <h2 style="margin-top:16px">Free to read.<br><em>Pay once</em> for quiet.</h2>
+    </div>
+    <div class="price">
+      <div class="pc rv">
+        <div class="kicker">Free</div>
+        <div class="amt">$0</div>
+        <ul>
+          <li>Every quote, every deck, every feature</li>
+          <li>Widgets, daily quote, favorites, both themes</li>
+          <li>A small banner at the bottom, and one full-screen ad only if you ignore the nudge</li>
+        </ul>
+      </div>
+      <div class="pc gold rv">
+        <div class="kicker">Remove ads</div>
+        <div class="amt">$2.99<small>once, forever</small></div>
+        <ul>
+          <li>One purchase, no subscription</li>
+          <li>Removes every ad for good</li>
+          <li>Restores on a new phone. Price shown in your local currency.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="sec" id="faq" style="padding-top:0">
+  <div class="wrap faq">
+    <div class="rv">
+      <div class="kicker">Questions</div>
+      <h2 style="margin-top:16px">Asked,<br><em>answered</em>.</h2>
+    </div>
+    <div class="rv">
+      <details open><summary>Does it need the internet?</summary><p>No. Every quote is bundled in the app, and the daily notification is scheduled on your phone. Ads are the only part that uses the network.</p></details>
+      <details><summary>Will I see the same quote twice?</summary><p>Not for a long time. Each deck is shuffled once and dealt in order, so every quote in it comes up before any repeats. Your place is saved after every quote, so closing the app doesn't reset anything.</p></details>
+      <details><summary>What data does it collect?</summary><p>Morning Line has no account and no servers. Your favorites, reading position and settings stay on your phone. Ads are served by Google AdMob, which collects some device data to show and measure them. The <a href="privacy.html" style="text-decoration:underline">privacy policy</a> lists exactly what.</p></details>
+      <details><summary>Is it on Android?</summary><p>Android, with its home-screen widget, is in closed testing now. <a href="mailto:ch.hasni.khan@gmail.com?subject=Morning%20Line%20Android%20beta" style="text-decoration:underline">Email us</a> to join, or check back soon.</p></details>
+      <details><summary>Can I share a quote?</summary><p>Yes, from the share button under any quote. Favorite the ones that land and they're kept in one list.</p></details>
+    </div>
+  </div>
+</section>
+
+<section class="end">
+  <div class="wrap rv">
+    <div class="qm" aria-hidden="true">“</div>
+    <h2>Start tomorrow with <em>one good line</em>.</h2>
+    <div class="get">
+      <a class="btn" href="https://apps.apple.com/app/id6805128520" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.4 12.6c0-2.6 2.1-3.8 2.2-3.9-1.2-1.8-3.1-2-3.7-2-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.4-.9-1.7 0-3.3 1-4.2 2.6-1.8 3.1-.5 7.7 1.3 10.2.8 1.2 1.8 2.6 3.1 2.6 1.3-.1 1.7-.8 3.3-.8 1.5 0 1.9.8 3.3.8 1.4 0 2.2-1.2 3-2.5 1-1.4 1.4-2.8 1.4-2.9 0 0-2.4-1-2.4-4.1zM13.9 4.9c.7-.8 1.2-2 1-3.1-1 0-2.2.7-2.9 1.5-.6.7-1.2 1.9-1 3 1.1.1 2.2-.6 2.9-1.4z"/></svg>
+        <span><small>Download on the</small><b>App Store</b></span>
+      </a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <a class="mark" href="/" style="font-size:16px"><img src="images/icon.png" alt="" width="24" height="24" style="width:24px;height:24px">Khan Creators</a>
+    <nav>
+      <a href="privacy.html">Privacy policy</a>
+      <a href="support.html">Support</a>
+      <a href="/">More apps</a>
+    </nav>
+    <span>© 2026 Khan Creators</span>
+  </div>
+</footer>
+
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(function(){
+  /* ---------- a small, hand-picked slice of the app's own quotes.json ---------- */
+  var Q={
+    motivational:[
+      ["The impediment to action advances action. What stands in the way becomes the way.","Marcus Aurelius"],
+      ["Do what you can, with what you have, where you are.","Theodore Roosevelt"],
+      ["As you start to walk on the way, the way appears. Clarity doesn't come before action. It comes from action.","Rumi"],
+      ["Deciding what not to do is as important as deciding what to do.","Steve Jobs"],
+      ["Be patient and tough; someday this pain will be useful to you.","Ovid"],
+      ["It is better to do something than to do nothing while waiting to do everything.","Winston Churchill"],
+      ["With the new day comes new strength and new thoughts.","Eleanor Roosevelt"],
+      ["Luck is what happens when preparation meets opportunity.","Seneca"]
+    ],
+    inspirational:[
+      ["The trouble is, you think you have time.","Buddha"],
+      ["If you have a garden and a library, you have everything you need.","Cicero"],
+      ["If a little is not enough for you, nothing is.","Epicurus"],
+      ["You must do the things you think you cannot do.","Eleanor Roosevelt"],
+      ["In a gentle way, you can shake the world.","Mahatma Gandhi"],
+      ["The purpose of knowledge is action, not knowledge.","Aristotle"]
+    ],
+    courage:[
+      ["Failure is not fatal: it is the courage to continue that counts.","Winston Churchill"],
+      ["What would life be if we had no courage to attempt anything?","Vincent Van Gogh"],
+      ["Courage is the first of human qualities because it is the quality which guarantees the others.","Aristotle"],
+      ["A great part of courage is the courage of having done the thing before.","Ralph Waldo Emerson"],
+      ["Courage conquers all things: it even gives strength to the body.","Ovid"]
+    ],
+    hope:[
+      ["We must accept finite disappointment, but never lose infinite hope.","Martin Luther King, Jr."],
+      ["Hope is a good breakfast, but it is a bad supper.","Francis Bacon"],
+      ["Optimism is the faith that leads to achievement. Nothing can be done without hope and confidence.","Helen Keller"],
+      ["You cannot hope to make progress in areas where you have taken no action.","Epictetus"]
+    ],
+    dreams:[
+      ["Who looks outside, dreams; who looks inside, awakes.","Carl Jung"],
+      ["Yesterday is but today's memory, and tomorrow is today's dream.","Khalil Gibran"],
+      ["Our truest life is when we are in dreams awake.","Henry David Thoreau"],
+      ["You are exactly as big as the vision you have of yourself.","Epictetus"]
+    ],
+    happiness:[
+      ["The happiness of your life depends upon the quality of your thoughts.","Marcus Aurelius"],
+      ["Fortify yourself with contentment, for this is an impregnable fortress.","Epictetus"],
+      ["A table, a chair, a bowl of fruit and a violin; what else does a man need to be happy?","Albert Einstein"],
+      ["Happiness is not a goal; it is a by-product.","Eleanor Roosevelt"]
+    ],
+    success:[
+      ["Strive not to be a success, but rather to be of value.","Albert Einstein"],
+      ["Success consists of going from failure to failure without loss of enthusiasm.","Winston Churchill"],
+      ["Success usually comes to those who are too busy to be looking for it.","Henry David Thoreau"],
+      ["The successful warrior is the average man, with laser-like focus.","Bruce Lee"]
+    ],
+    positive:[
+      ["As soon as you trust yourself, you will know how to live.","Johann Wolfgang von Goethe"],
+      ["The secret of change is to focus all of your energy, not on fighting the old, but on building the new.","Socrates"],
+      ["There is no passion to be found in settling for a life that is less than the one you are capable of living.","Nelson Mandela"]
+    ]
+  };
+  /* deck order, labels and real counts from constants/categories.js + quotes.json */
+  var DECKS=[
+    ["motivational","Motivation",2246,"#3b3020"],["inspirational","Inspiration",386,"#2f3a2e"],
+    ["courage","Courage",476,"#4a2a22"],["hope","Hope",616,"#26364a"],
+    ["dreams","Dreams",577,"#3a2b45"],["happiness","Happiness",800,"#4a3d1c"],
+    ["success","Success",768,"#1f3b38"],["positive","Positivity",377,"#43302b"]
+  ];
+  var NUDGES=[
+    ["Quotes won't do the whole job.","A line can spark something. It can't build it. Go read a chapter of something real."],
+    ["You've been collecting sparks.","Now go feed one of them. Pick up a book, even for ten minutes."],
+    ["Inspiration isn't the hard part.","Doing the thing is. Step away and go do one small piece of it."],
+    ["That's enough for now.","More quotes won't move you forward the way action will. Go work on something."]
+  ];
+  function $(id){return document.getElementById(id)}
+  function store(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v)}catch(e){return null}}
+
+  /* ---------- theme ---------- */
+  var root=document.documentElement;
+  function setTheme(t){root.dataset.theme=t;$('themeLbl').textContent=t==='dark'?'Candlelit':'Morning paper';store('ml-theme',t);
+    document.querySelector('meta[name=theme-color]').content=t==='dark'?'#161511':'#F5EFE3';}
+  var saved=store('ml-theme');
+  setTheme(saved||(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark'));
+  $('themeBtn').onclick=function(){setTheme(root.dataset.theme==='dark'?'light':'dark')};
+  document.querySelectorAll('[data-set]').forEach(function(b){b.onclick=function(){setTheme(b.dataset.set)}});
+
+  /* ---------- dateline ---------- */
+  var now=new Date();
+  $('today').textContent=now.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  var doy=Math.floor((now-new Date(now.getFullYear(),0,0))/864e5);
+  $('issue').textContent="Today's line · No. "+doy;
+  $('lsDay').textContent=now.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'});
+
+  /* ---------- the reader: a seeded shuffle, like the app's deck ---------- */
+  function mulberry(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+  var all=[];Object.keys(Q).forEach(function(k){Q[k].forEach(function(x){all.push({t:x[0],a:x[1],c:k})})});
+  var seed=+store('ml-seed');if(!seed){seed=(Math.random()*2e9)|0;store('ml-seed',seed)}
+  var rnd=mulberry(seed^doy),deck=all.slice();
+  for(var i=deck.length-1;i>0;i--){var j=Math.floor(rnd()*(i+1));var tmp=deck[i];deck[i]=deck[j];deck[j]=tmp}
+  var pos=0,read=1,favs={},busy=false,threshold=7,shown=0;
+  try{favs=JSON.parse(store('ml-favs')||'{}')||{}}catch(e){}
+  var stage=$('stage');
+  function size(t){return t.length<=80?'':t.length<=120?'md':'sm'}
+  function card(q,first){
+    var d=document.createElement('div');d.className='q'+(first?'':' below');
+    d.innerHTML=(first?'<div class="eyebrow">Quote of the Day</div>':'')+'<blockquote class="'+size(q.t)+'"></blockquote><cite></cite>';
+    d.querySelector('blockquote').textContent=q.t;d.querySelector('cite').textContent=q.a;return d;
+  }
+  function syncFav(){var on=!!favs[deck[pos].t];$('favBtn').classList.toggle('on',on);$('favBtn').setAttribute('aria-pressed',on)}
+  stage.appendChild(card(deck[0],true));syncFav();
+  function next(){
+    if(busy||$('veil').classList.contains('show'))return;
+    if(read>=threshold){openNudge();return}
+    busy=true;var old=stage.firstElementChild;pos=(pos+1)%deck.length;read++;
+    var n=card(deck[pos]);stage.appendChild(n);
+    requestAnimationFrame(function(){requestAnimationFrame(function(){old.classList.add('above');n.classList.remove('below')})});
+    setTimeout(function(){old.remove();busy=false},750);
+    $('count').innerHTML='<b>'+read+'</b> of 6,246';syncFav();
+  }
+  function openNudge(){
+    var m=NUDGES[shown%NUDGES.length];shown++;
+    $('nTitle').textContent=m[0];$('nBody').textContent=m[1];
+    $('nMeta').textContent="You've read "+read+" lines. In the app, this appears after 20 to 30.";
+    $('veil').classList.add('show');setTimeout(function(){$('nKeep').focus()},50);
+  }
+  $('nKeep').onclick=function(e){e.stopPropagation();$('veil').classList.remove('show');threshold=read+3+Math.floor(Math.random()*3);next();$('reader').focus()};
+  $('nGo').onclick=function(){$('veil').classList.remove('show')};
+  $('veil').onclick=function(e){e.stopPropagation()};
+  $('reader').addEventListener('click',next);
+  $('nextBtn').onclick=next;
+  $('reader').addEventListener('keydown',function(e){if(e.key==='ArrowDown'||e.key===' '||e.key==='Enter'){e.preventDefault();next()}});
+  document.addEventListener('keydown',function(e){
+    if(e.key!=='ArrowDown'||e.target.closest('input,textarea,summary,button,a'))return;
+    var r=$('reader').getBoundingClientRect();if(r.top<innerHeight*.5&&r.bottom>innerHeight*.5&&scrollY<40){e.preventDefault();next()}
+  });
+  var ty=null;$('reader').addEventListener('touchstart',function(e){ty=e.touches[0].clientY},{passive:true});
+  $('reader').addEventListener('touchend',function(e){if(ty===null)return;var dy=ty-e.changedTouches[0].clientY;ty=null;if(dy>60&&scrollY<30)next()},{passive:true});
+
+  function toast(t){var el=$('toast');el.textContent=t;el.classList.add('show');clearTimeout(el._t);el._t=setTimeout(function(){el.classList.remove('show')},1800)}
+  $('favBtn').onclick=function(){var q=deck[pos];if(favs[q.t]){delete favs[q.t];toast('Removed from favorites')}else{favs[q.t]=q.a;toast('Saved. In the app, favorites stay on your phone.')}store('ml-favs',JSON.stringify(favs));syncFav()};
+  $('shareBtn').onclick=function(){
+    var q=deck[pos],txt='“'+q.t+'” — '+q.a+'\n\nvia Morning Line';
+    if(navigator.share){navigator.share({text:txt,url:location.href}).catch(function(){})}
+    else if(navigator.clipboard){navigator.clipboard.writeText(txt).then(function(){toast('Copied to clipboard')},function(){toast('Couldn’t copy')})}
+  };
+
+  /* ---------- nudge section: counter + rotating phone sheet ---------- */
+  var ctr=$('counter');for(var k=0;k<30;k++){var b=document.createElement('i');ctr.appendChild(b)}
+  var bars=ctr.children,tick=0,th=24;
+  function runCounter(){
+    tick++;if(tick>th+5){tick=0;th=20+Math.floor(Math.random()*11)}
+    for(var k=0;k<30;k++){bars[k].className=k<Math.min(tick,th)?(k===th-1&&tick>=th?'t':'on'):''}
+    $('counterLbl').textContent=tick>=th?'nudge at '+th+' · shown':'nudge at '+th;
+  }
+  var pi=2;setInterval(function(){
+    var t=$('pT'),b=$('pB');t.classList.add('fade');b.classList.add('fade');
+    setTimeout(function(){pi=(pi+1)%NUDGES.length;t.textContent=NUDGES[pi][0];b.textContent=NUDGES[pi][1];t.classList.remove('fade');b.classList.remove('fade')},400);
+  },4200);
+
+  /* ---------- the deck maths (quoteEngine: one full pass before any repeat) ---------- */
+  function deckUpd(){
+    var n=+$('perDay').value,days=Math.floor(6246/n);
+    $('perDayV').textContent=n;
+    $('daysOut').innerHTML=days.toLocaleString()+'<small>days before a repeat</small>';
+    var d=new Date(now.getTime()+days*864e5);
+    $('deckOut').innerHTML='Start today and the first quote you could see twice turns up around <b>'+d.toLocaleDateString('en-GB',{month:'long',year:'numeric'})+'</b>.';
+    var cs=$('cards').children,spread=Math.max(4,Math.min(26,120/n*6));
+    for(var i=0;i<cs.length;i++){var off=i-(cs.length-1)/2;cs[i].style.transform='translateX('+(off*spread)+'px) rotate('+(off*spread/5)+'deg)'}
+  }
+  $('perDay').oninput=deckUpd;deckUpd();
+
+  /* ---------- the shelf ---------- */
+  var shelf=$('shelfEl'),maxC=2246,idx={};
+  DECKS.forEach(function(d){
+    var b=document.createElement('button');b.className='spine';b.setAttribute('role','listitem');b.dataset.k=d[0];
+    b.style.background=d[3];b.style.height=(150+Math.sqrt(d[2]/maxC)*140)+'px';
+    b.innerHTML='<span class="t"></span><span class="n">'+d[2].toLocaleString()+'</span>';
+    b.querySelector('.t').textContent=d[1];b.setAttribute('aria-label',d[1]+', '+d[2]+' quotes');
+    b.onclick=function(){pull(d)};shelf.appendChild(b);
+  });
+  function pull(d){
+    var list=Q[d[0]];idx[d[0]]=((idx[d[0]]===undefined?-1:idx[d[0]])+1)%list.length;var q=list[idx[d[0]]];
+    shelf.querySelectorAll('.spine').forEach(function(s){s.classList.toggle('on',s.dataset.k===d[0])});
+    var qe=$('openQ'),ae=$('openA');qe.style.opacity=0;ae.style.opacity=0;
+    setTimeout(function(){qe.textContent=q[0];ae.textContent=q[1];$('openLbl').textContent=d[1]+' · '+d[2].toLocaleString();qe.style.opacity=1;ae.style.opacity=1},300);
+    $('openAgain').onclick=function(){pull(d)};
+  }
+  pull(DECKS[2]);
+
+  /* ---------- voices ---------- */
+  var names=['Marcus Aurelius','Seneca','Epictetus','Lao Tzu','Confucius','Rumi','Emerson','Helen Keller','Carl Jung','Aristotle','Maya Angelou','Thoreau','Goethe','Virginia Woolf','Leonardo da Vinci','Khalil Gibran','Eleanor Roosevelt','Ovid','and 2,821 more'];
+  var tr=$('voices'),h='';for(var r=0;r<2;r++)names.forEach(function(n){h+='<span>'+n+'</span>'});tr.innerHTML=h;
+
+  /* ---------- reveal + section-driven timers ---------- */
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.12});
+  document.querySelectorAll('.rv').forEach(function(el){io.observe(el)});
+  var ctrTimer=null;new IntersectionObserver(function(es){es.forEach(function(e){
+    if(e.isIntersecting&&!ctrTimer){ctrTimer=setInterval(runCounter,160)}else if(!e.isIntersecting&&ctrTimer){clearInterval(ctrTimer);ctrTimer=null}
+  })}).observe(ctr);
+})();
+</script>
+</body>
+</html>
