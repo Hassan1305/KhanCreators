@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Morning Line: One Quote at a Time</title>
-<meta name="description" content="A calm quotes app for iPhone. One quote at a time, 6,246 of them, shuffled so none repeats for months. And when you've read enough, it tells you to go read a real book.">
+<meta name="description" content="A calm quotes app for iPhone and Android. One quote at a time, 6,246 of them, shuffled so none repeats for months. And when you've read enough, it tells you to go read a real book.">
 <link rel="canonical" href="https://khancreators.netlify.app/apps/morning-line/">
 <meta property="og:title" content="Morning Line: One quote at a time">
 <meta property="og:description" content="6,246 quotes, no feed, no account. It even tells you when to stop.">
@@ -306,7 +306,7 @@ footer a:hover{color:var(--ink)}
         <a href="#price">Price</a>
         <a href="#faq">FAQ</a>
       </nav>
-      <a class="btn getsm" href="https://apps.apple.com/app/id6805128520" target="_blank" rel="noopener">Get it</a>
+      <a class="btn getsm" id="getTop" href="https://apps.apple.com/app/id6805128520" target="_blank" rel="noopener">Get it</a>
       <button class="theme" id="themeBtn" aria-label="Switch between candlelit and morning paper themes"><i></i><span id="themeLbl">Candlelit</span></button>
     </div>
     <div class="dateline"><span id="today">Tuesday, 29 September 2026</span><span id="issue">Today's line</span><span>6,246 quotes · one at a time</span></div>
@@ -353,7 +353,11 @@ footer a:hover{color:var(--ink)}
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.4 12.6c0-2.6 2.1-3.8 2.2-3.9-1.2-1.8-3.1-2-3.7-2-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.4-.9-1.7 0-3.3 1-4.2 2.6-1.8 3.1-.5 7.7 1.3 10.2.8 1.2 1.8 2.6 3.1 2.6 1.3-.1 1.7-.8 3.3-.8 1.5 0 1.9.8 3.3.8 1.4 0 2.2-1.2 3-2.5 1-1.4 1.4-2.8 1.4-2.9 0 0-2.4-1-2.4-4.1zM13.9 4.9c.7-.8 1.2-2 1-3.1-1 0-2.2.7-2.9 1.5-.6.7-1.2 1.9-1 3 1.1.1 2.2-.6 2.9-1.4z"/></svg>
         <span><small>Download on the</small><b>App Store</b></span>
       </a>
-      <span class="note">iPhone and iPad. Android is in testing: <a href="mailto:ch.hasni.khan@gmail.com?subject=Morning%20Line%20Android%20beta">ask to join</a>.</span>
+      <a class="btn ghost" href="https://play.google.com/store/apps/details?id=com.hasnikhan.morningline" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.6 1.8a1.5 1.5 0 0 0-.6 1.2v18a1.5 1.5 0 0 0 .6 1.2l10.1-10.2zm11.5 8.8 2.9-2.9L5.5.6l9.6 10zm0 2.8-9.6 10 12.5-7.1zm4.2-4.9-3.3 3.5 3.3 3.5 2.7-1.6c1-.6 1-2.2 0-2.8z"/></svg>
+        <span><small>GET IT ON</small><b>Google Play</b></span>
+      </a>
+      <span class="note">Free on iPhone, iPad and Android.</span>
     </div>
   </div>
 </section>
@@ -559,7 +563,7 @@ footer a:hover{color:var(--ink)}
       <details open><summary>Does it need the internet?</summary><p>No. Every quote is bundled in the app, and the daily notification is scheduled on your phone. Ads are the only part that uses the network.</p></details>
       <details><summary>Will I see the same quote twice?</summary><p>Not for a long time. Each deck is shuffled once and dealt in order, so every quote in it comes up before any repeats. Your place is saved after every quote, so closing the app doesn't reset anything.</p></details>
       <details><summary>What data does it collect?</summary><p>Morning Line has no account and no servers. Your favorites, reading position and settings stay on your phone. Ads are served by Google AdMob, which collects some device data to show and measure them. The <a href="privacy.html" style="text-decoration:underline">privacy policy</a> lists exactly what.</p></details>
-      <details><summary>Is it on Android?</summary><p>Android, with its home-screen widget, is in closed testing now. <a href="mailto:ch.hasni.khan@gmail.com?subject=Morning%20Line%20Android%20beta" style="text-decoration:underline">Email us</a> to join, or check back soon.</p></details>
+      <details><summary>Is it on Android?</summary><p>Yes, on <a href="https://play.google.com/store/apps/details?id=com.hasnikhan.morningline" style="text-decoration:underline">Google Play</a>, with the same quotes, decks, daily quote and a home-screen widget. The Lock Screen widget is iPhone-only, because Android doesn't allow them.</p></details>
       <details><summary>Can I share a quote?</summary><p>Yes, from the share button under any quote. Favorite the ones that land and they're kept in one list.</p></details>
     </div>
   </div>
@@ -573,6 +577,10 @@ footer a:hover{color:var(--ink)}
       <a class="btn" href="https://apps.apple.com/app/id6805128520" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.4 12.6c0-2.6 2.1-3.8 2.2-3.9-1.2-1.8-3.1-2-3.7-2-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.4-.9-1.7 0-3.3 1-4.2 2.6-1.8 3.1-.5 7.7 1.3 10.2.8 1.2 1.8 2.6 3.1 2.6 1.3-.1 1.7-.8 3.3-.8 1.5 0 1.9.8 3.3.8 1.4 0 2.2-1.2 3-2.5 1-1.4 1.4-2.8 1.4-2.9 0 0-2.4-1-2.4-4.1zM13.9 4.9c.7-.8 1.2-2 1-3.1-1 0-2.2.7-2.9 1.5-.6.7-1.2 1.9-1 3 1.1.1 2.2-.6 2.9-1.4z"/></svg>
         <span><small>Download on the</small><b>App Store</b></span>
+      </a>
+      <a class="btn ghost" href="https://play.google.com/store/apps/details?id=com.hasnikhan.morningline" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.6 1.8a1.5 1.5 0 0 0-.6 1.2v18a1.5 1.5 0 0 0 .6 1.2l10.1-10.2zm11.5 8.8 2.9-2.9L5.5.6l9.6 10zm0 2.8-9.6 10 12.5-7.1zm4.2-4.9-3.3 3.5 3.3 3.5 2.7-1.6c1-.6 1-2.2 0-2.8z"/></svg>
+        <span><small>GET IT ON</small><b>Google Play</b></span>
       </a>
     </div>
   </div>
@@ -667,6 +675,8 @@ footer a:hover{color:var(--ink)}
   ];
   function $(id){return document.getElementById(id)}
   function store(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v)}catch(e){return null}}
+
+  if(/Android/i.test(navigator.userAgent)){$('getTop').href='https://play.google.com/store/apps/details?id=com.hasnikhan.morningline'}
 
   /* ---------- theme ---------- */
   var root=document.documentElement;
